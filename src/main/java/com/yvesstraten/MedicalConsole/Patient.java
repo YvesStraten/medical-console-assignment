@@ -9,15 +9,17 @@ public class Patient implements Comparable<Patient> {
   private double balance;
   private MedicalFacility currentFacility;
 
-	public Patient(int id, String name, double balance, MedicalFacility facility){
+	public Patient(String name, double balance, MedicalFacility facility){
+		// TODO: Random generate
+		int id = 0;
 		setId(id);
 		setName(name);
 		setBalance(balance);
 		setMedicalFacility(facility);
 	}
 
-	public Patient(int id, String name, MedicalFacility facility){
-		this(id, name, 0.0, facility);
+	public Patient(String name, MedicalFacility facility){
+		this(name, 0.0, facility);
 	}
 
   public int getId() {
@@ -40,7 +42,7 @@ public class Patient implements Comparable<Patient> {
     return this.currentFacility;
   }
 
-  public void setId(int id) {
+  private void setId(int id) {
     this.id = id;
   }
 
@@ -68,6 +70,18 @@ public class Patient implements Comparable<Patient> {
     if (this == oPatient) return 0;
     else return (int) (getBalance() - oPatient.getBalance());
   }
+
+	public boolean equals(Object other){
+		if(this == other)
+			return true;
+		else {
+			if(other instanceof Patient){
+				return ((Patient) other).getId() == getId();
+			}
+		}
+
+		return false;
+	}
 
   @Override
   public String toString() {
