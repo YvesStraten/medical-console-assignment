@@ -10,9 +10,8 @@ public class Patient implements Comparable<Patient> {
   private MedicalFacility currentFacility;
 
 	public Patient(String name, double balance, MedicalFacility facility){
-		// TODO: Random generate
-		int id = 0;
-		setId(id);
+		// TODO: generate randomly
+		//setId(random.nextInt());
 		setName(name);
 		setBalance(balance);
 		setMedicalFacility(facility);
@@ -20,6 +19,14 @@ public class Patient implements Comparable<Patient> {
 
 	public Patient(String name, MedicalFacility facility){
 		this(name, 0.0, facility);
+	}
+
+	public Patient(String name){
+		this(name, 0.0, null);
+	}
+
+	public Patient(){
+		this("", null);
 	}
 
   public int getId() {
