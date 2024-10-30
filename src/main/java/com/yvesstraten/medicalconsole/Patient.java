@@ -9,24 +9,25 @@ public class Patient implements Comparable<Patient> {
   private double balance;
   private MedicalFacility currentFacility;
 
-	public Patient(String name, double balance, MedicalFacility facility){
+	public Patient(String name, boolean isPrivate, double balance, MedicalFacility facility){
 		// TODO: generate randomly
 		//setId(random.nextInt());
 		setName(name);
+		setPrivate(isPrivate);
 		setBalance(balance);
 		setMedicalFacility(facility);
 	}
 
 	public Patient(String name, MedicalFacility facility){
-		this(name, 0.0, facility);
+		this(name, false, 0.0, facility);
 	}
 
 	public Patient(String name){
-		this(name, 0.0, null);
+		this(name, false, 0.0, null);
 	}
 
 	public Patient(){
-		this("", null);
+		this("");
 	}
 
   public int getId() {
