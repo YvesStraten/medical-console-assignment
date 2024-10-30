@@ -1,4 +1,4 @@
-package com.yvesstraten.MedicalConsole;
+package com.yvesstraten.medicalconsole;
 
 public class MedicalConsole {
     public static void main(String[] args) {
