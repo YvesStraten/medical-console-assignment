@@ -1,4 +1,4 @@
-package com.yvesstraten.medicalconsoletests;
+package com.yvesstraten.medicalconsole.tests;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

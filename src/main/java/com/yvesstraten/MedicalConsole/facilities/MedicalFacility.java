@@ -12,6 +12,10 @@ public abstract class MedicalFacility {
     setName(name);
   }
 
+	public MedicalFacility(){
+		this("");
+	}
+
   public int getId() {
     return this.id;
   }
@@ -24,9 +28,25 @@ public abstract class MedicalFacility {
     this.name = name;
   }
 
+	private void setId(int id) {
+		this.id = id;
+	}
+
   public abstract boolean visit(Patient pat); 
 
   public int hashCode() {
     return getId();
   }
+
+	public boolean equals(Object other){
+		if(this == other)
+			return true;
+		else {
+			if(other instanceof MedicalFacility){
+				return this.getId() == ((MedicalFacility) other).getId(); 
+			}
+		}
+
+		return false;
+	}
 }
