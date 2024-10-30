@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -20,9 +21,25 @@ public class ClinicTests {
   @Test
   public void registeredPatientVisitReturnsTrue() {
     Clinic clinic = new Clinic("Test clinic", 0.0, 0.0);
-    Patient patient = new Patient("Test", 0.0, clinic);
+    Patient patient = new Patient("Test", false, 0.0, clinic);
 
     assertTrue(clinic.visit(patient));
   }
+
+	@Test 
+	public void patientVisitAddsBalance(){
+    Clinic clinic = new Clinic("Test clinic", 300, 1.2);
+		double fee = clinic.getFee();
+		double gapPercent = clinic.getGapPercent();
+
+    Patient privatePatient = new Patient("Test", true, 0.0, clinic);
+    Patient publicPatient = new Patient("Test", false, 0.0, clinic);
+
+		clinic.visit(privatePatient);
+		assertEquals(privatePatient.getBalance(), fee);
+
+		clinic.visit(publicPatient);
+		assertEquals(publicPatient.getBalance(), fee * gapPercent);
+	}
 
 }

@@ -8,13 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import java.util.Arrays;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.suite.api.Suite;
-import org.junit.platform.suite.api.SuiteDisplayName;
 
 /** Test suite for all tests related to the {@code Patient} class */
-@Suite
-@SuiteDisplayName("Patient tests")
+@DisplayName("Patient tests")
 public class PatientTests {
   @Test
   public void shouldBeSameHashCode() {
