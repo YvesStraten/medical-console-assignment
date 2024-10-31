@@ -47,4 +47,10 @@ public class Clinic extends MedicalFacility {
       return false;
     }
   }
+
+	@Override
+	public String toString(){
+		return "Clinic " + getName() + " fee " + getFee() + " and gap percent " + gapPercent;
+
+	}
 }
