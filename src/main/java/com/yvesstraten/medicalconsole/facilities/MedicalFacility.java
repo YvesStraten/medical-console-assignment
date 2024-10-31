@@ -2,6 +2,11 @@ package com.yvesstraten.medicalconsole.facilities;
 
 import com.yvesstraten.medicalconsole.Patient;
 
+/**
+ * This class outlines the basic properties 
+ * that a <code>MedicalFacility</code> should have
+ * @author Yves Straten e2400068
+*/
 public abstract class MedicalFacility {
   private String name;
   private int id;
@@ -34,16 +39,18 @@ public abstract class MedicalFacility {
 
   public abstract boolean visit(Patient pat); 
 
+	@Override
   public int hashCode() {
     return getId();
   }
 
-	public boolean equals(Object other){
-		if(this == other)
+	@Override
+	public boolean equals(Object obj){
+		if(this == obj)
 			return true;
 		else {
-			if(other instanceof MedicalFacility){
-				return this.getId() == ((MedicalFacility) other).getId(); 
+			if(obj instanceof MedicalFacility){
+				return this.getId() == ((MedicalFacility) obj).getId(); 
 			}
 		}
 
