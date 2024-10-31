@@ -7,6 +7,17 @@ public class Procedure {
 	private boolean isElective;
 	private double cost;
 
+	public Procedure(String name, String description, boolean isElective, double basicCost){
+		setName(name);
+		setDescription(description);
+		setIsElective(isElective);
+		setCost(basicCost);
+	}
+
+	public Procedure(){
+		this("", "", false, 0.0);
+	}
+
 	public int getId(){
 		return this.id;
 	}
