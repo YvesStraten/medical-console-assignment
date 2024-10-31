@@ -3,7 +3,7 @@ package com.yvesstraten.medicalconsole;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 
 /** 
- * Class that represents a patient 
+ * This class represents a patient 
  * @author Yves Straten e2400068
 */
 public class Patient implements Comparable<Patient> {
