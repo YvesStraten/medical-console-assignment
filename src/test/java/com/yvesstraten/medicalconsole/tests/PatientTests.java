@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.PatientsSortedByName;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import java.util.Arrays;
 
@@ -34,6 +35,17 @@ public class PatientTests {
 
     assertArrayEquals(expected, patients);
   }
+
+	@Test 
+	public void sortByNameTest(){
+    Patient patient = new Patient("Mark", new Clinic("Victory", 300, 0.3));
+    Patient patient2 = new Patient("Other", new Clinic("Victory", 300, 0.3));
+		Patient[] expected = new Patient[] { patient, patient2 };
+		Patient[] actual = new Patient[] { patient2, patient };
+
+		Arrays.sort(actual, new PatientsSortedByName());
+		assertArrayEquals(expected, actual);
+	}
 
   @Test
   public void equalsTest() {
