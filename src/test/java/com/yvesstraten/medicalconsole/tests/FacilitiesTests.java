@@ -13,7 +13,7 @@ import com.yvesstraten.medicalconsole.facilities.Procedure;
 
 @Suite
 @SuiteDisplayName("Facilities tests")
-@SelectClasses({ FacilitiesTests.class, ClinicTests.class })
+@SelectClasses({ FacilitiesTests.class, ClinicTests.class, HospitalTests.class })
 public class FacilitiesTests {
   @Test
   public void shouldBeSameHashCode() {
