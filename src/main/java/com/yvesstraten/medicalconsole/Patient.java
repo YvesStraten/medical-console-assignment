@@ -32,24 +32,30 @@ public class Patient implements Comparable<Patient> {
 	}
 
 	/** 
-	 * Alternate constructor for a Patient
-	 * @see Patient#Patient(String, boolean, double, MedicalFacility)
+	 * Alternate constructor for this patient 
+	 * Sets facility to <code>null</c>
+	 * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
 	*/
 	public Patient(int id, String name, boolean isPrivate, double balance){
 		this(id, name, false, balance, null);
 	}
 
 	/** 
-	 * Alternate constructor for a Patient
-	 * @see Patient#Patient(String, boolean, double, MedicalFacility)
+	 * Alternate constructor for this patient 
+	 * Sets facility to <code>null</c>
+	 * Sets balance to 0.0 
+	 * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
 	*/
 	public Patient(int id, String name, boolean isPrivate){
 		this(id, name, false, 0.0, null);
 	}
 
 	/** 
-	 * Alternate constructor for a Patient
-	 * @see Patient#Patient(String, boolean, double, MedicalFacility)
+	 * This patient must have an id, thus,
+	 * providing no details is an <b>Unsupported</b>
+	 * operation
+	 * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
+	 * @throws UnsupportedOperationException
 	*/
 	public Patient(){
 		throw new UnsupportedOperationException();

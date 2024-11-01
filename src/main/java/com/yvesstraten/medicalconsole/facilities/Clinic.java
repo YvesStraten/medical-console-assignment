@@ -12,6 +12,9 @@ public class Clinic extends MedicalFacility {
     setGapPercent(gapPercent);
   }
 
+	/** 
+	 * {@inheritDoc}
+	*/
 	public Clinic(){
 		super();
 	}

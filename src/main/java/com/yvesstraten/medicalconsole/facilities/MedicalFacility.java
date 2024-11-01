@@ -16,6 +16,11 @@ public abstract class MedicalFacility {
     setName(name);
   }
 
+	/** 
+	 * A medical facility must have an id, 
+	 * thus providing no details is <b>Unsupported</b>
+	 * @throws UnsupportedOperationException
+	*/
 	public MedicalFacility(){
 		throw new UnsupportedOperationException();
 	}

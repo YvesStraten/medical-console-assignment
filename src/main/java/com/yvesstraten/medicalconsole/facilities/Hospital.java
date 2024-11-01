@@ -19,6 +19,9 @@ public class Hospital extends MedicalFacility {
     this(id, name, new ArrayList<Procedure>());
   }
 
+	/** 
+	 * {@inheritDoc}
+	*/
 	public Hospital(){
 		super();
 	}
