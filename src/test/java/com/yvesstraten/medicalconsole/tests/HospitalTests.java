@@ -12,8 +12,8 @@ import com.yvesstraten.medicalconsole.facilities.Hospital;
 public class HospitalTests {
 	@Test
 	public void visitBehavesCorrectly(){
-		Hospital hospital = new Hospital("Test");
-		Patient patient = new Patient("Test patient");
+		Hospital hospital = new Hospital(0, "Test");
+		Patient patient = new Patient(1, "Test patient", false, 0.0, null);
 		boolean success = hospital.visit(patient);
 
 		if(success){

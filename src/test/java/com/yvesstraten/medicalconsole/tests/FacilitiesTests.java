@@ -17,8 +17,8 @@ import com.yvesstraten.medicalconsole.facilities.Procedure;
 public class FacilitiesTests {
   @Test
   public void shouldBeSameHashCode() {
-    Clinic clinic = new Clinic("test", 300, 0.3);
-    Hospital hospital = new Hospital("test");
+    Clinic clinic = new Clinic(0, "test", 300, 0.3);
+    Hospital hospital = new Hospital(1, "test");
     Procedure procedure = new Procedure();
 
     assertEquals(clinic.hashCode(), clinic.getId());

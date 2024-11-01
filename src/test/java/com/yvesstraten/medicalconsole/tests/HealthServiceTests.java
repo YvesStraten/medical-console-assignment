@@ -16,10 +16,10 @@ public class HealthServiceTests {
 	@Test 
 	public void toStringExpectedOutput(){
 		ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-		facilities.add(new Clinic("Test", 300, 1.2));
+		facilities.add(new Clinic(0, "Test", 300, 1.2));
 
 		ArrayList<Patient> patients = new ArrayList<Patient>();
-		patients.add(new Patient("Mark", facilities.get(0)));
+		patients.add(new Patient(0, "Mark", false, 0.0, facilities.get(0)));
 
 		HealthService service = new HealthService("TestService", facilities, patients);
 	}
