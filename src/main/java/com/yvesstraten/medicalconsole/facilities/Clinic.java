@@ -6,11 +6,15 @@ public class Clinic extends MedicalFacility {
   private double fee;
   private double gapPercent;
 
-  public Clinic(String name, double fee, double gapPercent) {
-    super(name);
+  public Clinic(int id, String name, double fee, double gapPercent) {
+    super(id, name);
     setFee(fee);
     setGapPercent(gapPercent);
   }
+
+	public Clinic(){
+		super();
+	}
 
   public double getFee() {
     return this.fee;

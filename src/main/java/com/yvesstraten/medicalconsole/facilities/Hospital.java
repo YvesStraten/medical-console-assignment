@@ -8,20 +8,20 @@ public class Hospital extends MedicalFacility {
   private double probAdmit;
   private ArrayList<Procedure> procedures;
 
-  public Hospital(String name, ArrayList<Procedure> procedures) {
-    super(name);
+  public Hospital(int id, String name, ArrayList<Procedure> procedures) {
+    super(id, name);
 
     Random random = new Random();
     setProbAdmit(random.nextDouble(1));
   }
 
-  public Hospital(String name) {
-    this(name, new ArrayList<Procedure>());
+  public Hospital(int id, String name) {
+    this(id, name, new ArrayList<Procedure>());
   }
 
-  public Hospital() {
-    this("", new ArrayList<Procedure>());
-  }
+	public Hospital(){
+		super();
+	}
 
   public double getProbAdmit() {
     return this.probAdmit;
