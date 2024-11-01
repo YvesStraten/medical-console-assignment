@@ -23,9 +23,8 @@ public class Patient implements Comparable<Patient> {
 	 * this patient
 	 * @see MedicalFacility
 	*/
-	public Patient(String name, boolean isPrivate, double balance, MedicalFacility facility){
-		// TODO: generate randomly
-		//setId(random.nextInt());
+	public Patient(int id, String name, boolean isPrivate, double balance, MedicalFacility facility){
+		setId(id);
 		setName(name);
 		setPrivate(isPrivate);
 		setBalance(balance);
@@ -36,16 +35,16 @@ public class Patient implements Comparable<Patient> {
 	 * Alternate constructor for a Patient
 	 * @see Patient#Patient(String, boolean, double, MedicalFacility)
 	*/
-	public Patient(String name, MedicalFacility facility){
-		this(name, false, 0.0, facility);
+	public Patient(int id, String name, boolean isPrivate, double balance){
+		this(id, name, false, balance, null);
 	}
 
 	/** 
 	 * Alternate constructor for a Patient
 	 * @see Patient#Patient(String, boolean, double, MedicalFacility)
 	*/
-	public Patient(String name){
-		this(name, false, 0.0, null);
+	public Patient(int id, String name, boolean isPrivate){
+		this(id, name, false, 0.0, null);
 	}
 
 	/** 
@@ -53,7 +52,7 @@ public class Patient implements Comparable<Patient> {
 	 * @see Patient#Patient(String, boolean, double, MedicalFacility)
 	*/
 	public Patient(){
-		this("");
+		throw new UnsupportedOperationException();
 	}
 
   public int getId() {

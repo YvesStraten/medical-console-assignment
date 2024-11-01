@@ -11,14 +11,13 @@ public abstract class MedicalFacility {
   private String name;
   private int id;
 
-  public MedicalFacility(String name) {
-		// TODO: Figure out how to generate random identifier
-    // setId(id);
+  public MedicalFacility(int id, String name) {
+    setId(id);
     setName(name);
   }
 
 	public MedicalFacility(){
-		this("");
+		throw new UnsupportedOperationException();
 	}
 
   public int getId() {
