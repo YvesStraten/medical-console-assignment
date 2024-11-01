@@ -18,14 +18,14 @@ import org.junit.jupiter.api.Test;
 public class PatientTests {
   @Test
   public void shouldBeSameHashCode() {
-    Patient patient = new Patient("Mark", new Clinic("Victory", 300, 0.3));
+    Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(1, "Victory", 300, 0.3));
     assertEquals(patient.hashCode(), patient.getId());
   }
 
   @Test
   public void comparableTest() {
-    Patient patient = new Patient("Mark", new Clinic("Victory", 300, 0.3));
-    Patient patient2 = new Patient("Other", new Clinic("Victory", 300, 0.3));
+    Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(2, "Victory", 300, 0.3));
+    Patient patient2 = new Patient(1, "Other", false, 0.0, new Clinic(3, "Victory", 300, 0.3));
     patient2.setBalance(30.0);
 
     Patient[] patients = new Patient[] {patient2, patient};
@@ -38,8 +38,8 @@ public class PatientTests {
 
 	@Test 
 	public void sortByNameTest(){
-    Patient patient = new Patient("Mark", new Clinic("Victory", 300, 0.3));
-    Patient patient2 = new Patient("Other", new Clinic("Victory", 300, 0.3));
+    Patient patient = new Patient(0, "Mark", false);
+    Patient patient2 = new Patient(1, "Other", false);
 		Patient[] expected = new Patient[] { patient, patient2 };
 		Patient[] actual = new Patient[] { patient2, patient };
 
@@ -49,8 +49,8 @@ public class PatientTests {
 
   @Test
   public void equalsTest() {
-    Patient patient = new Patient("Mark", new Clinic("Victory", 300, 0.3));
-    Patient patient2 = new Patient("Other", new Clinic("Victory", 300, 0.3));
+    Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(2, "Victory", 300, 0.3));
+    Patient patient2 = new Patient(1, "Other", false, 0.0, new Clinic(3, "Victory", 300, 0.3));
 
     assertTrue(patient.equals(patient));
     assertFalse(patient.equals(patient2));
