@@ -47,7 +47,7 @@ public class Patient implements Comparable<Patient> {
 	 * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
 	*/
 	public Patient(int id, String name, boolean isPrivate){
-		this(id, name, false, 0.0, null);
+		this(id, name, isPrivate, 0.0, null);
 	}
 
 	/** 
@@ -133,16 +133,24 @@ public class Patient implements Comparable<Patient> {
   @Override
   public String toString() {
     String statusString = isPrivate() ? "private" : "public";
-		String facilityString = getCurrentFacility().toString();
+		System.out.println(isPrivate());
+		MedicalFacility currentFacility = getCurrentFacility();
+		String facilityString;
+
+		if(currentFacility == null){
+			facilityString = new String("none");
+		} else {
+			facilityString = currentFacility.toString();
+		}
 
     return statusString
         + " patient "
         + getId()
         + " named "
         + getName()
-        + " balance "
+        + " with balance "
         + getBalance()
-				+ " current facility "
-        + (facilityString != null ? facilityString : "none");
+				+ " and current facility "
+        + facilityString;
   }
 }

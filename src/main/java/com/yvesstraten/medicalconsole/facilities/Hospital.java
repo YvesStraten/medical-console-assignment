@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Format;
 import com.yvesstraten.medicalconsole.Patient;
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,18 +14,17 @@ public class Hospital extends MedicalFacility {
 
     Random random = new Random();
     setProbAdmit(random.nextDouble(1));
+    setProcedures(procedures);
   }
 
   public Hospital(int id, String name) {
     this(id, name, new ArrayList<Procedure>());
   }
 
-	/** 
-	 * {@inheritDoc}
-	*/
-	public Hospital(){
-		super();
-	}
+  /** {@inheritDoc} */
+  public Hospital() {
+    super();
+  }
 
   public double getProbAdmit() {
     return this.probAdmit;
@@ -43,7 +43,7 @@ public class Hospital extends MedicalFacility {
   }
 
   public boolean visit(Patient pat) {
-		Random random = new Random();
+    Random random = new Random();
     double rand = random.nextDouble(1);
 
     if (rand > getProbAdmit()) {
@@ -52,5 +52,17 @@ public class Hospital extends MedicalFacility {
     }
 
     return false;
+  }
+
+  @Override
+  public String toString() {
+    String[] proceduresDetails =
+        getProcedures().stream().map((procedure) -> procedure.toString()).toArray(String[]::new);
+    String proceduresString =
+        proceduresDetails.length == 0
+            ? " and no procedures"
+            : Format.enumeratedContent(proceduresDetails);
+
+    return "Hospital named " + getName() + " with id " + getId() + proceduresString;
   }
 }

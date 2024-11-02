@@ -7,15 +7,22 @@ public class Procedure {
 	private boolean isElective;
 	private double cost;
 
-	public Procedure(String name, String description, boolean isElective, double basicCost){
+	public Procedure(int id, String name, String description, boolean isElective, double basicCost){
+		setId(id);
 		setName(name);
 		setDescription(description);
 		setIsElective(isElective);
 		setCost(basicCost);
 	}
 
+	/** 
+		* This procedure must have an id, thus, 
+		* providing no details is <b>unsupported</b>
+		* @see Procedure#Procedure(int, String, String, boolean, double)
+		* @throws UnsupportedOperationException
+	*/
 	public Procedure(){
-		this("", "", false, 0.0);
+		throw new UnsupportedOperationException();
 	}
 
 	public int getId(){
