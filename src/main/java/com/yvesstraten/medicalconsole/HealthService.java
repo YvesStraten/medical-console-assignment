@@ -1,6 +1,7 @@
 package com.yvesstraten.medicalconsole;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 
@@ -8,10 +9,11 @@ import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
  * Main service class for the application
  * @author Yves Straten e2400068
  */
-public class HealthService {
+public class HealthService implements Iterator<Integer> {
   private String name;
   private ArrayList<MedicalFacility> medicalFacilities;
   private ArrayList<Patient> patients;
+	private int lastDispensedId;
 
 	/** 
 	 * Constructs a HealthService object 
@@ -25,6 +27,7 @@ public class HealthService {
     setName(name);
 		setMedicalFacilities(medicalFacilities);
 		setPatients(patients);
+		setLastDispensedId(0);
   }
 
 	/** 
@@ -47,6 +50,10 @@ public class HealthService {
 		return this.patients;
 	}
 
+	public int getLastDispensedId(){
+		return this.lastDispensedId;
+	}
+
   public void setName(String name) {
     this.name = name;
   }
@@ -59,6 +66,18 @@ public class HealthService {
     this.medicalFacilities = medicalFacilities;
   }
 
+	private void setLastDispensedId(int id){
+		this.lastDispensedId = id;
+	}
+
+	public void AddPatient(Patient patient){
+		getPatients().add(patient);
+	}
+
+	public void AddMedicalFacility(MedicalFacility facility){
+		getMedicalFacilities().add(facility);
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder base = new StringBuilder("HealthService that manages the following medical facilities: \n");
@@ -69,5 +88,13 @@ public class HealthService {
 		getPatients().stream().map((patient) -> "- " + patient.toString() + "\n").forEach((detail) -> base.append(detail));
 
 		return base.toString();
+	}
+
+	public Integer next(){
+		return getLastDispensedId() + 1;
+	}
+
+	public boolean hasNext(){ 
+		return true;
 	}
 }
