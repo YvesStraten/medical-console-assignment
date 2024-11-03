@@ -3,10 +3,14 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,6 +19,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.InvalidOptionException;
 import com.yvesstraten.medicalconsole.MedicalConsole;
+import com.yvesstraten.medicalconsole.NoHospitalsAvailable;
+import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 
 @DisplayName("Medical console tests")
 public class MedicalConsoleTests {
@@ -55,5 +62,14 @@ public class MedicalConsoleTests {
 		boolean returned = MedicalConsole.testYesNo(input);
 
 		assertEquals(expected, returned);
+	}
+
+	@Test
+	public void addingProcedureWithNoHospitalsThrows(){
+		HealthService testService = new HealthService("Test service", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
+		ByteArrayInputStream input = new ByteArrayInputStream("".getBytes()); 
+		Scanner mockInput = new Scanner(input);
+
+		assertThrows(NoHospitalsAvailable.class, () -> MedicalConsole.addProcedure(testService, mockInput));
 	}
 }
