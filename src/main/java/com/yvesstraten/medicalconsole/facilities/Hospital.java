@@ -42,6 +42,10 @@ public class Hospital extends MedicalFacility {
     this.procedures = procedures;
   }
 
+	public void addProcedure(Procedure procedure){
+		getProcedures().add(procedure);
+	}
+
   public boolean visit(Patient pat) {
     Random random = new Random();
     double rand = random.nextDouble(1);
