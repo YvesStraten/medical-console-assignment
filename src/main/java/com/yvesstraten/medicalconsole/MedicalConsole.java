@@ -42,9 +42,7 @@ public class MedicalConsole {
     System.out.println("What would you like to do today?");
     System.out.println();
 
-    for (int i = 0; i < options.length; i++) {
-      System.out.printf("[%d] %s \n", i + 1, options[i]);
-    }
+    System.out.println(Format.enumeratedContent(options));
   }
 
   public static void checkChosenOption(int chosenOption, String[] availableOptions)
@@ -65,7 +63,7 @@ public class MedicalConsole {
 
     stdin.nextLine();
     Clinic clinicToAdd = new Clinic(service.next(), name, fee, gapPercent);
-    service.AddMedicalFacility(clinicToAdd);
+    service.addMedicalFacility(clinicToAdd);
   }
 
   public static void addHospital(HealthService service, Scanner stdin) {
@@ -73,9 +71,36 @@ public class MedicalConsole {
     String name = stdin.nextLine();
     Hospital hospitalToAdd = new Hospital(service.next(), name);
 
-    service.AddMedicalFacility(hospitalToAdd);
+    service.addMedicalFacility(hospitalToAdd);
   }
 
+  public static void addPatient(HealthService service, Scanner stdin) {
+    System.out.print("What is the name of the patient? ");
+    String name = stdin.nextLine();
+
+    System.out.print("Is the patient private? ");
+    String isPrivateString = stdin.nextLine();
+    boolean isPrivate = testYesNo(isPrivateString);
+
+    Patient patientToAdd = new Patient(service.next(), name, isPrivate);
+    service.addPatient(patientToAdd);
+    System.out.println("Successfully added " + patientToAdd.toString());
+    System.out.println();
+  }
+  public static void addProcedure(int id, Hospital hospital, Scanner stdin) {
+    System.out.print("Name of procedure? ");
+    String name = stdin.nextLine();
+    System.out.print("Description of procedure? ");
+    String description = stdin.nextLine();
+    System.out.print("Is the procedure elective? ");
+    boolean isElective = testYesNo(stdin.nextLine());
+    System.out.print("What is the basic cost of the procedure? ");
+    double basicCost = stdin.nextDouble();
+    stdin.nextLine();
+
+    Procedure procedureToAdd = new Procedure(id, name, description, isElective, basicCost);
+    hospital.addProcedure(procedureToAdd);
+  }
   public static boolean testYesNo(String stringToTest) {
     if (stringToTest.startsWith("y") || stringToTest.startsWith("Y")) {
       return true;
@@ -130,18 +155,8 @@ public class MedicalConsole {
         break;
       case 2:
         do {
-          System.out.print("What is the name of the patient? ");
-          String name = stdin.nextLine();
-
-          System.out.print("Is the patient private? ");
-          String isPrivateString = stdin.nextLine();
-          boolean isPrivate = testYesNo(isPrivateString);
-
-          Patient patientToAdd = new Patient(service.next(), name, isPrivate);
-          service.AddPatient(patientToAdd);
+          addPatient(service, stdin);
           validInput = true;
-          System.out.println("Successfully added " + patientToAdd.toString());
-          System.out.println();
 
         } while (!validInput);
         break;
