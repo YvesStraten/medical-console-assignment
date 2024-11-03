@@ -19,7 +19,7 @@ public class FacilitiesTests {
   public void shouldBeSameHashCode() {
     Clinic clinic = new Clinic(0, "test", 300, 0.3);
     Hospital hospital = new Hospital(1, "test");
-    Procedure procedure = new Procedure();
+    Procedure procedure = new Procedure(2, "Test Procedure", "Test procedure desc", false, 0.30);
 
     assertEquals(clinic.hashCode(), clinic.getId());
     assertEquals(hospital.hashCode(), hospital.getId());
