@@ -4,7 +4,6 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -87,6 +86,7 @@ public class MedicalConsole {
     System.out.println("Successfully added " + patientToAdd.toString());
     System.out.println();
   }
+
   public static void addProcedure(int id, Hospital hospital, Scanner stdin) {
     System.out.print("Name of procedure? ");
     String name = stdin.nextLine();
@@ -101,6 +101,7 @@ public class MedicalConsole {
     Procedure procedureToAdd = new Procedure(id, name, description, isElective, basicCost);
     hospital.addProcedure(procedureToAdd);
   }
+
   public static boolean testYesNo(String stringToTest) {
     if (stringToTest.startsWith("y") || stringToTest.startsWith("Y")) {
       return true;
@@ -157,46 +158,107 @@ public class MedicalConsole {
         do {
           addPatient(service, stdin);
           validInput = true;
-
         } while (!validInput);
         break;
       case 3:
         do {
-          if (service.getMedicalFacilities().size() == 0) {
-            System.out.println("Please add a hospital first!");
-            addHospital(service, stdin);
-          } else {
+          try {
+            if (service.getMedicalFacilities().size() == 0) {
+              throw new NoHospitalsAvailable("Please add a hospital first!");
+            }
             Stream<MedicalFacility> filteredHospitals =
                 service.getMedicalFacilities().stream()
                     .filter((facility) -> facility instanceof Hospital);
 
             String[] hospitalDetails =
                 filteredHospitals
-                    .map((facility) -> ((Hospital) facility).toString())
+                    .peek((facility) -> ((Hospital) facility).toString())
                     .toArray(String[]::new);
 
-						System.out.println(Format.enumeratedContent(hospitalDetails));
+            System.out.println(Format.enumeratedContent(hospitalDetails));
             System.out.print("Please select a hospital to add the procedure to: ");
-						int chosenHospital = stdin.nextInt();
-						checkChosenOption(chosenHospital, hospitalDetails);
-					  stdin.nextLine();
-            System.out.print("Name of procedure? ");
-            String name = stdin.nextLine();
-            System.out.print("Description of procedure? ");
-            String description = stdin.nextLine();
-            System.out.print("Is the procedure elective? ");
-            boolean isElective = testYesNo(stdin.nextLine());
-            System.out.print("What is the basic cost of the procedure? ");
-            double basicCost = stdin.nextDouble();
+            int chosenHospital = stdin.nextInt();
+            checkChosenOption(chosenHospital, hospitalDetails);
             stdin.nextLine();
 
-            Procedure procedureToAdd =
-                new Procedure(service.next(), name, description, isElective, basicCost);
+            addProcedure(
+                service.next(),
+                filteredHospitals.toArray(Hospital[]::new)[chosenHospital - 1],
+                stdin);
 
             validInput = true;
+
+          } catch (NoHospitalsAvailable e) {
+            System.err.println(e);
+            addHospital(service, stdin);
+          }
+        } while (!validInput);
+        break;
+    }
+  }
+
+  public static void deleteObject(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    System.out.println("The following types of services are available: ");
+    String[] types =
+        new String[] {
+          new String("Medical facility"), new String("Patient"), new String("Procedure")
+        };
+
+    System.out.println(Format.enumeratedContent(types));
+    System.out.print("Which type of object would you like to delete? ");
+    int chosenOption = stdin.nextInt();
+    checkChosenOption(chosenOption, types);
+    stdin.nextLine();
+
+    boolean validInput = false;
+    switch (chosenOption) {
+      case 1:
+        do {
+          System.out.println("The following medical facilities are stored: ");
+          String[] facilitiesDetails = service.getMedicalFacilities().toArray(String[]::new);
+          System.out.println(Format.enumeratedContent(facilitiesDetails));
+          System.out.print("Which facility would you like to delete? ");
+          int facilityToDelete = stdin.nextInt();
+          stdin.nextLine();
+          checkChosenOption(facilityToDelete, facilitiesDetails);
+          MedicalFacility facilityToBeDeleted =
+              service.getMedicalFacilities().get(facilityToDelete);
+          if (facilityToBeDeleted instanceof Hospital) {
+            int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
+            if (numProcedures > 0) {
+              System.out.print(
+                  "This hospital can perform "
+                      + numProcedures
+                      + " procedures - do you still wish to delete it? [y/n]");
+              String choice = stdin.nextLine();
+              if (testYesNo(choice)) {
+                service.deleteMedicalFacility(facilityToDelete);
+              }
+            }
+          } else {
+            service.deleteMedicalFacility(facilityToDelete);
           }
 
+          validInput = true;
         } while (!validInput);
+
+      case 2:
+        do {
+          System.out.println("The following patients are stored: ");
+          String[] patientsDetails =
+              service.getPatients().stream()
+                  .map((patient) -> patient.toString())
+                  .toArray(String[]::new);
+
+          System.out.println(Format.enumeratedContent(patientsDetails));
+          System.out.print("Which patient would you like to remove? ");
+          int patientToRemove = stdin.nextInt();
+          checkChosenOption(patientToRemove, patientsDetails);
+          service.deletePatient(patientToRemove);
+          validInput = true;
+        } while (!validInput);
+
         break;
     }
   }
@@ -213,6 +275,7 @@ public class MedicalConsole {
         } while (!done);
         break;
       case DELETE:
+        deleteObject(service, stdin);
         break;
       case SIMULATE:
         // TODO
