@@ -70,12 +70,20 @@ public class HealthService implements Iterator<Integer> {
 		this.lastDispensedId = id;
 	}
 
-	public void AddPatient(Patient patient){
+	public void addPatient(Patient patient){
 		getPatients().add(patient);
 	}
 
-	public void AddMedicalFacility(MedicalFacility facility){
+	public void addMedicalFacility(MedicalFacility facility){
 		getMedicalFacilities().add(facility);
+	}
+
+	public void deleteMedicalFacility(int index){
+		getMedicalFacilities().remove(index);
+	}
+
+	public void deletePatient(int index){
+		getPatients().remove(index);
 	}
 
 	@Override

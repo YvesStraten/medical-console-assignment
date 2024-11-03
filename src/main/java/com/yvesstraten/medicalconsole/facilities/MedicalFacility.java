@@ -50,7 +50,7 @@ public abstract class MedicalFacility {
 
 	@Override
 	public boolean equals(Object obj){
-		if(this == obj)
+		if(this == obj || this.hashCode() == obj.hashCode())
 			return true;
 		else {
 			if(obj instanceof MedicalFacility){
