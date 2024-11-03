@@ -5,7 +5,9 @@ import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MedicalConsole {
@@ -87,7 +89,27 @@ public class MedicalConsole {
     System.out.println();
   }
 
-  public static void addProcedure(int id, Hospital hospital, Scanner stdin) {
+  public static void addProcedure(HealthService service, Scanner stdin) throws NoHospitalsAvailable, InvalidOptionException {
+    if (service.getMedicalFacilities().size() == 0) {
+      throw new NoHospitalsAvailable("Please add a hospital first!");
+    }
+
+    List<MedicalFacility> filteredHospitals = 
+        service.getMedicalFacilities().stream().filter((facility) -> facility instanceof Hospital).collect(Collectors.toList());
+
+    String[] hospitalDetails =
+        filteredHospitals.stream()
+            .map((facility) -> ((Hospital) facility).toString())
+            .toArray(String[]::new);
+
+    System.out.println(Format.enumeratedContent(hospitalDetails));
+    System.out.print("Please select a hospital to add the procedure to: ");
+    int chosenHospital = stdin.nextInt();
+    checkChosenOption(chosenHospital, hospitalDetails);
+    stdin.nextLine();
+
+		Hospital hospital = (Hospital) (filteredHospitals.get(chosenHospital));
+
     System.out.print("Name of procedure? ");
     String name = stdin.nextLine();
     System.out.print("Description of procedure? ");
@@ -98,7 +120,8 @@ public class MedicalConsole {
     double basicCost = stdin.nextDouble();
     stdin.nextLine();
 
-    Procedure procedureToAdd = new Procedure(id, name, description, isElective, basicCost);
+    Procedure procedureToAdd =
+        new Procedure(service.next(), name, description, isElective, basicCost);
     hospital.addProcedure(procedureToAdd);
   }
 
@@ -163,31 +186,8 @@ public class MedicalConsole {
       case 3:
         do {
           try {
-            if (service.getMedicalFacilities().size() == 0) {
-              throw new NoHospitalsAvailable("Please add a hospital first!");
-            }
-            Stream<MedicalFacility> filteredHospitals =
-                service.getMedicalFacilities().stream()
-                    .filter((facility) -> facility instanceof Hospital);
-
-            String[] hospitalDetails =
-                filteredHospitals
-                    .peek((facility) -> ((Hospital) facility).toString())
-                    .toArray(String[]::new);
-
-            System.out.println(Format.enumeratedContent(hospitalDetails));
-            System.out.print("Please select a hospital to add the procedure to: ");
-            int chosenHospital = stdin.nextInt();
-            checkChosenOption(chosenHospital, hospitalDetails);
-            stdin.nextLine();
-
-            addProcedure(
-                service.next(),
-                filteredHospitals.toArray(Hospital[]::new)[chosenHospital - 1],
-                stdin);
-
+            addProcedure(service, stdin);
             validInput = true;
-
           } catch (NoHospitalsAvailable e) {
             System.err.println(e);
             addHospital(service, stdin);
