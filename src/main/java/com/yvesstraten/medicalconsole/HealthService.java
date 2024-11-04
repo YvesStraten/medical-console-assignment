@@ -98,6 +98,18 @@ public class HealthService implements Iterator<Integer> {
 		return base.toString();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj)
+			return true;
+		else if(obj instanceof HealthService){
+			HealthService other = (HealthService) obj;
+			return this.getName().equals(other.getName()) && this.getPatients().equals(other.getPatients()) && this.getMedicalFacilities().equals(other.getMedicalFacilities()) && this.getLastDispensedId() == other.getLastDispensedId();
+		}
+
+		return false;
+	}
+
 	public Integer next(){
 		return getLastDispensedId() + 1;
 	}
