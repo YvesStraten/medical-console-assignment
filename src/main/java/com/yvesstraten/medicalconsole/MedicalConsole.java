@@ -75,7 +75,7 @@ public class MedicalConsole {
     service.addMedicalFacility(hospitalToAdd);
   }
 
-  public static void addPatient(HealthService service, Scanner stdin) {
+  public static void addPatient(HealthService service, Scanner stdin) throws InvalidYesNoException {
     System.out.print("What is the name of the patient? ");
     String name = stdin.nextLine();
 
@@ -89,10 +89,9 @@ public class MedicalConsole {
     System.out.println();
   }
 
-  public static void addProcedure(HealthService service, Scanner stdin)
-      throws NoHospitalsAvailable, InvalidOptionException {
+  public static void addProcedure(HealthService service, Scanner stdin) throws NoHospitalsAvailableException, InvalidOptionException, InvalidYesNoException {
     if (service.getMedicalFacilities().size() == 0) {
-      throw new NoHospitalsAvailable("Please add a hospital first!");
+      throw new NoHospitalsAvailableException("Please add a hospital first!");
     }
 
     List<MedicalFacility> filteredHospitals =
@@ -111,7 +110,7 @@ public class MedicalConsole {
     checkChosenOption(chosenHospital, hospitalDetails);
     stdin.nextLine();
 
-    Hospital hospital = (Hospital) (filteredHospitals.get(chosenHospital));
+		Hospital hospital = (Hospital) (filteredHospitals.get(chosenHospital - 1));
 
     System.out.print("Name of procedure? ");
     String name = stdin.nextLine();
@@ -128,17 +127,17 @@ public class MedicalConsole {
     hospital.addProcedure(procedureToAdd);
   }
 
-  public static boolean testYesNo(String stringToTest) {
+  public static boolean testYesNo(String stringToTest) throws InvalidYesNoException {
     if (stringToTest.startsWith("y") || stringToTest.startsWith("Y")) {
       return true;
     } else if (stringToTest.startsWith("n") || stringToTest.startsWith("N")) {
       return false;
     } else {
-      throw new InputMismatchException();
+      throw new InvalidYesNoException(stringToTest + " is not a yes/no answer, please input yes/no");
     }
   }
 
-  public static void addObject(HealthService service, Scanner stdin) throws InvalidOptionException {
+  public static void addObject(HealthService service, Scanner stdin) throws InvalidOptionException, InvalidYesNoException {
     String[] mainOptions =
         new String[] {
           new String("Medical facility"), new String("Patient"), new String("Procedure"),
@@ -191,7 +190,7 @@ public class MedicalConsole {
           try {
             addProcedure(service, stdin);
             validInput = true;
-          } catch (NoHospitalsAvailable e) {
+          } catch (NoHospitalsAvailableException e) {
             System.err.println(e);
             addHospital(service, stdin);
           }
@@ -201,7 +200,7 @@ public class MedicalConsole {
   }
 
   public static void deleteObject(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
+      throws InvalidOptionException, InvalidYesNoException {
     System.out.println("The following types of services are available: ");
     String[] types =
         new String[] {
@@ -258,7 +257,7 @@ public class MedicalConsole {
           System.out.print("Which patient would you like to remove? ");
           int patientToRemove = stdin.nextInt();
           checkChosenOption(patientToRemove, patientsDetails);
-          service.deletePatient(patientToRemove);
+          service.deletePatient(patientToRemove - 1);
           validInput = true;
         } while (!validInput);
 
@@ -313,7 +312,7 @@ public class MedicalConsole {
 
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
-      throws InvalidOptionException, InputMismatchException {
+      throws InvalidOptionException, InvalidYesNoException, InputMismatchException {
     switch (selectedOption) {
       case ADD:
         boolean done = false;
@@ -368,10 +367,12 @@ public class MedicalConsole {
           executeOption(ConsoleOption.values()[inputOption - 1], service, stdin);
         }
       } catch (InputMismatchException exception) {
-        System.err.println("Wrong option, please try again!");
+        System.err.println("Wrong input, please try again");
       } catch (InvalidOptionException exception) {
         System.err.println(exception.getMessage() + "\n");
-      }
+      } catch (InvalidYesNoException exception){
+				System.err.println(exception.getMessage() + "\n");
+			}
 
     } while (true);
   }

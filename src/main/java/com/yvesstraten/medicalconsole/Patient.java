@@ -33,7 +33,7 @@ public class Patient implements Comparable<Patient> {
 
 	/** 
 	 * Alternate constructor for this patient 
-	 * Sets facility to <code>null</c>
+	 * Sets facility to <code>null</code>
 	 * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
 	*/
 	public Patient(int id, String name, boolean isPrivate, double balance){
@@ -42,7 +42,7 @@ public class Patient implements Comparable<Patient> {
 
 	/** 
 	 * Alternate constructor for this patient 
-	 * Sets facility to <code>null</c>
+	 * Sets facility to <code>null</code>
 	 * Sets balance to 0.0 
 	 * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
 	*/
