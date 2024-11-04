@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.ValueSources;
 
 import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.InvalidOptionException;
@@ -71,5 +74,30 @@ public class MedicalConsoleTests {
 		Scanner mockInput = new Scanner(input);
 
 		assertThrows(NoHospitalsAvailable.class, () -> MedicalConsole.addProcedure(testService, mockInput));
+	}
+
+
+	private final PrintStream stdout = System.out;
+
+	@ParameterizedTest
+	@MethodSource("inputProvider")
+	public void listingProceduresWithNoObjectsPrintsError(String chosenOption, String output) throws InvalidOptionException {
+		HealthService testService = new HealthService("Test service", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
+		ByteArrayInputStream input = new ByteArrayInputStream(chosenOption.getBytes()); 
+		Scanner mockInput = new Scanner(input);
+		ByteArrayOutputStream capturedStdout = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(capturedStdout));
+
+		String[] stringStdout = capturedStdout.toString().split("\n");
+		System.out.println(stringStdout);
+		// String expected = stringStdout[stringStdout.length];
+
+		// MedicalConsole.listObjects(testService, mockInput);
+		// assertEquals(output, expected);
+		System.setOut(stdout);
+	} 
+
+	private static Stream<Arguments> inputProvider(){
+		return Stream.of(Arguments.of("3\n", "There are no hospitals, and as such, no procedures"));
 	}
 }
