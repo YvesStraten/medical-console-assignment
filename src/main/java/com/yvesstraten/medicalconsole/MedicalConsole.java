@@ -89,13 +89,16 @@ public class MedicalConsole {
     System.out.println();
   }
 
-  public static void addProcedure(HealthService service, Scanner stdin) throws NoHospitalsAvailable, InvalidOptionException {
+  public static void addProcedure(HealthService service, Scanner stdin)
+      throws NoHospitalsAvailable, InvalidOptionException {
     if (service.getMedicalFacilities().size() == 0) {
       throw new NoHospitalsAvailable("Please add a hospital first!");
     }
 
-    List<MedicalFacility> filteredHospitals = 
-        service.getMedicalFacilities().stream().filter((facility) -> facility instanceof Hospital).collect(Collectors.toList());
+    List<MedicalFacility> filteredHospitals =
+        service.getMedicalFacilities().stream()
+            .filter((facility) -> facility instanceof Hospital)
+            .collect(Collectors.toList());
 
     String[] hospitalDetails =
         filteredHospitals.stream()
@@ -108,7 +111,7 @@ public class MedicalConsole {
     checkChosenOption(chosenHospital, hospitalDetails);
     stdin.nextLine();
 
-		Hospital hospital = (Hospital) (filteredHospitals.get(chosenHospital));
+    Hospital hospital = (Hospital) (filteredHospitals.get(chosenHospital));
 
     System.out.print("Name of procedure? ");
     String name = stdin.nextLine();
@@ -263,6 +266,51 @@ public class MedicalConsole {
     }
   }
 
+  public static String getObjectStreamDetails(Stream<Object> stream, String name) {
+    List<Object> objects = stream.toList();
+		System.out.println(objects.get(0));
+    if (objects.size() == 0) {
+      return new String("There are no " + name + " for this service");
+    }
+
+		String toReturn = objects.stream().map((object) -> object.toString()).reduce("The following " + name + " are available \n", (before, next) -> (before + next + "\n"));
+
+		System.out.println(toReturn);
+
+    return toReturn;
+  }
+
+  public static void listObjects(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    System.out.println("Which type of object would you like to see listed?");
+    String[] options =
+        new String[] {
+          new String("Medical Facilities"), new String("Patients"), new String("Procedures")
+        };
+    System.out.println(Format.enumeratedContent(options));
+    System.out.print("Please select a type: ");
+    int chosenOption = stdin.nextInt();
+    stdin.nextLine();
+
+    checkChosenOption(chosenOption, options);
+
+    switch (chosenOption) {
+      case 1:
+        System.out.println(
+            getObjectStreamDetails(Stream.of(service.getMedicalFacilities()), "facilities"));
+        break;
+
+      case 2:
+				System.out.println(getObjectStreamDetails(Stream.of(service.getPatients()), "patients"));
+        break;
+
+      case 3:
+				Stream<Procedure> procedures = service.getMedicalFacilities().stream().filter((facility) -> facility instanceof Hospital).map(Hospital.class::cast).map((hospital) -> hospital.getProcedures()).flatMap((procedureArr) -> procedureArr.stream());
+				System.out.println(getObjectStreamDetails(Stream.of(procedures), "procedures"));
+				break;
+    }
+  }
+
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
       throws InvalidOptionException, InputMismatchException {
@@ -275,6 +323,7 @@ public class MedicalConsole {
         } while (!done);
         break;
       case DELETE:
+        // TODO
         deleteObject(service, stdin);
         break;
       case SIMULATE:
@@ -284,7 +333,7 @@ public class MedicalConsole {
         // TODO
         break;
       case LIST:
-        // TODO
+        listObjects(service, stdin);
         break;
       case QUIT:
         System.exit(0);
