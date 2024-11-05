@@ -38,6 +38,7 @@ public class Hospital extends MedicalFacility {
 	public Stream<Procedure> getProceduresStream(){
 		return getProcedures().stream();
 	}
+
   public void setProbAdmit(double probAdmit) {
     this.probAdmit = probAdmit;
   }
@@ -69,7 +70,7 @@ public class Hospital extends MedicalFacility {
     String proceduresString =
         proceduresDetails.length == 0
             ? " and no procedures"
-            : Format.enumeratedContent(proceduresDetails);
+            : " and the following procedures: \n" + Format.bulletedContent(proceduresDetails);
 
     return "Hospital named " + getName() + " with id " + getId() + proceduresString;
   }
