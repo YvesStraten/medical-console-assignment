@@ -1,9 +1,12 @@
 package com.yvesstraten.medicalconsole;
 
+import com.yvesstraten.medicalconsole.facilities.Clinic;
+import com.yvesstraten.medicalconsole.facilities.Hospital;
+import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
+import java.util.stream.Stream;
 
 /**
  * Main service class for the application
@@ -48,10 +51,24 @@ public class HealthService implements Iterator<Integer> {
 
 	public ArrayList<Patient> getPatients() {
 		return this.patients;
+  public Stream<MedicalFacility> getMedicalFacilitiesStream() {
+    return getMedicalFacilities().stream();
+  }
+  public Stream<Hospital> getHospitals() {
+    return getMedicalFacilities().stream()
+        .filter((facility) -> facility instanceof Hospital)
+        .map(Hospital.class::cast);
+  }
+	public Stream<Clinic> getClinics(){
+    return getMedicalFacilities().stream()
+        .filter((facility) -> facility instanceof Clinic)
+        .map(Clinic.class::cast);
 	}
 
 	public int getLastDispensedId(){
 		return this.lastDispensedId;
+	public Stream<Patient> getPatientsStream(){
+		return getPatients().stream();
 	}
 
   public void setName(String name) {
