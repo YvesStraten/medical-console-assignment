@@ -9,15 +9,13 @@ import com.yvesstraten.medicalconsole.InvalidYesNoException;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +24,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.jupiter.params.provider.ValueSources;
 
 @DisplayName("Medical console tests")
 public class MedicalConsoleTests {
@@ -74,7 +71,8 @@ public class MedicalConsoleTests {
 
   @ParameterizedTest
   @MethodSource("provideStringsForYesNo")
-  public void validYesNoReturnsBoolean(String input, boolean expected) throws InvalidYesNoException {
+  public void validYesNoReturnsBoolean(String input, boolean expected)
+      throws InvalidYesNoException {
     boolean returned = MedicalConsole.testYesNo(input);
 
     assertEquals(expected, returned);
@@ -89,30 +87,60 @@ public class MedicalConsoleTests {
     Scanner mockInput = new Scanner(input);
 
     assertThrows(
-        NoHospitalsAvailableException.class, () -> MedicalConsole.addProcedure(testService, mockInput));
+        NoHospitalsAvailableException.class,
+        () -> MedicalConsole.addProcedure(testService, mockInput));
   }
 
-	// TODO: Not right output, investigate
-	@Test
+  // TODO: Not right output, investigate
+  @Test
   public void addingProcedureWithHospital() {
-		ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();
-		expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
+    ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();
+    expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
 
-		ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-		facilities.add(new Hospital(0, "Test hospital"));
+    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
+    facilities.add(new Hospital(0, "Test hospital"));
 
     HealthService testService =
-        new HealthService(
-            "Test service", facilities, new ArrayList<Patient>());
-    ByteArrayInputStream input = new ByteArrayInputStream("3\n 1\n TestName\n TestDesc\n yes\n 300.0\n".getBytes());
+        new HealthService("Test service", facilities, new ArrayList<Patient>());
+    ByteArrayInputStream input =
+        new ByteArrayInputStream("3\n 1\n TestName\n TestDesc\n yes\n 300.0\n".getBytes());
     Scanner mockInput = new Scanner(input);
 
     try {
       MedicalConsole.addObject(testService, mockInput);
-			assertEquals(expectedProcedures, ((Hospital) testService.getMedicalFacilities().get(0)).getProcedures());
+      assertEquals(
+          expectedProcedures,
+          ((Hospital) testService.getMedicalFacilities().get(0)).getProcedures());
 
     } catch (Exception e) {
-			System.err.println(e.toString());
+      System.err.println(e.toString());
     }
+  }
+
+  @Test
+  public void emptyStreamShouldReturnNoDetailsString() {
+    Stream<Object> stream = Stream.of();
+    String result = MedicalConsole.getObjectStreamDetails(stream, "test");
+
+    assertEquals("There are no test for this service", result);
+  }
+
+  @ParameterizedTest
+  @MethodSource("objectStreams")
+  public <T> void filledStreamShouldReturnDetailsString(List<T> listToTest, String name) {
+    StringBuilder builder = new StringBuilder("The following " + name + " are available \n");
+
+    listToTest.stream().forEach((item) -> builder.append(item.toString()).append("\n"));
+    String result = MedicalConsole.getObjectStreamDetails(listToTest.stream(), name);
+
+    assertEquals(builder.toString(), result);
+  }
+
+  public static Stream<Arguments> objectStreams() {
+    return Stream.of(
+        Arguments.of(
+            List.of(new Patient(0, "Mark", false), new Patient(1, "John", true)), "patients"),
+        Arguments.of(
+            List.of(new Clinic(0, "Victoria", 400, 0.3), new Clinic(1, "Saint Croix", 1000, 1.2)), "facilities"));
   }
 }
