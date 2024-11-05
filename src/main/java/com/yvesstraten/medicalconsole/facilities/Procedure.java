@@ -88,4 +88,9 @@ public class Procedure {
 	protected Object clone() throws CloneNotSupportedException {
 		return new CloneNotSupportedException("Cloning is not supported");
 	} 
+
+	@Override 
+	public String toString() {
+		return new String("Procedure " + getName() + " id " + getId() + " with description " + getDescription() + " and basic cost " + getCost());
+	}
 }
