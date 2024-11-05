@@ -94,9 +94,8 @@ public class MedicalConsole {
       throw new NoHospitalsAvailableException("Please add a hospital first!");
     }
 
-    List<MedicalFacility> filteredHospitals =
-        service.getMedicalFacilities().stream()
-            .filter((facility) -> facility instanceof Hospital)
+    List<Hospital> filteredHospitals =
+        service.getHospitals()
             .collect(Collectors.toList());
 
     String[] hospitalDetails =
@@ -249,7 +248,7 @@ public class MedicalConsole {
         do {
           System.out.println("The following patients are stored: ");
           String[] patientsDetails =
-              service.getPatients().stream()
+              service.getPatientsStream()
                   .map((patient) -> patient.toString())
                   .toArray(String[]::new);
 
@@ -265,18 +264,20 @@ public class MedicalConsole {
     }
   }
 
-  public static String getObjectStreamDetails(Stream<Object> stream, String name) {
-    List<Object> objects = stream.toList();
-		System.out.println(objects.get(0));
+  public static <T> String getObjectStreamDetails(Stream<T> stream, String name) {
+		// Using .count() is a terminal operation,
+		// as such, the stream is converted to a list  
+		// first to get its size and return an appropriate message
+    List<T> objects = stream.toList();
     if (objects.size() == 0) {
       return new String("There are no " + name + " for this service");
     }
 
-		String toReturn = objects.stream().map((object) -> object.toString()).reduce("The following " + name + " are available \n", (before, next) -> (before + next + "\n"));
+		// Get every detail of an object, and append to builder
+		StringBuilder builder = new StringBuilder("The following " + name + " are available \n");
+		objects.stream().forEach(object -> builder.append(object.toString()).append("\n"));
 
-		System.out.println(toReturn);
-
-    return toReturn;
+    return builder.toString();
   }
 
   public static void listObjects(HealthService service, Scanner stdin)
@@ -293,19 +294,27 @@ public class MedicalConsole {
 
     checkChosenOption(chosenOption, options);
 
+		String output;
+		String[] splitted;
     switch (chosenOption) {
       case 1:
+				output = getObjectStreamDetails(service.getMedicalFacilitiesStream(), "facilities");
+				splitted = output.split("\n");
         System.out.println(
-            getObjectStreamDetails(Stream.of(service.getMedicalFacilities()), "facilities"));
+				Format.enumeratedContent(splitted, 1));
         break;
 
       case 2:
-				System.out.println(getObjectStreamDetails(Stream.of(service.getPatients()), "patients"));
+				output = getObjectStreamDetails(service.getPatientsStream(), "facilities");
+				splitted = output.split("\n");
+				System.out.println(Format.enumeratedContent(splitted, 1));
         break;
 
       case 3:
-				Stream<Procedure> procedures = service.getMedicalFacilities().stream().filter((facility) -> facility instanceof Hospital).map(Hospital.class::cast).map((hospital) -> hospital.getProcedures()).flatMap((procedureArr) -> procedureArr.stream());
-				System.out.println(getObjectStreamDetails(Stream.of(procedures), "procedures"));
+				Stream<Procedure> procedures = service.getHospitals().flatMap(Hospital::getProceduresStream);
+				output = getObjectStreamDetails(procedures, "procedures");
+				splitted = output.split("\n");
+				System.out.println(Format.enumeratedContent(splitted, 1));
 				break;
     }
   }
@@ -353,6 +362,14 @@ public class MedicalConsole {
 
   public static void main(String[] args) {
     HealthService service = new HealthService();
+		Hospital hospital = new Hospital(service.next(), "TestHospital");
+		Clinic clinic = new Clinic(service.next(), "Croix", 1000, 0.3);
+		Patient patient = new Patient(service.next(), "Mark", false);
+		hospital.addProcedure(new Procedure(service.next(), "TestProc", "desc", true, 300));
+		service.addMedicalFacility(hospital);
+		service.addMedicalFacility(clinic);
+		service.addPatient(patient);
+
     Scanner stdin = new Scanner(System.in);
     boolean quit = false;
 
