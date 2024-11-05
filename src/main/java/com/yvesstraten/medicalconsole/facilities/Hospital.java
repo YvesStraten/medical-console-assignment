@@ -4,6 +4,7 @@ import com.yvesstraten.medicalconsole.Format;
 import com.yvesstraten.medicalconsole.Patient;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class Hospital extends MedicalFacility {
   private double probAdmit;
@@ -34,6 +35,9 @@ public class Hospital extends MedicalFacility {
     return this.procedures;
   }
 
+	public Stream<Procedure> getProceduresStream(){
+		return getProcedures().stream();
+	}
   public void setProbAdmit(double probAdmit) {
     this.probAdmit = probAdmit;
   }
