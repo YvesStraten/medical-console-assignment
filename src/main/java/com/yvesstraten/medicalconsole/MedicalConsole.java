@@ -198,6 +198,17 @@ public class MedicalConsole {
     }
   }
 
+	/** 
+	 * Deletes an object from the provided HealthService 
+	 * this object can either be a {@link MedicalFacility},  
+	 * {@link Patient} or {@link Procedure}. 
+	 * @param service <code>HealthService</code> object 
+	 * to delete an object from
+	 * @param stdin <code>Scanner</code> object which 
+	 * preferably iterates over <code>System.in</code>
+	 * @throws InvalidOptionException
+	 * @throws InvalidYesNoException
+	*/
   public static void deleteObject(HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException {
     System.out.println("The following types of services are available: ");
@@ -264,6 +275,16 @@ public class MedicalConsole {
     }
   }
 
+	/** 
+	 * Gets details of provided object stream
+	 * @param stream stream to get details from 
+	 * @param name name that should be included in final string
+	 * @return String containing details of objects in the stream 
+	 * This String always has the following format: 
+	 * <code>The following <strong>name</strong> are available \n details of object</code>
+	 * unless there are not items present, in this case, 
+	 * <code>There are no <strong>name</strong> for this service \n</code>
+	*/
   public static <T> String getObjectStreamDetails(Stream<T> stream, String name) {
 		// Using .count() is a terminal operation,
 		// as such, the stream is converted to a list  
