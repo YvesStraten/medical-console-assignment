@@ -48,7 +48,8 @@ public class MedicalConsole {
 
   public static void checkChosenOption(int chosenOption, String[] availableOptions)
       throws InvalidOptionException {
-    if (chosenOption <= 0 || chosenOption > availableOptions.length) {
+		chosenOption -= 1;
+    if (chosenOption < 0 || chosenOption >= availableOptions.length) {
       throw new InvalidOptionException(
           String.format("Invalid option please select option [%d-%d]", 1, availableOptions.length));
     }
@@ -418,7 +419,11 @@ public class MedicalConsole {
   public static boolean checkOption(int inputOption) throws InvalidOptionException {
     ConsoleOption[] optionValues = ConsoleOption.values();
 
-    if (inputOption == optionValues[inputOption - 1].getValue()) {
+		if(inputOption - 1 >= optionValues.length){
+     throw new InvalidOptionException(
+        String.format(
+            "This option is invalid, please input a number from [%d-%d]", 1, optionValues.length));
+		} else if (inputOption == optionValues[inputOption - 1].getValue()) {
       return true;
     }
 

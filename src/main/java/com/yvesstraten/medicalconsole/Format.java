@@ -3,26 +3,27 @@ package com.yvesstraten.medicalconsole;
 import java.util.Arrays;
 
 public class Format {
-  public static String enumeratedContent(String[] options) {
+  public static String enumeratedContent(String[] options, int startRange, int endRange) {
     StringBuilder builder = new StringBuilder();
+		int currentIndex = 1;
     for (int i = 0; i < options.length; i++) {
-      if (!options[i].startsWith("-"))
-        builder.append(String.format("[%d] %s \n", i + 1, options[i]));
-			else 
+      if (!options[i].startsWith("-") && i >= startRange) {
+				builder.append(String.format("[%d] %s\n", currentIndex, options[i]));
+				currentIndex += 1;
+			}
+			else
 				builder.append(options[i]).append("\n");
     }
 
     return builder.toString();
   }
 
-  public static String enumeratedContent(String[] options, int startRange, int endRange) {
-    String[] sliced = Arrays.copyOfRange(options, startRange, endRange);
-    return enumeratedContent(sliced);
+  public static String enumeratedContent(String[] options) {
+    return enumeratedContent(options, 0, options.length);
   }
 
   public static String enumeratedContent(String[] options, int startRange) {
-    String[] sliced = Arrays.copyOfRange(options, startRange, options.length);
-    return enumeratedContent(sliced);
+    return enumeratedContent(options, startRange, options.length);
   }
 
   public static String bulletedContent(String[] options) {
