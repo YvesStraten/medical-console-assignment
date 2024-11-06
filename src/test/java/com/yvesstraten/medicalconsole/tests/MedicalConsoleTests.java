@@ -39,12 +39,14 @@ public class MedicalConsoleTests {
       new String("Quit")
     };
 
+		System.out.println(selectedOption);
+
     InvalidOptionException e =
         assertThrows(
             InvalidOptionException.class,
-            () -> {
-              MedicalConsole.checkChosenOption(selectedOption, options);
-            });
+            () -> 
+              MedicalConsole.checkChosenOption(selectedOption, options)
+            );
 
     assertEquals(
         String.format("Invalid option please select option [%d-%d]", 1, options.length),
