@@ -361,6 +361,31 @@ public class MedicalConsole {
     }
   }
 
+  public static void simulateVisit(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    String patientsDetails = getObjectStreamDetails(service.getPatientsStream(), "patients");
+    String[] splittedPatientsDetails = patientsDetails.split("\n");
+    System.out.println(Format.enumeratedContent(splittedPatientsDetails, 1));
+    System.out.print("Please choose a patient to simulate a visit: ");
+    int chosenPatient = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(chosenPatient, splittedPatientsDetails);
+
+    String medicalFacilitiesDetails =
+        getObjectStreamDetails(service.getMedicalFacilitiesStream(), "facilities");
+    String[] splittedFacilitiesDetails = medicalFacilitiesDetails.split("\n");
+    System.out.println(Format.enumeratedContent(splittedFacilitiesDetails, 1));
+    System.out.print("Please choose a facility the patient should visit: ");
+    int chosenFacility = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(chosenFacility, splittedFacilitiesDetails);
+
+    service
+        .getMedicalFacilities()
+        .get(chosenFacility - 1)
+        .visit(service.getPatients().get(chosenPatient - 1));
+  }
+
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException, InputMismatchException {
@@ -377,7 +402,7 @@ public class MedicalConsole {
         deleteObject(service, stdin);
         break;
       case SIMULATE:
-        // TODO
+        simulateVisit(service, stdin);
         break;
       case OPERATE:
         // TODO
