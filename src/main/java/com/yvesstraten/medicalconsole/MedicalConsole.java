@@ -272,6 +272,27 @@ public class MedicalConsole {
         } while (!validInput);
 
         break;
+
+      case 3:
+        do {
+					//TODO
+          System.out.println("The following procedures are stored");
+					List<Hospital> hospitals = service.getHospitals().toList(); 
+
+          String procedureDetails =
+              hospitals
+                  .stream()
+                  .flatMap((hospital) -> hospital.getProcedures().stream())
+                  .map(procedure -> procedure.toString())
+                  .reduce("", (before, next) -> before + next + "\n");
+
+					String[] splitted = procedureDetails.split("\n");
+					System.out.println(Format.enumeratedContent(splitted));
+					int toDelete = stdin.nextInt();
+					stdin.nextLine();
+					checkChosenOption(toDelete, splitted);
+        } while (!validInput);
+        break;
     }
   }
 
