@@ -5,7 +5,7 @@
 
   <groupId>com.yvesstraten.MedicalConsole</groupId>
   <artifactId>medical-console</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 
   <name>medical-console</name>
   <!-- FIXME change it to the project's website -->
