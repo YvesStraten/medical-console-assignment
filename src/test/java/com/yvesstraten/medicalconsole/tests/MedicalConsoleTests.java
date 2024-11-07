@@ -177,4 +177,57 @@ public class MedicalConsoleTests {
             new Procedure(1, "TestProcedure", "TestDesc", false, 300),
             0));
   }
+
+	@Test
+	public void deletePatientDeletes() throws InvalidOptionException {
+    ArrayList<Patient> patients = new ArrayList<Patient>();
+    patients.add(new Patient(0, "Test patient", true));
+
+    HealthService testService =
+        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
+    ByteArrayInputStream input =
+        new ByteArrayInputStream("1\n".getBytes());
+    Scanner mockInput = new Scanner(input);
+
+		MedicalConsole.deletePatient(testService, mockInput);
+		assertEquals(new ArrayList<Patient>(), testService.getPatients());
+	}
+
+	@Test
+	public void invalidPatientDeletionChoiceThrows() {
+    ArrayList<Patient> patients = new ArrayList<Patient>();
+    patients.add(new Patient(0, "Test patient", true));
+
+    HealthService testService =
+        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
+    ByteArrayInputStream input =
+        new ByteArrayInputStream("2\n".getBytes());
+    Scanner mockInput = new Scanner(input);
+
+		assertThrows(InvalidOptionException.class, () -> MedicalConsole.deletePatient(testService, mockInput));
+	}
+
+	public void deleteFacilityDeletes() throws InvalidOptionException, InvalidYesNoException {
+		Clinic clinic1 = new Clinic(0, "Test clinic", 300, 0.2);
+		Hospital hospital1 = new Hospital(1, "Test");
+    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
+    facilities.add(clinic1);
+		facilities.add(hospital1);
+
+    HealthService testService =
+        new HealthService("Test service", facilities, new ArrayList<Patient>());
+    ByteArrayInputStream input =
+        new ByteArrayInputStream("1\n1\n".getBytes());
+    Scanner mockInput = new Scanner(input);
+
+		MedicalConsole.deleteFacility(testService, mockInput);
+		assertEquals(List.of(hospital1), testService.getMedicalFacilities());
+
+    ByteArrayInputStream nextInput =
+        new ByteArrayInputStream("1\n2\nyes\n".getBytes());
+    Scanner nextMock = new Scanner(nextInput);
+		MedicalConsole.deleteFacility(testService, nextMock);
+
+		assertEquals(List.of(clinic1), testService.getMedicalFacilities());
+	}
 }
