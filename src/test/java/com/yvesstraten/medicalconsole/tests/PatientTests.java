@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.yvesstraten.medicalconsole.Patient;
-import com.yvesstraten.medicalconsole.PatientsSortedByName;
+import com.yvesstraten.medicalconsole.comparators.PatientsSortedByName;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import java.util.Arrays;
 
