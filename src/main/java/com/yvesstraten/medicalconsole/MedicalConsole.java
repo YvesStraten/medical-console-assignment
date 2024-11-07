@@ -4,9 +4,11 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -277,21 +279,43 @@ public class MedicalConsole {
 
       case 3:
         do {
-          // TODO
-          System.out.println("The following procedures are stored");
+          System.out.println("The following procedures are stored: ");
           List<Hospital> hospitals = service.getHospitals().toList();
+          HashMap<Procedure, Hospital> map = new HashMap<Procedure, Hospital>();
+
+          for (Hospital hospital : hospitals) {
+            for (Procedure procedure : hospital.getProcedures()) map.put(procedure, hospital);
+          }
 
           String procedureDetails =
-              hospitals.stream()
-                  .flatMap((hospital) -> hospital.getProcedures().stream())
+              map.keySet().stream()
                   .map(procedure -> procedure.toString())
                   .reduce("", (before, next) -> before + next + "\n");
 
           String[] splitted = procedureDetails.split("\n");
           System.out.println(Format.enumeratedContent(splitted));
+					System.out.print("Choose a procedure to remove: ");
           int toDelete = stdin.nextInt();
           stdin.nextLine();
           checkChosenOption(toDelete, splitted);
+
+          int i = 0;
+          Iterator<Entry<Procedure, Hospital>> iterator = map.entrySet().iterator();
+          Hospital hospitalToAffect = null;
+          Procedure procedureToDelete = null;
+
+          while (iterator.hasNext()) {
+            Entry<Procedure, Hospital> current = iterator.next();
+            if (i == toDelete - 1) {
+              procedureToDelete = current.getKey();
+              hospitalToAffect = current.getValue();
+            }
+            i++;
+          }
+
+          hospitalToAffect.removeProcedure(procedureToDelete);
+					System.out.println("Selected procedure was removed successfully!");
+					validInput = true;
         } while (!validInput);
         break;
     }
