@@ -39,14 +39,12 @@ public class MedicalConsoleTests {
       new String("Quit")
     };
 
-		System.out.println(selectedOption);
+    System.out.println(selectedOption);
 
     InvalidOptionException e =
         assertThrows(
             InvalidOptionException.class,
-            () -> 
-              MedicalConsole.checkChosenOption(selectedOption, options)
-            );
+            () -> MedicalConsole.checkChosenOption(selectedOption, options));
 
     assertEquals(
         String.format("Invalid option please select option [%d-%d]", 1, options.length),
@@ -143,6 +141,40 @@ public class MedicalConsoleTests {
         Arguments.of(
             List.of(new Patient(0, "Mark", false), new Patient(1, "John", true)), "patients"),
         Arguments.of(
-            List.of(new Clinic(0, "Victoria", 400, 0.3), new Clinic(1, "Saint Croix", 1000, 1.2)), "facilities"));
+            List.of(new Clinic(0, "Victoria", 400, 0.3), new Clinic(1, "Saint Croix", 1000, 1.2)),
+            "facilities"));
+  }
+
+	@ParameterizedTest
+	@MethodSource("operationCostsArguments")
+  public void gettingOperationCostReturnsProperResults(
+      Patient patient, Procedure procedure, double expected) {
+    double result = MedicalConsole.getOperationCost(patient, procedure);
+
+    assertEquals(expected, result);
+  }
+
+  public static Stream<Arguments> operationCostsArguments() {
+    return Stream.of(
+        // Private, elective
+        Arguments.of(
+            new Patient(0, "TestPatient", true),
+            new Procedure(1, "TestProcedure", "TestDesc", true, 300),
+            2000),
+        // Private, non-elective
+        Arguments.of(
+            new Patient(0, "TestPatient", true),
+            new Procedure(1, "TestProcedure", "TestDesc", false, 300),
+            1000),
+        // Public, elective
+        Arguments.of(
+            new Patient(0, "TestPatient", false),
+            new Procedure(1, "TestProcedure", "TestDesc", true, 300),
+            300),
+        // Public, non-elective
+        Arguments.of(
+            new Patient(0, "TestPatient", false),
+            new Procedure(1, "TestProcedure", "TestDesc", false, 300),
+            0));
   }
 }

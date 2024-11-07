@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole;
 
+import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 
 /** 
@@ -100,6 +101,24 @@ public class Patient implements Comparable<Patient> {
   public void setMedicalFacility(MedicalFacility medicalFacility) {
     this.currentFacility = medicalFacility;
   }
+
+	public void addBalance(double toAdd) throws IllegalArgumentException {
+		if(toAdd < 0){
+			throw new IllegalArgumentException("Balance to be added is invalid!");
+		}
+
+		setBalance(getBalance() + toAdd);
+	}
+
+	public boolean isInThisHospital(Hospital hospitalToCheck) throws WrongHospitalException {
+		if(getCurrentFacility() == null){
+				throw new WrongHospitalException("Patient has not visited any hospital yet!");
+		} else if(!getCurrentFacility().equals(hospitalToCheck)) {
+				throw new WrongHospitalException("Patient's current facility is not this hospital!");
+		}
+
+		return true;
+	}
 
   public int hashCode() {
     return this.id;
