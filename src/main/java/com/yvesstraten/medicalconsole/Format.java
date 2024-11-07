@@ -1,7 +1,5 @@
 package com.yvesstraten.medicalconsole;
 
-import java.util.Arrays;
-
 public class Format {
   public static String enumeratedContent(String[] options, int startRange, int endRange) {
     StringBuilder builder = new StringBuilder();
@@ -20,6 +18,21 @@ public class Format {
 
   public static String enumeratedContent(String[] options) {
     return enumeratedContent(options, 0, options.length);
+  }
+
+  public static String enumeratedContent(String options, int startRange, int endRange) {
+		String[] splitted = options.split("\n");
+    return enumeratedContent(splitted, startRange, endRange);
+  }
+
+  public static String enumeratedContent(String options, int startRange) {
+		String[] splitted = options.split("\n");
+    return enumeratedContent(splitted, startRange, splitted.length);
+  }
+
+  public static String enumeratedContent(String options) {
+		String[] splitted = options.split("\n");
+    return enumeratedContent(splitted, 0, splitted.length);
   }
 
   public static String enumeratedContent(String[] options, int startRange) {

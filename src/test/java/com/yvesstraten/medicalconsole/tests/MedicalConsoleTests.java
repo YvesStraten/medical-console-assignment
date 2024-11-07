@@ -91,9 +91,8 @@ public class MedicalConsoleTests {
         () -> MedicalConsole.addProcedure(testService, mockInput));
   }
 
-  // TODO: Not right output, investigate
   @Test
-  public void addingProcedureWithHospital() {
+  public void addingProcedureWithHospital() throws InvalidYesNoException, InvalidOptionException, NoHospitalsAvailableException {
     ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();
     expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
 
@@ -103,18 +102,14 @@ public class MedicalConsoleTests {
     HealthService testService =
         new HealthService("Test service", facilities, new ArrayList<Patient>());
     ByteArrayInputStream input =
-        new ByteArrayInputStream("3\n 1\n TestName\n TestDesc\n yes\n 300.0\n".getBytes());
+        new ByteArrayInputStream("1\nTestName\nTestDesc\nyes\n300.0\n".getBytes());
+
     Scanner mockInput = new Scanner(input);
 
-    try {
-      MedicalConsole.addObject(testService, mockInput);
+      MedicalConsole.addProcedure(testService, mockInput);
       assertEquals(
           expectedProcedures,
           ((Hospital) testService.getMedicalFacilities().get(0)).getProcedures());
-
-    } catch (Exception e) {
-      System.err.println(e.toString());
-    }
   }
 
   @Test
