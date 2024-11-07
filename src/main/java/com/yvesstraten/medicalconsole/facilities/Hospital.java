@@ -51,6 +51,10 @@ public class Hospital extends MedicalFacility {
 		getProcedures().add(procedure);
 	}
 
+	public void removeProcedure(Procedure toRemove){
+		getProcedures().remove(toRemove);
+	}
+
   public boolean visit(Patient pat) {
     Random random = new Random();
     double rand = random.nextDouble(1);
