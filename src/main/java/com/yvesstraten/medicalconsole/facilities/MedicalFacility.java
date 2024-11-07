@@ -7,7 +7,7 @@ import com.yvesstraten.medicalconsole.Patient;
  * that a <code>MedicalFacility</code> should have
  * @author Yves Straten e2400068
 */
-public abstract class MedicalFacility {
+public abstract class MedicalFacility implements Comparable<MedicalFacility> {
   private String name;
   private int id;
 
@@ -60,4 +60,18 @@ public abstract class MedicalFacility {
 
 		return false;
 	}
+	/** 
+	 * Compares this MedicalFacility to another 
+	 * The natural order of medical facilities 
+	 * is by their ids.
+	 * @param o - medical facility to compare
+	 * @return 0 - same id
+	 * @return 1 - larger id
+	 * @return -1 - smaller id
+	*/
+  @Override
+  public int compareTo(MedicalFacility o) {
+    if (this == o) return 0;
+    else return getId() - o.getId();
+  }
 }

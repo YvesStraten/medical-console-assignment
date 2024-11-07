@@ -1,6 +1,6 @@
 package com.yvesstraten.medicalconsole.facilities;
 
-public class Procedure {
+public class Procedure implements Comparable<Procedure> {
 	private int id; 
 	private String name;
 	private String description;
@@ -83,11 +83,12 @@ public class Procedure {
 		return getId();
 	}
 
-	// TODO: Check implementation
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return new CloneNotSupportedException("Cloning is not supported");
-	} 
+	@Override 
+	public int compareTo(Procedure o){
+		if(this == o)
+			return 0;
+		else return getId() - o.getId(); 
+	}
 
 	@Override 
 	public String toString() {
