@@ -4,6 +4,7 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Iterator;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MedicalConsole {
@@ -161,10 +161,7 @@ public class MedicalConsole {
       case 1:
         do {
           System.out.println("The following medical facilities are available");
-          String[] facilityOptions =
-              new String[] {
-                new String("Clinic"), new String("Hospital"),
-              };
+          String facilityOptions = "Clinic\n" + "Hospital\n";
 
           System.out.println(Format.enumeratedContent(facilityOptions));
           int chosenFacilityOption = stdin.nextInt();
@@ -204,6 +201,88 @@ public class MedicalConsole {
     }
   }
 
+  public static void deletePatient(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    String patientsDetails =
+			getObjectStreamDetails(service.getPatientsStream(), "patients");
+		String[] splittedPatientDetails = patientsDetails.split("\n");
+
+    System.out.println(Format.enumeratedContent(splittedPatientDetails, 1));
+    System.out.print("Which patient would you like to remove? ");
+    int patientToRemove = stdin.nextInt();
+		stdin.nextLine();
+    checkChosenOption(patientToRemove, splittedPatientDetails);
+    service.deletePatient(patientToRemove - 1);
+		System.out.println("Removed patient successfully!");
+  }
+
+  public static void deleteFacility(HealthService service, Scanner stdin)
+      throws InvalidOptionException, InvalidYesNoException {
+    String facilitiesDetails =
+        getObjectStreamDetails(service.getMedicalFacilitiesStream(), "facilities");
+    String[] splittedFacilitiesDetails = facilitiesDetails.split("\n");
+    System.out.println(Format.enumeratedContent(splittedFacilitiesDetails, 1));
+    System.out.print("Which facility would you like to delete? ");
+    int facilityToDelete = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(facilityToDelete, splittedFacilitiesDetails);
+    MedicalFacility facilityToBeDeleted = service.getMedicalFacilities().get(facilityToDelete);
+    if (facilityToBeDeleted instanceof Hospital) {
+      int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
+      if (numProcedures > 0) {
+        System.out.print(
+            "This hospital can perform "
+                + numProcedures
+                + " procedures - do you still wish to delete it? [y/n]");
+        String choice = stdin.nextLine();
+        if (testYesNo(choice)) {
+          service.deleteMedicalFacility(facilityToDelete);
+        }
+      }
+    } else {
+      service.deleteMedicalFacility(facilityToDelete);
+    }
+  }
+
+  public static void deleteProcedure(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    System.out.println("The following procedures are stored: ");
+    List<Hospital> hospitals = service.getHospitals().toList();
+    HashMap<Procedure, Hospital> map = new HashMap<Procedure, Hospital>();
+
+    for (Hospital hospital : hospitals) {
+      for (Procedure procedure : hospital.getProcedures()) map.put(procedure, hospital);
+    }
+
+    String procedureDetails =
+        map.keySet().stream()
+            .map(procedure -> procedure.toString())
+            .reduce("", (before, next) -> before + next + "\n");
+
+    System.out.println(Format.enumeratedContent(procedureDetails));
+    System.out.print("Choose a procedure to remove: ");
+    int toDelete = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(toDelete, map.keySet());
+
+    int i = 0;
+    Iterator<Entry<Procedure, Hospital>> iterator = map.entrySet().iterator();
+    Hospital hospitalToAffect = null;
+    Procedure procedureToDelete = null;
+
+    while (iterator.hasNext()) {
+      Entry<Procedure, Hospital> current = iterator.next();
+      if (i == toDelete - 1) {
+        procedureToDelete = current.getKey();
+        hospitalToAffect = current.getValue();
+      }
+      i++;
+    }
+
+    hospitalToAffect.removeProcedure(procedureToDelete);
+    System.out.println("Selected procedure was removed successfully!");
+  }
+
   /**
    * Deletes an object from the provided HealthService this object can either be a {@link
    * MedicalFacility}, {@link Patient} or {@link Procedure}.
@@ -216,10 +295,7 @@ public class MedicalConsole {
   public static void deleteObject(HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException {
     System.out.println("The following types of services are available: ");
-    String[] types =
-        new String[] {
-          new String("Medical facility"), new String("Patient"), new String("Procedure")
-        };
+    String types = "Medical facility\n" + "Patient\n" + "Procedure\n";
 
     System.out.println(Format.enumeratedContent(types));
     System.out.print("Which type of object would you like to delete? ");
@@ -231,92 +307,21 @@ public class MedicalConsole {
     switch (chosenOption) {
       case 1:
         do {
-          System.out.println("The following medical facilities are stored: ");
-          String[] facilitiesDetails = service.getMedicalFacilities().toArray(String[]::new);
-          System.out.println(Format.enumeratedContent(facilitiesDetails));
-          System.out.print("Which facility would you like to delete? ");
-          int facilityToDelete = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(facilityToDelete, facilitiesDetails);
-          MedicalFacility facilityToBeDeleted =
-              service.getMedicalFacilities().get(facilityToDelete);
-          if (facilityToBeDeleted instanceof Hospital) {
-            int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
-            if (numProcedures > 0) {
-              System.out.print(
-                  "This hospital can perform "
-                      + numProcedures
-                      + " procedures - do you still wish to delete it? [y/n]");
-              String choice = stdin.nextLine();
-              if (testYesNo(choice)) {
-                service.deleteMedicalFacility(facilityToDelete);
-              }
-            }
-          } else {
-            service.deleteMedicalFacility(facilityToDelete);
-          }
-
+          deleteFacility(service, stdin);
           validInput = true;
         } while (!validInput);
-
+				break;
       case 2:
         do {
-          System.out.println("The following patients are stored: ");
-          String[] patientsDetails =
-              service
-                  .getPatientsStream()
-                  .map((patient) -> patient.toString())
-                  .toArray(String[]::new);
-
-          System.out.println(Format.enumeratedContent(patientsDetails));
-          System.out.print("Which patient would you like to remove? ");
-          int patientToRemove = stdin.nextInt();
-          checkChosenOption(patientToRemove, patientsDetails);
-          service.deletePatient(patientToRemove - 1);
+          deletePatient(service, stdin);
           validInput = true;
         } while (!validInput);
 
         break;
-
       case 3:
         do {
-          System.out.println("The following procedures are stored: ");
-          List<Hospital> hospitals = service.getHospitals().toList();
-          HashMap<Procedure, Hospital> map = new HashMap<Procedure, Hospital>();
-
-          for (Hospital hospital : hospitals) {
-            for (Procedure procedure : hospital.getProcedures()) map.put(procedure, hospital);
-          }
-
-          String procedureDetails =
-              map.keySet().stream()
-                  .map(procedure -> procedure.toString())
-                  .reduce("", (before, next) -> before + next + "\n");
-
-          String[] splitted = procedureDetails.split("\n");
-          System.out.println(Format.enumeratedContent(splitted));
-					System.out.print("Choose a procedure to remove: ");
-          int toDelete = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(toDelete, splitted);
-
-          int i = 0;
-          Iterator<Entry<Procedure, Hospital>> iterator = map.entrySet().iterator();
-          Hospital hospitalToAffect = null;
-          Procedure procedureToDelete = null;
-
-          while (iterator.hasNext()) {
-            Entry<Procedure, Hospital> current = iterator.next();
-            if (i == toDelete - 1) {
-              procedureToDelete = current.getKey();
-              hospitalToAffect = current.getValue();
-            }
-            i++;
-          }
-
-          hospitalToAffect.removeProcedure(procedureToDelete);
-					System.out.println("Selected procedure was removed successfully!");
-					validInput = true;
+					deleteProcedure(service, stdin);
+          validInput = true;
         } while (!validInput);
         break;
     }
