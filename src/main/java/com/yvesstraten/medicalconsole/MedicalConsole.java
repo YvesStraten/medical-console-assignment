@@ -217,7 +217,7 @@ public class MedicalConsole {
     int facilityToDelete = stdin.nextInt();
     stdin.nextLine();
     checkChosenOption(facilityToDelete, service.getMedicalFacilities());
-    MedicalFacility facilityToBeDeleted = service.getMedicalFacilities().get(facilityToDelete);
+    MedicalFacility facilityToBeDeleted = service.getMedicalFacilities().get(facilityToDelete - 1);
     if (facilityToBeDeleted instanceof Hospital) {
       int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
       if (numProcedures > 0) {
@@ -227,12 +227,13 @@ public class MedicalConsole {
                 + " procedures - do you still wish to delete it? [y/n]");
         String choice = stdin.nextLine();
         if (testYesNo(choice)) {
-          service.deleteMedicalFacility(facilityToDelete);
+          service.deleteMedicalFacility(facilityToDelete - 1);
         }
       }
     } else {
-      service.deleteMedicalFacility(facilityToDelete);
+      service.deleteMedicalFacility(facilityToDelete - 1);
     }
+		System.out.println("Removed facility successfully!");
   }
 
   public static void deleteProcedure(HealthService service, Scanner stdin)
