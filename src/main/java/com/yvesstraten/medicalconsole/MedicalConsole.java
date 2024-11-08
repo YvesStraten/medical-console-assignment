@@ -467,6 +467,41 @@ public class MedicalConsole {
     }
   }
 
+	public static void sortObjects(HealthService service, Scanner stdin) throws InvalidOptionException {
+		String types = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
+
+		System.out.println(Format.enumeratedContent(types));
+		System.out.print("Which object type would you like to see sorted? ");
+		int selectedOpt = stdin.nextInt();
+		stdin.nextLine();
+		checkChosenOption(selectedOpt, List.of(types.split("\n")));
+		
+		switch(selectedOpt){
+			case 1:
+				break;
+				int selectedCriteria = stdin.nextInt();
+				stdin.nextLine();
+				checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+				Stream<Patient> patients = service.getPatientsStream();
+
+				switch(selectedCriteria){
+					case 1: 
+						listObjectGroup(patients.sorted(new PatientsSortedByName()), "patients");
+						break;
+					case 2:
+						listObjectGroup(patients.sorted(new PatientsSortedByBalance()), "patients");
+						break;
+				}
+				
+				stdin.nextLine();
+				break;
+			case 3: 
+				break;
+		}
+
+
+	}
+
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException, InputMismatchException {
@@ -488,6 +523,9 @@ public class MedicalConsole {
       case OPERATE:
         operate(service, stdin);
         break;
+			case SORTED: 
+				sortObjects(service, stdin);
+				break;
       case LIST:
         listObjects(service, stdin);
         break;
