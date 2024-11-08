@@ -1,7 +1,6 @@
 package com.yvesstraten.medicalconsole;
 
-import com.yvesstraten.medicalconsole.comparators.PatientsSortedByBalance;
-import com.yvesstraten.medicalconsole.comparators.PatientsSortedByName;
+import com.yvesstraten.medicalconsole.comparators.PatientComparators;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
@@ -491,10 +490,10 @@ public class MedicalConsole {
 
 				switch(selectedCriteria){
 					case 1: 
-						listObjectGroup(patients.sorted(new PatientsSortedByName()), "patients");
+						listObjectGroup(patients.sorted(new PatientComparators.SortedByName()), "patients");
 						break;
 					case 2:
-						listObjectGroup(patients.sorted(new PatientsSortedByBalance()), "patients");
+						listObjectGroup(patients.sorted(new PatientComparators.SortedByBalance()), "patients");
 						break;
 				}
 				

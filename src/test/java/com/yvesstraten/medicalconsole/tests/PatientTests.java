@@ -5,13 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.yvesstraten.medicalconsole.Patient;
-import com.yvesstraten.medicalconsole.comparators.PatientsSortedByName;
-import com.yvesstraten.medicalconsole.facilities.Clinic;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.comparators.PatientComparators;
+import com.yvesstraten.medicalconsole.facilities.Clinic;
 
 /** Test suite for all tests related to the {@code Patient} class */
 @DisplayName("Patient tests")
@@ -43,7 +44,18 @@ public class PatientTests {
 		Patient[] expected = new Patient[] { patient, patient2 };
 		Patient[] actual = new Patient[] { patient2, patient };
 
-		Arrays.sort(actual, new PatientsSortedByName());
+		Arrays.sort(actual, new PatientComparators.SortedByName());
+		assertArrayEquals(expected, actual);
+	}
+
+	@Test 
+	public void sortByBalanceTest(){
+    Patient patient = new Patient(0, "Mark", false, 300);
+    Patient patient2 = new Patient(1, "Other", false, 100);
+		Patient[] expected = new Patient[] { patient2, patient };
+		Patient[] actual = new Patient[] { patient, patient2 };
+
+		Arrays.sort(actual, new PatientComparators.SortedByBalance());
 		assertArrayEquals(expected, actual);
 	}
 
