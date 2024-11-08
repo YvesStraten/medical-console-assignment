@@ -26,37 +26,68 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
     throw new UnsupportedOperationException();
   }
 
+	/** 
+	 * Retrieves the id of this medical facility 
+	 * @return id - id of this facility
+	*/
   public int getId() {
     return this.id;
   }
 
+	/** 
+	 * Retrieves the name of this medical facility
+	 * @return name - name of this facility
+	*/
   public String getName() {
     return this.name;
   }
 
+	/** 
+	 * Sets the id of this medical facility 
+	 * @param id - id to set
+	*/
+	private void setId(int id) {
+		this.id = id;
+	}
+
+	/** 
+	 * Sets the name of this medical facility
+	 * @param name - name to set
+	*/
   public void setName(String name) {
     this.name = name;
   }
 
-  private void setId(int id) {
-    this.id = id;
-  }
+	/** 
+	 * Make a patient visit this medical facility 
+	 * @param pat - patient that visits
+	*/
+  public abstract boolean visit(Patient pat); 
 
-  public abstract boolean visit(Patient pat);
-
-  @Override
+	/** 
+	 * Get hash of this medical facility 
+	 * @return hash of this facility
+	*/
+	@Override
   public int hashCode() {
     return getId();
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj || this.hashCode() == obj.hashCode()) return true;
-    else {
-      if (obj instanceof MedicalFacility) {
-        return this.getId() == ((MedicalFacility) obj).getId();
-      }
-    }
+	/** 
+	 * Compares this medical facility to another object 
+	 * @param obj - object to compare with
+	 * @return true - object is the same 
+	 * @return false - object is not the same
+	*/
+	@Override
+	public boolean equals(Object obj){
+		if(this == obj || this.hashCode() == obj.hashCode())
+			return true;
+		else {
+			if(obj instanceof MedicalFacility){
+				return this.getId() == ((MedicalFacility) obj).getId(); 
+			}
+		}
 
     return false;
   }
