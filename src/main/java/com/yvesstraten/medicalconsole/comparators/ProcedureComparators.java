@@ -26,7 +26,7 @@ public class ProcedureComparators {
 	public static class SortByElective implements Comparator<Procedure> {
 		@Override 
 		public int compare(Procedure o1, Procedure o2){
-			int elective = o1.isElective() ? 1 : -1;
+			int elective = o1.isElective() ? -1 : 1;
 			if(o1 == o2)
 				return 0;
 			else 
