@@ -92,6 +92,7 @@ public class Procedure implements Comparable<Procedure> {
 
 	@Override 
 	public String toString() {
-		return new String("Procedure " + getName() + " id " + getId() + " with description " + getDescription() + " and basic cost " + getCost());
+		String elective = isElective() ? "Elective" : "Non-elective";
+		return new String(elective + " procedure " + getName() + " id " + getId() + " with description " + getDescription() + " and basic cost " + getCost());
 	}
 }
