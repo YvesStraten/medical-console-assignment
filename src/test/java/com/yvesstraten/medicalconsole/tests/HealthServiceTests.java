@@ -1,5 +1,7 @@
 package com.yvesstraten.medicalconsole.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +14,14 @@ import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 
 @DisplayName("HealthService Tests")
 public class HealthServiceTests {
-	// TODO: Add test case when sure
+	@Test 
+	public void idIsRandomAndSequential(){
+		HealthService testService = new HealthService("Test", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
+
+		assertEquals(1, testService.next());
+		assertEquals(2, testService.next());
+	}
+
 	@Test 
 	public void toStringExpectedOutput(){
 		ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
