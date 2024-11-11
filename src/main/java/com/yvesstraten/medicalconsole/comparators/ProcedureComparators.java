@@ -22,4 +22,16 @@ public class ProcedureComparators {
 			return o1.getName().compareTo(o2.getName());
 		}
 	}
+
+	public static class SortByElective implements Comparator<Procedure> {
+		@Override 
+		public int compare(Procedure o1, Procedure o2){
+			int elective = o1.isElective() ? 1 : -1;
+			if(o1 == o2)
+				return 0;
+			else 
+				return elective;
+		}
+
+	}
 }
