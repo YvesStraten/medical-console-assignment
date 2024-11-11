@@ -1,6 +1,8 @@
 package com.yvesstraten.medicalconsole;
 
+import com.yvesstraten.medicalconsole.comparators.MedicalFacilitiesComparators;
 import com.yvesstraten.medicalconsole.comparators.PatientComparators;
+import com.yvesstraten.medicalconsole.comparators.ProcedureComparators;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
@@ -382,6 +384,8 @@ public class MedicalConsole {
 				listObjectGroup(procedures, "procedures");
 				break;
 			}
+
+			validInput = true;
 		} while(!validInput);
   }
 
@@ -471,40 +475,93 @@ public class MedicalConsole {
     }
   }
 
-	public static void sortObjects(HealthService service, Scanner stdin) throws InvalidOptionException {
-		String types = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
+  public static void sortObjects(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    String types = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
 
-		System.out.println(Format.enumeratedContent(types));
-		System.out.print("Which object type would you like to see sorted? ");
-		int selectedOpt = stdin.nextInt();
-		stdin.nextLine();
-		checkChosenOption(selectedOpt, List.of(types.split("\n")));
-		
-		switch(selectedOpt){
-			case 1:
-				break;
-				int selectedCriteria = stdin.nextInt();
-				stdin.nextLine();
-				checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
-				Stream<Patient> patients = service.getPatientsStream();
+    System.out.println(Format.enumeratedContent(types));
+    System.out.print("Which object type would you like to see sorted? ");
+    int selectedOpt = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(selectedOpt, List.of(types.split("\n")));
 
-				switch(selectedCriteria){
-					case 1: 
-						listObjectGroup(patients.sorted(new PatientComparators.SortedByName()), "patients");
-						break;
-					case 2:
-						listObjectGroup(patients.sorted(new PatientComparators.SortedByBalance()), "patients");
-						break;
-				}
-				
-				stdin.nextLine();
-				break;
-			case 3: 
-				break;
-		}
+    String sortingCriteria;
+    int selectedCriteria;
 
+    switch (selectedOpt) {
+      case 1:
+        sortingCriteria = "Name\n" + "Hospital\n" + "Clinic\n";
+        System.out.println(Format.enumeratedContent(sortingCriteria));
+        System.out.print("Which criteria would you like to sort them by? ");
+        selectedCriteria = stdin.nextInt();
+        stdin.nextLine();
+        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        Stream<MedicalFacility> facilities = service.getMedicalFacilitiesStream();
+        switch (selectedCriteria) {
+          case 1:
+            listObjectGroup(
+                facilities.sorted(new MedicalFacilitiesComparators.SortByName()), "facilities");
+            break;
+          case 2:
+            listObjectGroup(
+                facilities.sorted(new MedicalFacilitiesComparators.SortByHospital()), "facilities");
+            break;
+          case 3:
+            listObjectGroup(
+                facilities.sorted(new MedicalFacilitiesComparators.SortByClinic()), "facilities");
+            break;
+        }
+        break;
+      case 2:
+        sortingCriteria = "Name\n" + "Balance\n";
+        System.out.println(Format.enumeratedContent(sortingCriteria));
+        System.out.print("Which criteria would you like to sort them by? ");
+        selectedCriteria = stdin.nextInt();
+        stdin.nextLine();
+        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        Stream<Patient> patients = service.getPatientsStream();
 
-	}
+        switch (selectedCriteria) {
+          case 1:
+            listObjectGroup(patients.sorted(new PatientComparators.SortedByName()), "patients");
+            break;
+          case 2:
+            listObjectGroup(patients.sorted(new PatientComparators.SortedByBalance()), "patients");
+            break;
+        }
+
+        break;
+      case 3:
+        sortingCriteria = "Name\n" + "Base cost\n" + "Elective\n" + "Non elective\n";
+        System.out.println(Format.enumeratedContent(sortingCriteria));
+        System.out.print("Which criteria would you like to sort them by? ");
+        selectedCriteria = stdin.nextInt();
+        stdin.nextLine();
+        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        Stream<Procedure> procedures =
+            service.getHospitals().flatMap(hospital -> hospital.getProceduresStream());
+
+        switch (selectedCriteria) {
+          case 1:
+            listObjectGroup(procedures.sorted(new ProcedureComparators.SortByName()), "procedures");
+            break;
+          case 2:
+            listObjectGroup(
+                procedures.sorted(new ProcedureComparators.SortByPrice().reversed()), "procedures");
+            break;
+          case 3:
+            listObjectGroup(
+                procedures.sorted(new ProcedureComparators.SortByElective()), "procedures");
+            break;
+          case 4:
+            listObjectGroup(
+                procedures.sorted(new ProcedureComparators.SortByElective().reversed()),
+                "procedures");
+            break;
+        }
+        break;
+    }
+  }
 
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
@@ -560,7 +617,11 @@ public class MedicalConsole {
     Hospital hospital = new Hospital(service.next(), "TestHospital");
     Clinic clinic = new Clinic(service.next(), "Croix", 1000, 0.3);
     Patient patient = new Patient(service.next(), "Mark", false);
-    hospital.addProcedure(new Procedure(service.next(), "TestProc", "desc", true, 300));
+    hospital.addProcedure(
+        new Procedure(
+            service.next(), "MRI scan", "Magnetic Resonance Imaging scan of patient", false, 700));
+    hospital.addProcedure(
+        new Procedure(service.next(), "Radiological Inspection", "X-ray of patient", true, 300));
     service.addMedicalFacility(hospital);
     service.addMedicalFacility(clinic);
     service.addPatient(patient);

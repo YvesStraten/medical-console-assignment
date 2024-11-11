@@ -161,7 +161,6 @@ public class Patient implements Comparable<Patient> {
   @Override
   public String toString() {
     String statusString = isPrivate() ? "private" : "public";
-		System.out.println(isPrivate());
 		MedicalFacility currentFacility = getCurrentFacility();
 		String facilityString;
 
