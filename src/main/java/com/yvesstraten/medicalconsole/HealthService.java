@@ -13,6 +13,7 @@ import java.util.stream.Stream;
  * @author Yves Straten e2400068
  */
 public class HealthService implements Iterator<Integer> {
+	@Editable
   private String name;
   private ArrayList<MedicalFacility> medicalFacilities;
   private ArrayList<Patient> patients;

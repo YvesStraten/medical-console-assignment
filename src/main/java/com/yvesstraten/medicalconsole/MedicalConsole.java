@@ -11,6 +11,8 @@ import com.yvesstraten.medicalconsole.facilities.Procedure;
 import java.util.Arrays;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MedicalConsole {
@@ -565,32 +568,74 @@ public class MedicalConsole {
     }
   }
 
-	public static void editObject(HealthService service, Scanner stdin) throws InvalidOptionException {
-		List<Class<?>> classes = List.of( 
-			HealthService.class, 
-			Clinic.class, 
-			Hospital.class, 
-			Patient.class
-		);
-
-
-		String types = classes.stream().map((item) -> item.getName()).reduce((before, next) -> before + next + "\n").orElse("None of the objects can be edited"); 
-		System.out.println(Format.enumeratedContent(types));
-		System.out.print("Select object to edit: ");
-		int toEdit = stdin.nextInt();
-		stdin.nextLine();
-		checkChosenOption(toEdit, classes);
-
-		Field[] fields = classes.get(toEdit).getDeclaredFields();
+	public static void attemptEdit(Object toEdit, Scanner stdin){
+		System.out.println("Attempting edit");
+		Class<?> selectedClass = toEdit.getClass();
+		Field[] fields = selectedClass.getDeclaredFields();
+		Method[] methods = selectedClass.getDeclaredMethods();
 
 		for(Field field: fields){
 			Editable editable = field.getAnnotation(Editable.class);
 			if(editable != null){
 				System.out.println(field.getName());
+				String fieldType = field.getType().getName();
+				System.out.println(fieldType);
+				char[] fieldNameChars = field.getName().toCharArray();
+				fieldNameChars[0] = Character.toUpperCase(field.getName().charAt(0));
+				String setterName = "set" + new String(fieldNameChars);
+				System.out.println(setterName);
+
+				try {
+					Method setter;
+					if(fieldType.equals("double")){
+ 						setter = selectedClass.getMethod(setterName, double.class);
+						setter.invoke(toEdit, stdin.nextDouble());
+						stdin.nextLine();
+					} else if(fieldType.equals("java.lang.String")){
+ 						setter = selectedClass.getMethod(setterName, String.class);
+						setter.invoke(toEdit, stdin.nextLine());
+					} else if(fieldType.equals("int")){
+						setter = selectedClass.getMethod(setterName, int.class);
+						setter.invoke(toEdit, stdin.nextInt());
+						stdin.nextLine();
+					}
+
+					System.out.println(toEdit.toString());
+				} catch (NoSuchMethodException e){
+					System.err.println("There is no setter for this field!");
+				} catch (InvocationTargetException | IllegalAccessException e){
+					System.err.println("Something went wrong when invoking setter!");
+				}
 			}
 		}
+	}
 
+	public static void editObject(HealthService service, Scanner stdin) throws InvalidOptionException {
+		String types = "Health Service\n" + "Hospital\n" + "Clinic\n" + "Patient\n" + "Procedure\n"; 
+		System.out.println(Format.enumeratedContent(types));
+		System.out.print("Select the type of object you wish to edit: ");
+		int selectedType = stdin.nextInt();
+		stdin.nextLine();
+		checkChosenOption(selectedType, List.of(types.split("\n")));
 
+		switch(selectedType){
+			case 1: 
+				attemptEdit(service, stdin);
+				break;
+			case 2: 
+				String clinics = service.getClinics().map(clinic -> clinic.toString()).reduce((before, next) -> before + next + "\n").orElse("No clinics");
+				System.out.println(Format.enumeratedContent(clinics));
+				int clinicToEdit = stdin.nextInt();
+				checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
+				attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
+				break;
+
+		}
+		// System.out.println(Format.enumeratedContent(types));
+		// System.out.print("Select object to edit: ");
+		// int toEdit = stdin.nextInt();
+		// stdin.nextLine();
+		// checkChosenOption(toEdit, classes);
 	}
 
   public static void executeOption(
