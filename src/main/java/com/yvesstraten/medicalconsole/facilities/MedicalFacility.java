@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Patient;
 
 /**
@@ -8,6 +9,7 @@ import com.yvesstraten.medicalconsole.Patient;
  * @author Yves Straten e2400068
 */
 public abstract class MedicalFacility implements Comparable<MedicalFacility> {
+	@Editable
   private String name;
   private int id;
 

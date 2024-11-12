@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Format;
 import com.yvesstraten.medicalconsole.Patient;
 import java.util.ArrayList;

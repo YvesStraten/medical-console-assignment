@@ -1,9 +1,12 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Patient;
 
 public class Clinic extends MedicalFacility {
+	@Editable
   private double fee;
+	@Editable
   private double gapPercent;
 
   public Clinic(int id, String name, double fee, double gapPercent) {

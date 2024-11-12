@@ -9,6 +9,8 @@ import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 
 import java.util.Arrays;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -563,6 +565,34 @@ public class MedicalConsole {
     }
   }
 
+	public static void editObject(HealthService service, Scanner stdin) throws InvalidOptionException {
+		List<Class<?>> classes = List.of( 
+			HealthService.class, 
+			Clinic.class, 
+			Hospital.class, 
+			Patient.class
+		);
+
+
+		String types = classes.stream().map((item) -> item.getName()).reduce((before, next) -> before + next + "\n").orElse("None of the objects can be edited"); 
+		System.out.println(Format.enumeratedContent(types));
+		System.out.print("Select object to edit: ");
+		int toEdit = stdin.nextInt();
+		stdin.nextLine();
+		checkChosenOption(toEdit, classes);
+
+		Field[] fields = classes.get(toEdit).getDeclaredFields();
+
+		for(Field field: fields){
+			Editable editable = field.getAnnotation(Editable.class);
+			if(editable != null){
+				System.out.println(field.getName());
+			}
+		}
+
+
+	}
+
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException, InputMismatchException {
@@ -590,6 +620,9 @@ public class MedicalConsole {
       case LIST:
         listObjects(service, stdin);
         break;
+			case EDIT: 
+				editObject(service, stdin);
+				break;
       case QUIT:
         System.exit(0);
     }
