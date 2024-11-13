@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class Hospital extends MedicalFacility {
+	@Editable
   private double probAdmit;
   private ArrayList<Procedure> procedures;
 

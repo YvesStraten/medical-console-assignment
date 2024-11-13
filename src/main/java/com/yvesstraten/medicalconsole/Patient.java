@@ -7,16 +7,14 @@ import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
  * This class represents a patient 
  * @author Yves Straten e2400068
 */
-@Editable
 public class Patient implements Comparable<Patient> {
   private int id;
 	@Editable
   private String name;
-	@Editable
+	@Editable(message="Is the patient private or public? [y/n]", setter="setPrivate")
   private boolean isPrivate;
 	@Editable
   private double balance;
-	@Editable
   private MedicalFacility currentFacility;
 
 	/** 

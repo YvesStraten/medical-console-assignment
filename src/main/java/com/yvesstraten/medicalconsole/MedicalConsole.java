@@ -599,6 +599,13 @@ public class MedicalConsole {
 						setter.invoke(toEdit, stdin.nextInt());
 						stdin.nextLine();
 					}
+					
+					StringBuilder messageBuilder = new StringBuilder();
+					if(editable.message().isEmpty()){
+						messageBuilder.append("Please input new value to set for ").append(field.getName()).append(" ");
+					} else {
+						messageBuilder.append(editable.message()).append(" ");
+					}
 
 					System.out.println(toEdit.toString());
 				} catch (NoSuchMethodException e){
@@ -629,7 +636,31 @@ public class MedicalConsole {
 				checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
 				attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
 				break;
-
+			case 3: 
+				String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");				
+				System.out.println(Format.enumeratedContent(hospitals, 1));
+				int hospitalToEdit = stdin.nextInt();
+				stdin.nextLine();
+				checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));
+				attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
+				break;
+			case 4: 
+				String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");				
+				System.out.println(Format.enumeratedContent(patients, 1));
+				int patientToEdit = stdin.nextInt();
+				stdin.nextLine();
+				checkChosenOption(patientToEdit, List.of(patients.split("\n")));
+				attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
+				break;
+			case 5: 
+				List<Procedure> proceduresList = service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
+				String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");				
+				System.out.println(Format.enumeratedContent(procedures, 1));
+				int procedureToEdit = stdin.nextInt();
+				stdin.nextLine();
+				checkChosenOption(procedureToEdit, List.of(procedures.split("\n")));
+				attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
+				break;
 		}
 		// System.out.println(Format.enumeratedContent(types));
 		// System.out.print("Select object to edit: ");

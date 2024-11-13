@@ -1,10 +1,15 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Editable;
+
 public class Procedure implements Comparable<Procedure> {
 	private int id; 
 	private String name;
+	@Editable(message="What is the description for this procedure?")
 	private String description;
+	@Editable(message="Is this procedure elective [y/n]")
 	private boolean isElective;
+	@Editable
 	private double cost;
 
 	public Procedure(int id, String name, String description, boolean isElective, double basicCost){
