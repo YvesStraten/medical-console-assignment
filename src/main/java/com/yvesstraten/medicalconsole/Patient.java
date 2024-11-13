@@ -11,7 +11,7 @@ public class Patient implements Comparable<Patient> {
   private int id;
 	@Editable
   private String name;
-	@Editable(message="Is the patient private or public? [y/n]", setter="setPrivate")
+	@Editable(message="Is the patient private? [y/n]", setter="setPrivate")
   private boolean isPrivate;
 	@Editable
   private double balance;

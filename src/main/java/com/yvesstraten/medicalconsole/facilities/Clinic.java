@@ -6,7 +6,7 @@ import com.yvesstraten.medicalconsole.Patient;
 public class Clinic extends MedicalFacility {
 	@Editable
   private double fee;
-	@Editable
+	@Editable(message="What is the gap percentage?")
   private double gapPercent;
 
   public Clinic(int id, String name, double fee, double gapPercent) {

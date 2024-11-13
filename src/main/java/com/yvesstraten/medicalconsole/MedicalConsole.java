@@ -575,14 +575,11 @@ public class MedicalConsole {
 		for(Field field: fields){
 			Editable editable = field.getAnnotation(Editable.class);
 			if(editable != null){
-				System.out.println(field.getName());
 				Class<?> fieldType = field.getType();
-				System.out.println(fieldType);
 				char[] fieldNameChars = field.getName().toCharArray();
 				fieldNameChars[0] = Character.toUpperCase(field.getName().charAt(0));
 				String setterName = editable.setter().isEmpty() ? "set" + new String(fieldNameChars) : editable.setter();
 				
-				System.out.println(setterName);
 				boolean validInput = false;
 
 					do {
@@ -620,7 +617,6 @@ public class MedicalConsole {
 								}
 
 								validInput = true;
-							System.out.println(toEdit.toString());
 						} catch (NoSuchMethodException e){
 							throw new RuntimeException("There is no setter for this field!");
 						} catch (InvocationTargetException e){
@@ -632,12 +628,16 @@ public class MedicalConsole {
 							System.err.println(e.getMessage());
 						}
 				} while(!validInput); 
+
 			}
 		}
+		
+		System.out.println("Edited object successfully! Results:");
+		System.out.println(toEdit.toString());
 	}
 
 	public static void editObject(HealthService service, Scanner stdin) throws InvalidOptionException {
-		String types = "Health Service\n" + "Hospital\n" + "Clinic\n" + "Patient\n" + "Procedure\n"; 
+		String types = "Health Service\n" + "Clinic\n" + "Hospital\n" + "Patient\n" + "Procedure\n"; 
 		System.out.println(Format.enumeratedContent(types));
 		System.out.print("Select the type of object you wish to edit: ");
 		int selectedType = stdin.nextInt();

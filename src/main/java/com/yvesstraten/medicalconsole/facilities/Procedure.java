@@ -4,8 +4,9 @@ import com.yvesstraten.medicalconsole.Editable;
 
 public class Procedure implements Comparable<Procedure> {
 	private int id; 
+	@Editable(message="What should the name of this procedure be?")
 	private String name;
-	@Editable(message="What is the description for this procedure?")
+	@Editable(message="What should the description of this procedure be?")
 	private String description;
 	@Editable(message="Is this procedure elective [y/n]")
 	private boolean isElective;
