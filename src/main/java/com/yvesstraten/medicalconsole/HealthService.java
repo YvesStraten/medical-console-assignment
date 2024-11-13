@@ -116,7 +116,7 @@ public class HealthService implements Iterator<Integer> {
   @Override
   public String toString() {
     StringBuilder base =
-        new StringBuilder("HealthService that manages the following medical facilities: \n");
+        new StringBuilder("HealthService ").append(getName()).append(" that manages the following medical facilities: \n");
 
     getMedicalFacilities().stream()
         .map((facility) -> "- " + facility.toString() + "\n")
