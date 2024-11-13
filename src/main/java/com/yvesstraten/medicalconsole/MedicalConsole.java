@@ -583,54 +583,55 @@ public class MedicalConsole {
 				String setterName = editable.setter().isEmpty() ? "set" + new String(fieldNameChars) : editable.setter();
 				
 				System.out.println(setterName);
-
-				try {
-					Method setter;
-					
-					StringBuilder messageBuilder = new StringBuilder();
-					if(editable.message().isEmpty()){
-						messageBuilder.append("Please input new value to set for ").append(field.getName()).append(" ");
-					} else {
-						messageBuilder.append(editable.message()).append(" ");
-					}
-					System.out.print(messageBuilder.toString());
+				boolean validInput = false;
 
 					do {
-						if(fieldType.equals(double.class)){
-							setter = selectedClass.getMethod(setterName, double.class);
-							setter.invoke(toEdit, stdin.nextDouble());
-							stdin.nextLine();
-						} else if(fieldType.equals(String.class)){
-							setter = selectedClass.getMethod(setterName, String.class);
-							setter.invoke(toEdit, stdin.nextLine());
-						} else if(fieldType.equals(int.class)){
-							setter = selectedClass.getMethod(setterName, int.class);
-							setter.invoke(toEdit, stdin.nextInt());
-							stdin.nextLine();
-						} else if(fieldType.equals(char.class)){
-							setter = selectedClass.getMethod(setterName, char.class);
-							setter.invoke(toEdit, stdin.next().charAt(0));
-							stdin.nextLine();
-						} else if(fieldType.equals(boolean.class)){
-							setter = selectedClass.getMethod(setterName, boolean.class);
-							String input = stdin.nextLine();
-							boolean isYes = testYesNo(input);
-							setter.invoke(toEdit, isYes);
-						}
+						try {
+							Method setter;
+							
+							StringBuilder messageBuilder = new StringBuilder();
+							if(editable.message().isEmpty()){
+								messageBuilder.append("Please input new value to set for ").append(field.getName()).append(" ");
+							} else {
+								messageBuilder.append(editable.message()).append(" ");
+							}
+							System.out.print(messageBuilder.toString());
 
-						break;
-					} while(true); 
-					System.out.println(toEdit.toString());
-				} catch (NoSuchMethodException e){
-					throw new RuntimeException("There is no setter for this field!");
-				} catch (InvocationTargetException e){
-					System.err.println(e.getMessage());
-				} catch(IllegalAccessException e){
-					System.err.println("Setters should be public");
-				} 
-				catch(InvalidYesNoException e){
-					System.err.println(e.getMessage());
-				}
+								if(fieldType.equals(double.class)){
+									setter = selectedClass.getMethod(setterName, double.class);
+									setter.invoke(toEdit, stdin.nextDouble());
+									stdin.nextLine();
+								} else if(fieldType.equals(String.class)){
+									setter = selectedClass.getMethod(setterName, String.class);
+									setter.invoke(toEdit, stdin.nextLine());
+								} else if(fieldType.equals(int.class)){
+									setter = selectedClass.getMethod(setterName, int.class);
+									setter.invoke(toEdit, stdin.nextInt());
+									stdin.nextLine();
+								} else if(fieldType.equals(char.class)){
+									setter = selectedClass.getMethod(setterName, char.class);
+									setter.invoke(toEdit, stdin.next().charAt(0));
+									stdin.nextLine();
+								} else if(fieldType.equals(boolean.class)){
+									setter = selectedClass.getMethod(setterName, boolean.class);
+									String input = stdin.nextLine();
+									boolean isYes = testYesNo(input);
+									setter.invoke(toEdit, isYes);
+								}
+
+								validInput = true;
+							System.out.println(toEdit.toString());
+						} catch (NoSuchMethodException e){
+							throw new RuntimeException("There is no setter for this field!");
+						} catch (InvocationTargetException e){
+							System.err.println(e.getMessage());
+						} catch(IllegalAccessException e){
+							System.err.println("Setters should be public");
+						} 
+						catch(InvalidYesNoException e){
+							System.err.println(e.getMessage());
+						}
+				} while(!validInput); 
 			}
 		}
 	}
