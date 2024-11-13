@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MedicalConsole {
@@ -572,33 +571,21 @@ public class MedicalConsole {
 		System.out.println("Attempting edit");
 		Class<?> selectedClass = toEdit.getClass();
 		Field[] fields = selectedClass.getDeclaredFields();
-		Method[] methods = selectedClass.getDeclaredMethods();
 
 		for(Field field: fields){
 			Editable editable = field.getAnnotation(Editable.class);
 			if(editable != null){
 				System.out.println(field.getName());
-				String fieldType = field.getType().getName();
+				Class<?> fieldType = field.getType();
 				System.out.println(fieldType);
 				char[] fieldNameChars = field.getName().toCharArray();
 				fieldNameChars[0] = Character.toUpperCase(field.getName().charAt(0));
-				String setterName = "set" + new String(fieldNameChars);
+				String setterName = editable.setter().isEmpty() ? "set" + new String(fieldNameChars) : editable.setter();
+				
 				System.out.println(setterName);
 
 				try {
 					Method setter;
-					if(fieldType.equals("double")){
- 						setter = selectedClass.getMethod(setterName, double.class);
-						setter.invoke(toEdit, stdin.nextDouble());
-						stdin.nextLine();
-					} else if(fieldType.equals("java.lang.String")){
- 						setter = selectedClass.getMethod(setterName, String.class);
-						setter.invoke(toEdit, stdin.nextLine());
-					} else if(fieldType.equals("int")){
-						setter = selectedClass.getMethod(setterName, int.class);
-						setter.invoke(toEdit, stdin.nextInt());
-						stdin.nextLine();
-					}
 					
 					StringBuilder messageBuilder = new StringBuilder();
 					if(editable.message().isEmpty()){
@@ -606,12 +593,43 @@ public class MedicalConsole {
 					} else {
 						messageBuilder.append(editable.message()).append(" ");
 					}
+					System.out.print(messageBuilder.toString());
 
+					do {
+						if(fieldType.equals(double.class)){
+							setter = selectedClass.getMethod(setterName, double.class);
+							setter.invoke(toEdit, stdin.nextDouble());
+							stdin.nextLine();
+						} else if(fieldType.equals(String.class)){
+							setter = selectedClass.getMethod(setterName, String.class);
+							setter.invoke(toEdit, stdin.nextLine());
+						} else if(fieldType.equals(int.class)){
+							setter = selectedClass.getMethod(setterName, int.class);
+							setter.invoke(toEdit, stdin.nextInt());
+							stdin.nextLine();
+						} else if(fieldType.equals(char.class)){
+							setter = selectedClass.getMethod(setterName, char.class);
+							setter.invoke(toEdit, stdin.next().charAt(0));
+							stdin.nextLine();
+						} else if(fieldType.equals(boolean.class)){
+							setter = selectedClass.getMethod(setterName, boolean.class);
+							String input = stdin.nextLine();
+							boolean isYes = testYesNo(input);
+							setter.invoke(toEdit, isYes);
+						}
+
+						break;
+					} while(true); 
 					System.out.println(toEdit.toString());
 				} catch (NoSuchMethodException e){
-					System.err.println("There is no setter for this field!");
-				} catch (InvocationTargetException | IllegalAccessException e){
-					System.err.println("Something went wrong when invoking setter!");
+					throw new RuntimeException("There is no setter for this field!");
+				} catch (InvocationTargetException e){
+					System.err.println(e.getMessage());
+				} catch(IllegalAccessException e){
+					System.err.println("Setters should be public");
+				} 
+				catch(InvalidYesNoException e){
+					System.err.println(e.getMessage());
 				}
 			}
 		}
@@ -630,9 +648,10 @@ public class MedicalConsole {
 				attemptEdit(service, stdin);
 				break;
 			case 2: 
-				String clinics = service.getClinics().map(clinic -> clinic.toString()).reduce((before, next) -> before + next + "\n").orElse("No clinics");
-				System.out.println(Format.enumeratedContent(clinics));
+				String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
+				System.out.println(Format.enumeratedContent(clinics, 1));
 				int clinicToEdit = stdin.nextInt();
+				stdin.nextLine();
 				checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
 				attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
 				break;
@@ -662,11 +681,6 @@ public class MedicalConsole {
 				attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
 				break;
 		}
-		// System.out.println(Format.enumeratedContent(types));
-		// System.out.print("Select object to edit: ");
-		// int toEdit = stdin.nextInt();
-		// stdin.nextLine();
-		// checkChosenOption(toEdit, classes);
 	}
 
   public static void executeOption(
