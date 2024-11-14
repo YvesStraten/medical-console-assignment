@@ -1,10 +1,14 @@
 package com.yvesstraten.medicalconsole;
 
+import com.yvesstraten.medicalconsole.comparators.MedicalFacilitiesComparators;
+import com.yvesstraten.medicalconsole.comparators.PatientComparators;
+import com.yvesstraten.medicalconsole.comparators.ProcedureComparators;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -17,33 +21,34 @@ import java.util.stream.Stream;
 
 public class MedicalConsole {
   public enum ConsoleOption {
-    ADD(1),
-    LIST(2),
-    DELETE(3),
-    SIMULATE(4),
-    OPERATE(5),
-    QUIT(6);
+    ADD(1, "Add a service"),
+    LIST(2, "List all objects"),
+    DELETE(3, "Delete an object"),
+    SIMULATE(4, "Simulate a visit"),
+    OPERATE(5, "Operate a patient"),
+		SORTED(6, "Sort objects"),
+    QUIT(7, "Quit program");
 
     private final int value;
+		private final String optionName;
 
-    private ConsoleOption(int value) {
+    private ConsoleOption(int value, String optionName) {
       this.value = value;
+			this.optionName = optionName;
     }
 
     public int getValue() {
       return this.value;
     }
+
+		public String getOptionName(){
+			return this.optionName;
+		}
   }
 
   public static void printIntroduction() {
-    String[] options = {
-      new String("Add a service"),
-      new String("List all services"),
-      new String("Delete a service"),
-      new String("Simulate patient visit"),
-      new String("Operate"),
-      new String("Quit")
-    };
+		ConsoleOption[] declaredPanes = ConsoleOption.values();
+		String options = Arrays.stream(declaredPanes).map(pane -> pane.getOptionName()).reduce("", (before, next) -> before + next + "\n");
     System.out.println("Welcome to HELP Medical console");
     System.out.println("What would you like to do today?");
     System.out.println();
@@ -345,40 +350,43 @@ public class MedicalConsole {
     return builder.toString();
   }
 
+	public static <T> void listObjectGroup(Stream<T> streamFrom, String name) {
+     String output = getObjectStreamDetails(streamFrom, name);
+     System.out.println(Format.enumeratedContent(output, 1));
+	}
+
   public static void listObjects(HealthService service, Scanner stdin)
       throws InvalidOptionException {
     System.out.println("Which type of object would you like to see listed?");
     String options = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
     System.out.println(Format.enumeratedContent(options));
-    System.out.print("Please select a type: ");
-    int chosenOption = stdin.nextInt();
-    stdin.nextLine();
+		boolean validInput = false;
 
-    checkChosenOption(chosenOption, List.of(options.split("\n")));
+		do {
+			System.out.print("Please select a type: ");
+			int chosenOption = stdin.nextInt();
+			stdin.nextLine();
 
-    String output;
-    String[] splitted;
-    switch (chosenOption) {
-      case 1:
-        output = getObjectStreamDetails(service.getMedicalFacilitiesStream(), "facilities");
-        splitted = output.split("\n");
-        System.out.println(Format.enumeratedContent(splitted, 1));
-        break;
+			checkChosenOption(chosenOption, List.of(options.split("\n")));
 
-      case 2:
-        output = getObjectStreamDetails(service.getPatientsStream(), "facilities");
-        splitted = output.split("\n");
-        System.out.println(Format.enumeratedContent(splitted, 1));
-        break;
+			switch (chosenOption) {
+				case 1:
+				listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
+				break;
 
-      case 3:
-        Stream<Procedure> procedures =
-            service.getHospitals().flatMap(Hospital::getProceduresStream);
-        output = getObjectStreamDetails(procedures, "procedures");
-        splitted = output.split("\n");
-        System.out.println(Format.enumeratedContent(splitted, 1));
-        break;
-    }
+				case 2:
+				listObjectGroup(service.getPatientsStream(), "patients");
+				break;
+
+				case 3:
+				Stream<Procedure> procedures =
+				service.getHospitals().flatMap(Hospital::getProceduresStream);
+				listObjectGroup(procedures, "procedures");
+				break;
+			}
+
+			validInput = true;
+		} while(!validInput);
   }
 
   public static void simulateVisit(HealthService service, Scanner stdin)
@@ -467,6 +475,94 @@ public class MedicalConsole {
     }
   }
 
+  public static void sortObjects(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    String types = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
+
+    System.out.println(Format.enumeratedContent(types));
+    System.out.print("Which object type would you like to see sorted? ");
+    int selectedOpt = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(selectedOpt, List.of(types.split("\n")));
+
+    String sortingCriteria;
+    int selectedCriteria;
+
+    switch (selectedOpt) {
+      case 1:
+        sortingCriteria = "Name\n" + "Hospital\n" + "Clinic\n";
+        System.out.println(Format.enumeratedContent(sortingCriteria));
+        System.out.print("Which criteria would you like to sort them by? ");
+        selectedCriteria = stdin.nextInt();
+        stdin.nextLine();
+        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        Stream<MedicalFacility> facilities = service.getMedicalFacilitiesStream();
+        switch (selectedCriteria) {
+          case 1:
+            listObjectGroup(
+                facilities.sorted(new MedicalFacilitiesComparators.SortByName()), "facilities");
+            break;
+          case 2:
+            listObjectGroup(
+                facilities.sorted(new MedicalFacilitiesComparators.SortByHospital()), "facilities");
+            break;
+          case 3:
+            listObjectGroup(
+                facilities.sorted(new MedicalFacilitiesComparators.SortByClinic()), "facilities");
+            break;
+        }
+        break;
+      case 2:
+        sortingCriteria = "Name\n" + "Balance\n";
+        System.out.println(Format.enumeratedContent(sortingCriteria));
+        System.out.print("Which criteria would you like to sort them by? ");
+        selectedCriteria = stdin.nextInt();
+        stdin.nextLine();
+        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        Stream<Patient> patients = service.getPatientsStream();
+
+        switch (selectedCriteria) {
+          case 1:
+            listObjectGroup(patients.sorted(new PatientComparators.SortByName()), "patients");
+            break;
+          case 2:
+            listObjectGroup(patients.sorted(new PatientComparators.SortByBalance()), "patients");
+            break;
+        }
+
+        break;
+      case 3:
+        sortingCriteria = "Name\n" + "Base cost\n" + "Elective\n" + "Non elective\n";
+        System.out.println(Format.enumeratedContent(sortingCriteria));
+        System.out.print("Which criteria would you like to sort them by? ");
+        selectedCriteria = stdin.nextInt();
+        stdin.nextLine();
+        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        Stream<Procedure> procedures =
+            service.getHospitals().flatMap(hospital -> hospital.getProceduresStream());
+
+        switch (selectedCriteria) {
+          case 1:
+            listObjectGroup(procedures.sorted(new ProcedureComparators.SortByName()), "procedures");
+            break;
+          case 2:
+            listObjectGroup(
+                procedures.sorted(new ProcedureComparators.SortByPrice().reversed()), "procedures");
+            break;
+          case 3:
+            listObjectGroup(
+                procedures.sorted(new ProcedureComparators.SortByElective()), "procedures");
+            break;
+          case 4:
+            listObjectGroup(
+                procedures.sorted(new ProcedureComparators.SortByElective().reversed()),
+                "procedures");
+            break;
+        }
+        break;
+    }
+  }
+
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException, InputMismatchException {
@@ -488,6 +584,9 @@ public class MedicalConsole {
       case OPERATE:
         operate(service, stdin);
         break;
+			case SORTED: 
+				sortObjects(service, stdin);
+				break;
       case LIST:
         listObjects(service, stdin);
         break;
@@ -518,13 +617,16 @@ public class MedicalConsole {
     Hospital hospital = new Hospital(service.next(), "TestHospital");
     Clinic clinic = new Clinic(service.next(), "Croix", 1000, 0.3);
     Patient patient = new Patient(service.next(), "Mark", false);
-    hospital.addProcedure(new Procedure(service.next(), "TestProc", "desc", true, 300));
+    hospital.addProcedure(
+        new Procedure(
+            service.next(), "MRI scan", "Magnetic Resonance Imaging scan of patient", false, 700));
+    hospital.addProcedure(
+        new Procedure(service.next(), "Radiological Inspection", "X-ray of patient", true, 300));
     service.addMedicalFacility(hospital);
     service.addMedicalFacility(clinic);
     service.addPatient(patient);
 
     Scanner stdin = new Scanner(System.in);
-    boolean quit = false;
 
     do {
       printIntroduction();
@@ -538,6 +640,7 @@ public class MedicalConsole {
         }
       } catch (InputMismatchException exception) {
         System.err.println("Wrong input, please try again");
+				stdin.nextLine();
       } catch (InvalidOptionException exception) {
         System.err.println(exception.getMessage() + "\n");
       } catch (InvalidYesNoException exception) {

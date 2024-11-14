@@ -144,7 +144,9 @@ public class HealthService implements Iterator<Integer> {
   }
 
   public Integer next() {
-    return getLastDispensedId() + 1;
+		int nextId = getLastDispensedId() + 1;
+		setLastDispensedId(nextId);
+    return nextId;
   }
 
   public boolean hasNext() {

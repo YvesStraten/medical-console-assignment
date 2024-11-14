@@ -124,9 +124,18 @@ public class Patient implements Comparable<Patient> {
     return this.id;
   }
 
+	/** 
+	 * Compares this patient to another.  
+	 * The natural order of patients 
+	 * is by their ids. 
+	 * @param oPatient - Patient to compare to
+	 * @return 0 - same id 
+	 * @return 1 - larger id
+	 * @return -1 - smaller id
+	*/
   public int compareTo(Patient oPatient) {
     if (this == oPatient) return 0;
-    else return (int) (getBalance() - oPatient.getBalance());
+    else return getId() - oPatient.getId();
   }
 
 	/** 
@@ -152,7 +161,6 @@ public class Patient implements Comparable<Patient> {
   @Override
   public String toString() {
     String statusString = isPrivate() ? "private" : "public";
-		System.out.println(isPrivate());
 		MedicalFacility currentFacility = getCurrentFacility();
 		String facilityString;
 

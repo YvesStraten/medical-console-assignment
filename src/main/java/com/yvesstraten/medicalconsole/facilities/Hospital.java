@@ -69,12 +69,13 @@ public class Hospital extends MedicalFacility {
 
   @Override
   public String toString() {
-    String[] proceduresDetails =
-        getProcedures().stream().map((procedure) -> procedure.toString()).toArray(String[]::new);
+    String proceduresDetails =
+        getProceduresStream().map((procedure) -> procedure.toString()).reduce((before, next) -> before + "\n" + next).orElse("");
+
     String proceduresString =
-        proceduresDetails.length == 0
+        proceduresDetails.length() == 0
             ? " and no procedures"
-            : " and the following procedures: \n" + Format.bulletedContent(proceduresDetails);
+            : " and the following procedures: \n" + Format.bulletedContent(proceduresDetails).strip();
 
     return "Hospital named " + getName() + " with id " + getId() + proceduresString;
   }
