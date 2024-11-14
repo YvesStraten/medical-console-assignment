@@ -523,10 +523,10 @@ public class MedicalConsole {
 
         switch (selectedCriteria) {
           case 1:
-            listObjectGroup(patients.sorted(new PatientComparators.SortedByName()), "patients");
+            listObjectGroup(patients.sorted(new PatientComparators.SortByName()), "patients");
             break;
           case 2:
-            listObjectGroup(patients.sorted(new PatientComparators.SortedByBalance()), "patients");
+            listObjectGroup(patients.sorted(new PatientComparators.SortByBalance()), "patients");
             break;
         }
 
