@@ -567,10 +567,11 @@ public class MedicalConsole {
     }
   }
 
-	public static void attemptEdit(Object toEdit, Scanner stdin){
+	public static void attemptEdit(Object toEdit, Scanner stdin) throws ClassIsNotEditableException {
 		System.out.println("Attempting edit");
 		Class<?> selectedClass = toEdit.getClass();
 		Field[] fields = selectedClass.getDeclaredFields();
+		int numEdited = 0;
 
 		for(Field field: fields){
 			Editable editable = field.getAnnotation(Editable.class);
@@ -600,7 +601,8 @@ public class MedicalConsole {
 									stdin.nextLine();
 								} else if(fieldType.equals(String.class)){
 									setter = selectedClass.getMethod(setterName, String.class);
-									setter.invoke(toEdit, stdin.nextLine());
+									String toSet = stdin.nextLine();
+									setter.invoke(toEdit, toSet);
 								} else if(fieldType.equals(int.class)){
 									setter = selectedClass.getMethod(setterName, int.class);
 									setter.invoke(toEdit, stdin.nextInt());
@@ -626,14 +628,21 @@ public class MedicalConsole {
 						} 
 						catch(InvalidYesNoException e){
 							System.err.println(e.getMessage());
+							System.out.println();
 						}
 				} while(!validInput); 
 
+				numEdited++;
 			}
 		}
+
+		if(numEdited > 0){
+			System.out.println("Edited object successfully! Results:");
+			System.out.println(toEdit.toString());
+		} else {
+			throw new ClassIsNotEditableException();
+		}
 		
-		System.out.println("Edited object successfully! Results:");
-		System.out.println(toEdit.toString());
 	}
 
 	public static void editObject(HealthService service, Scanner stdin) throws InvalidOptionException {
@@ -644,43 +653,51 @@ public class MedicalConsole {
 		stdin.nextLine();
 		checkChosenOption(selectedType, List.of(types.split("\n")));
 
-		switch(selectedType){
-			case 1: 
-				attemptEdit(service, stdin);
-				break;
-			case 2: 
-				String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
-				System.out.println(Format.enumeratedContent(clinics, 1));
-				int clinicToEdit = stdin.nextInt();
-				stdin.nextLine();
-				checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
-				attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
-				break;
-			case 3: 
-				String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");				
-				System.out.println(Format.enumeratedContent(hospitals, 1));
-				int hospitalToEdit = stdin.nextInt();
-				stdin.nextLine();
-				checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));
-				attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
-				break;
-			case 4: 
-				String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");				
-				System.out.println(Format.enumeratedContent(patients, 1));
-				int patientToEdit = stdin.nextInt();
-				stdin.nextLine();
-				checkChosenOption(patientToEdit, List.of(patients.split("\n")));
-				attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
-				break;
-			case 5: 
-				List<Procedure> proceduresList = service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
-				String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");				
-				System.out.println(Format.enumeratedContent(procedures, 1));
-				int procedureToEdit = stdin.nextInt();
-				stdin.nextLine();
-				checkChosenOption(procedureToEdit, List.of(procedures.split("\n")));
-				attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
-				break;
+		try {
+			switch(selectedType){
+				case 1: 
+					attemptEdit(service, stdin);
+					break;
+				case 2: 
+					String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
+					System.out.println(Format.enumeratedContent(clinics, 1));
+					System.out.print("Please select a clinic to edit: ");
+					int clinicToEdit = stdin.nextInt();
+					stdin.nextLine();
+					checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
+					attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
+					break;
+				case 3: 
+					String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");				
+					System.out.println(Format.enumeratedContent(hospitals, 1));
+					int hospitalToEdit = stdin.nextInt();
+					stdin.nextLine();
+					System.out.print("Please select a hospital to edit: ");
+					checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));
+					attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
+					break;
+				case 4: 
+					String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");				
+					System.out.println(Format.enumeratedContent(patients, 1));
+					System.out.print("Please select a patient to edit: ");
+					int patientToEdit = stdin.nextInt();
+					stdin.nextLine();
+					checkChosenOption(patientToEdit, List.of(patients.split("\n")));
+					attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
+					break;
+				case 5: 
+					List<Procedure> proceduresList = service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
+					String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");				
+					System.out.println(Format.enumeratedContent(procedures, 1));
+					System.out.print("Please select a procedure to edit: ");
+					int procedureToEdit = stdin.nextInt();
+					stdin.nextLine();
+					checkChosenOption(procedureToEdit, List.of(procedures.split("\n")));
+					attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
+					break;
+			}
+		} catch(ClassIsNotEditableException e){
+			System.err.println(e.getMessage());
 		}
 	}
 
