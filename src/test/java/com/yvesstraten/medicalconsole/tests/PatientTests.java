@@ -4,25 +4,37 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Arrays;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.comparators.PatientComparators;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 /** Test suite for all tests related to the {@code Patient} class */
 @DisplayName("Patient tests")
 public class PatientTests {
+  /**
+   * Test to check that the id returned by {@link Patient#hashCode()} is the same as the id of this
+   * Patient
+   */
   @Test
   public void shouldBeSameHashCode() {
     Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(1, "Victory", 300, 0.3));
     assertEquals(patient.hashCode(), patient.getId());
   }
 
+  /**
+   * Test to check that Patients are sorted by their natural order, that is their ids
+   *
+   * @see Patient
+   */
   @Test
   public void comparableTest() {
     Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(2, "Victory", 300, 0.3));
@@ -37,28 +49,11 @@ public class PatientTests {
     assertArrayEquals(expected, patients);
   }
 
-	@Test 
-	public void sortByNameTest(){
-    Patient patient = new Patient(0, "Mark", false);
-    Patient patient2 = new Patient(1, "Other", false);
-		Patient[] expected = new Patient[] { patient, patient2 };
-		Patient[] actual = new Patient[] { patient2, patient };
-
-		Arrays.sort(actual, new PatientComparators.SortedByName());
-		assertArrayEquals(expected, actual);
-	}
-
-	@Test 
-	public void sortByBalanceTest(){
-    Patient patient = new Patient(0, "Mark", false, 300);
-    Patient patient2 = new Patient(1, "Other", false, 100);
-		Patient[] expected = new Patient[] { patient2, patient };
-		Patient[] actual = new Patient[] { patient, patient2 };
-
-		Arrays.sort(actual, new PatientComparators.SortedByBalance());
-		assertArrayEquals(expected, actual);
-	}
-
+  /**
+   * Test to check that equal patients are indeed treated as equal
+   *
+   * @see Patient
+   */
   @Test
   public void equalsTest() {
     Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(2, "Victory", 300, 0.3));
@@ -66,5 +61,34 @@ public class PatientTests {
 
     assertTrue(patient.equals(patient));
     assertFalse(patient.equals(patient2));
+  }
+
+  /**
+   * Test factory for all tests related to the sorting of Patient objects
+   *
+   * @see PatientComparators
+   */
+  @TestFactory
+  public Stream<DynamicTest> comparatorTests() {
+    Patient patient1 = new Patient(0, "Quentin", false, 100);
+    Patient patient2 = new Patient(1, "Other", false, 600);
+    List<Patient> facilities = List.of(patient1, patient2);
+    Stream<SortingTest<Patient>> tests =
+        Stream.of(
+            new SortingTest<Patient>(
+                "Sort by name", new PatientComparators.SortByName(), List.of(patient2, patient1)),
+            new SortingTest<Patient>(
+                "Sort by balance",
+                new PatientComparators.SortByBalance(),
+                List.of(patient2, patient1)));
+
+    return tests.map(
+        test ->
+            dynamicTest(
+                test.getName(),
+                () ->
+                    assertEquals(
+                        test.getExpected(),
+                        facilities.stream().sorted(test.getComparator()).toList())));
   }
 }
