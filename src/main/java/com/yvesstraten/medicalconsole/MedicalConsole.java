@@ -31,7 +31,8 @@ public class MedicalConsole {
     SIMULATE(4, "Simulate a visit"),
     OPERATE(5, "Operate a patient"),
 		SORTED(6, "Sort objects"),
-    QUIT(7, "Quit program");
+		EDIT(7, "Edit objects"),
+    QUIT(8, "Quit program");
 
     private final int value;
 		private final String optionName;
@@ -409,11 +410,16 @@ public class MedicalConsole {
     int chosenFacility = stdin.nextInt();
     stdin.nextLine();
     checkChosenOption(chosenFacility, service.getMedicalFacilities());
+		MedicalFacility chosenFacilityObject = service.getMedicalFacilities().get(chosenFacility - 1);
+		Patient chosenPatientObject = service.getPatients().get(chosenPatient - 1);
 
-    service
-        .getMedicalFacilities()
-        .get(chosenFacility - 1)
+    boolean successfullVisit = chosenFacilityObject 
         .visit(service.getPatients().get(chosenPatient - 1));
+
+		if(successfullVisit) 
+			System.out.println(chosenPatientObject.getName() + " successfully visited " + chosenFacilityObject.getName());
+		else 
+			System.out.println(chosenPatientObject.getName() + " failed to visit " + chosenFacilityObject.getName());
   }
 
   public static double getOperationCost(Patient patient, Procedure procedure) {

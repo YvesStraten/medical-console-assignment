@@ -3,8 +3,6 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.yvesstraten.medicalconsole.ClassIsNotEditableException;
-import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.InvalidOptionException;
 import com.yvesstraten.medicalconsole.InvalidYesNoException;
@@ -26,8 +24,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
+import org.junit.platform.suite.api.SuiteDisplayName;
 
-@DisplayName("Medical console tests")
+@Suite
+@SuiteDisplayName("Medical console tests")
+@SelectClasses({ EditTests.class })
 public class MedicalConsoleTests {
   @ParameterizedTest
   @ValueSource(ints = {-1, 7})
@@ -228,55 +231,4 @@ public class MedicalConsoleTests {
     assertEquals(List.of(), testService.getMedicalFacilities());
 		nextMock.close();
   }
-
-	@Test 
-	public void attemptEditNoEditableThrows() {
-		class Test {
-			private String testField;
-		}
-
-		Test test = new Test();
-		ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
-		Scanner stdin = new Scanner(input);
-		assertThrows(ClassIsNotEditableException.class, () -> MedicalConsole.attemptEdit(test, stdin));
-	}
-
-	@Test 
-	public void attemptEditWrongSetterThrows() {
-		class Test {
-			@Editable
-			private String testField;
-
-			public void setTest(String testField){
-				this.testField = testField;
-			}
-		}
-
-		Test test = new Test();
-		ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
-		Scanner stdin = new Scanner(input);
-		assertThrows(RuntimeException.class, () -> MedicalConsole.attemptEdit(test, stdin));
-	}
-
-	@Test 
-	public void attemptEditSuccessFullWithRightSetter() throws ClassIsNotEditableException {
-		class TestClass {
-			@Editable
-			private String field;
-
-			public void setField(String testField){
-				this.field = testField;
-			}
-
-			public String getTestField(){
-				return this.field;
-			}
-		}
-
-		TestClass test = new TestClass();
-
-		Scanner testInput = new Scanner(new ByteArrayInputStream("Another\n\n\n\n\n".getBytes()));
-		MedicalConsole.attemptEdit(test, testInput);
-		assertEquals("Another", test.getTestField());
-	}
 }
