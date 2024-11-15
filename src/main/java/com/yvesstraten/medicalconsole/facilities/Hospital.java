@@ -4,12 +4,12 @@ import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Format;
 import com.yvesstraten.medicalconsole.Patient;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
 public class Hospital extends MedicalFacility {
-	@Editable
-  private double probAdmit;
+  @Editable private double probAdmit;
   private ArrayList<Procedure> procedures;
 
   public Hospital(int id, String name, ArrayList<Procedure> procedures) {
@@ -37,9 +37,9 @@ public class Hospital extends MedicalFacility {
     return this.procedures;
   }
 
-	public Stream<Procedure> getProceduresStream(){
-		return getProcedures().stream();
-	}
+  public Stream<Procedure> getProceduresStream() {
+    return getProcedures().stream();
+  }
 
   public void setProbAdmit(double probAdmit) {
     this.probAdmit = probAdmit;
@@ -49,20 +49,18 @@ public class Hospital extends MedicalFacility {
     this.procedures = procedures;
   }
 
-	public void addProcedure(Procedure procedure){
-		getProcedures().add(procedure);
-	}
+  public void addProcedure(Procedure procedure) {
+    getProcedures().add(procedure);
+  }
 
-	public void removeProcedure(Procedure toRemove){
-		getProcedures().remove(toRemove);
-	}
+  public void removeProcedure(Procedure toRemove) {
+    getProcedures().remove(toRemove);
+  }
 
   public boolean visit(Patient pat) {
     Random random = new Random();
     double rand = random.nextDouble(1);
-
-    if (rand > getProbAdmit()) {
-      pat.setMedicalFacility(this);
+if (rand > getProbAdmit()) { pat.setMedicalFacility(this);
       return true;
     }
 
@@ -71,13 +69,16 @@ public class Hospital extends MedicalFacility {
 
   @Override
   public String toString() {
-    String proceduresDetails =
-        getProceduresStream().map((procedure) -> procedure.toString()).reduce((before, next) -> before + "\n" + next).orElse("");
+    Optional<String> proceduresDetails =
+        getProceduresStream()
+            .map((procedure) -> procedure.toString())
+            .reduce((before, next) -> before + "\n" + next);
 
     String proceduresString =
-        proceduresDetails.length() == 0
+        proceduresDetails.isEmpty()
             ? " and no procedures"
-            : " and the following procedures: \n" + Format.bulletedContent(proceduresDetails).strip();
+            : " and the following procedures: \n"
+                + Format.bulletedContent(proceduresDetails.get()).strip();
 
     return "Hospital named " + getName() + " with id " + getId() + proceduresString;
   }

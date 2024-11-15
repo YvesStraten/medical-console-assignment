@@ -3,102 +3,112 @@ package com.yvesstraten.medicalconsole.facilities;
 import com.yvesstraten.medicalconsole.Editable;
 
 public class Procedure implements Comparable<Procedure> {
-	private int id; 
-	@Editable(message="What should the name of this procedure be?")
-	private String name;
-	@Editable(message="What should the description of this procedure be?")
-	private String description;
-	@Editable(message="Is this procedure elective [y/n]")
-	private boolean isElective;
-	@Editable
-	private double cost;
+  private int id;
 
-	public Procedure(int id, String name, String description, boolean isElective, double basicCost){
-		setId(id);
-		setName(name);
-		setDescription(description);
-		setIsElective(isElective);
-		setCost(basicCost);
-	}
+  @Editable(message = "What should the name of this procedure be?")
+  private String name;
 
-	/** 
-		* This procedure must have an id, thus, 
-		* providing no details is <b>unsupported</b>
-		* @see Procedure#Procedure(int, String, String, boolean, double)
-		* @throws UnsupportedOperationException
-	*/
-	public Procedure(){
-		throw new UnsupportedOperationException();
-	}
+  @Editable(message = "What should the description of this procedure be?")
+  private String description;
 
-	public int getId(){
-		return this.id;
-	}
+  @Editable(message = "Is this procedure elective [y/n]")
+  private boolean isElective;
 
-	public String getName(){
-		return this.name;
-	}
+  @Editable private double cost;
 
-	public String getDescription(){
-		return this.description;
-	}
+  public Procedure(int id, String name, String description, boolean isElective, double basicCost) {
+    setId(id);
+    setName(name);
+    setDescription(description);
+    setIsElective(isElective);
+    setCost(basicCost);
+  }
 
-	public boolean isElective(){
-		return this.isElective;
-	}
+  /**
+   * This procedure must have an id, thus, providing no details is <b>unsupported</b>
+   *
+   * @see Procedure#Procedure(int, String, String, boolean, double)
+   * @throws UnsupportedOperationException
+   */
+  public Procedure() {
+    throw new UnsupportedOperationException();
+  }
 
-	public double getCost(){
-		return this.cost;
-	}
+  public int getId() {
+    return this.id;
+  }
 
-	private void setId(int id){
-		this.id = id;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public void setName(String name){
-		this.name = name;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public void setDescription(String description){
-		this.description = description;
-	}
+  public boolean isElective() {
+    return this.isElective;
+  }
 
-	public void setIsElective(boolean elective){
-		this.isElective = elective;
-	}
+  public double getCost() {
+    return this.cost;
+  }
 
-	public void setCost(double cost){
-		this.cost = cost;
-	}
+  private void setId(int id) {
+    this.id = id;
+  }
 
-	@Override
-	public boolean equals(Object other){
-		if(this == other)
-			return true;
-		else {
-			if(other instanceof Procedure){
-				return this.getId() == ((Procedure) other).getId();
-			}
-		}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-		return false;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	@Override
-	public int hashCode() {
-		return getId();
-	}
+  public void setIsElective(boolean elective) {
+    this.isElective = elective;
+  }
 
-	@Override 
-	public int compareTo(Procedure o){
-		if(this == o)
-			return 0;
-		else return getId() - o.getId(); 
-	}
+  public void setCost(double cost) {
+    this.cost = cost;
+  }
 
-	@Override 
-	public String toString() {
-		String elective = isElective() ? "Elective" : "Non-elective";
-		return new String(elective + " procedure " + getName() + " id " + getId() + " with description " + getDescription() + " and basic cost " + getCost());
-	}
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) return true;
+    else {
+      if (other instanceof Procedure) {
+        return this.getId() == ((Procedure) other).getId();
+      }
+    }
+
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId();
+  }
+
+  @Override
+  public int compareTo(Procedure o) {
+    if (this == o) return 0;
+    else return getId() - o.getId();
+  }
+
+  @Override
+  public String toString() {
+    String elective = isElective() ? "Elective" : "Non-elective";
+    return new String(
+        elective
+            + " procedure "
+            + getName()
+            + " id "
+            + getId()
+            + " with description "
+            + getDescription()
+            + " and basic cost "
+            + getCost());
+  }
 }

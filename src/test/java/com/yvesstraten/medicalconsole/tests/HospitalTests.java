@@ -3,14 +3,13 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.facilities.Hospital;
+import com.yvesstraten.medicalconsole.facilities.Procedure;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
-
-import com.yvesstraten.medicalconsole.Patient;
-import com.yvesstraten.medicalconsole.facilities.Hospital;
-import com.yvesstraten.medicalconsole.facilities.Procedure;
 
 /**
  * Test suite for all tests related to a Hospital

@@ -30,7 +30,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
 @SuiteDisplayName("Medical console tests")
-@SelectClasses({ EditTests.class })
+@SelectClasses({EditTests.class})
 public class MedicalConsoleTests {
   @ParameterizedTest
   @ValueSource(ints = {-1, 7})
@@ -205,10 +205,10 @@ public class MedicalConsoleTests {
         InvalidOptionException.class, () -> MedicalConsole.deletePatient(testService, mockInput));
   }
 
-	@Test
+  @Test
   public void deleteFacilityDeletes() throws InvalidOptionException, InvalidYesNoException {
-		ArrayList<Procedure> procedures = new ArrayList<Procedure>();
-		procedures.add(new Procedure(2, "Test proc", "Desc", true, 300));
+    ArrayList<Procedure> procedures = new ArrayList<Procedure>();
+    procedures.add(new Procedure(2, "Test proc", "Desc", true, 300));
     Clinic clinic1 = new Clinic(0, "Test clinic", 300, 0.2);
     Hospital hospital1 = new Hospital(1, "Test", procedures);
     ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
@@ -222,13 +222,13 @@ public class MedicalConsoleTests {
 
     MedicalConsole.deleteFacility(testService, mockInput);
     assertEquals(List.of(hospital1), testService.getMedicalFacilities());
-		mockInput.close();
+    mockInput.close();
 
     ByteArrayInputStream nextInput = new ByteArrayInputStream("1\nyes\n".getBytes());
     Scanner nextMock = new Scanner(nextInput);
     MedicalConsole.deleteFacility(testService, nextMock);
 
     assertEquals(List.of(), testService.getMedicalFacilities());
-		nextMock.close();
+    nextMock.close();
   }
 }

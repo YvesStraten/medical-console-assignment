@@ -3,13 +3,6 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.yvesstraten.medicalconsole.ClassIsNotEditableException;
 import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.HealthService;
@@ -17,6 +10,11 @@ import com.yvesstraten.medicalconsole.InvalidOptionException;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.Scanner;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("Edit Tests")
 public class EditTests {
@@ -83,13 +81,12 @@ public class EditTests {
   public class IntegrationTest {
     private String name;
     private String userInput;
-		private Object expected;
+    private Object expected;
 
-    public IntegrationTest(
-        String name, String userInput, Object expected) {
+    public IntegrationTest(String name, String userInput, Object expected) {
       setName(name);
       setUserInput(userInput);
-			setExpected(expected);
+      setExpected(expected);
     }
 
     public String getName() {
@@ -100,9 +97,9 @@ public class EditTests {
       return this.userInput;
     }
 
-		public Object getExpected(){
-			return this.expected;
-		}
+    public Object getExpected() {
+      return this.expected;
+    }
 
     public void setName(String name) {
       this.name = name;
@@ -112,9 +109,9 @@ public class EditTests {
       this.userInput = userInput;
     }
 
-		public void setExpected(Object expected){
-			this.expected = expected;
-		}
+    public void setExpected(Object expected) {
+      this.expected = expected;
+    }
 
     public Scanner inputToScanner() {
       return new Scanner(new ByteArrayInputStream(getUserInput().getBytes()));
@@ -136,18 +133,18 @@ public class EditTests {
   //           new IntegrationTest(
   //               "Edit Health Service",
   //               "1\nService",
-		// 						"Service"
+  // 						"Service"
   //               ),
   //           new IntegrationTest(
   //               "Edit Hospital",
   //               "2\nCroix",
-		// 						"Croix"
+  // 						"Croix"
   //               ));
   //
-		// return tests.stream().map(test -> dynamicTest(test.getName(), () -> {
-		// 	MedicalConsole.editObject(service, test.inputToScanner());
-		// 	assertEquals(test.getExpected(), )
+  // return tests.stream().map(test -> dynamicTest(test.getName(), () -> {
+  // 	MedicalConsole.editObject(service, test.inputToScanner());
+  // 	assertEquals(test.getExpected(), )
   //
-		// }))
+  // }))
   // }
 }

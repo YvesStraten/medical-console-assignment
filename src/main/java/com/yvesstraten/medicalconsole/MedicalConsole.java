@@ -7,12 +7,10 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-
-import java.util.Arrays;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -30,30 +28,33 @@ public class MedicalConsole {
     DELETE(3, "Delete an object"),
     SIMULATE(4, "Simulate a visit"),
     OPERATE(5, "Operate a patient"),
-		SORTED(6, "Sort objects"),
-		EDIT(7, "Edit objects"),
+    SORTED(6, "Sort objects"),
+    EDIT(7, "Edit objects"),
     QUIT(8, "Quit program");
 
     private final int value;
-		private final String optionName;
+    private final String optionName;
 
     private ConsoleOption(int value, String optionName) {
       this.value = value;
-			this.optionName = optionName;
+      this.optionName = optionName;
     }
 
     public int getValue() {
       return this.value;
     }
 
-		public String getOptionName(){
-			return this.optionName;
-		}
+    public String getOptionName() {
+      return this.optionName;
+    }
   }
 
   public static void printIntroduction() {
-		ConsoleOption[] declaredPanes = ConsoleOption.values();
-		String options = Arrays.stream(declaredPanes).map(pane -> pane.getOptionName()).reduce("", (before, next) -> before + next + "\n");
+    ConsoleOption[] declaredPanes = ConsoleOption.values();
+    String options =
+        Arrays.stream(declaredPanes)
+            .map(pane -> pane.getOptionName())
+            .reduce("", (before, next) -> before + next + "\n");
     System.out.println("Welcome to HELP Medical console");
     System.out.println("What would you like to do today?");
     System.out.println();
@@ -165,7 +166,7 @@ public class MedicalConsole {
       case 1:
         do {
           System.out.println("The following medical facilities are available");
-					String facilityOptions = "Clinic\n" + "Hospital\n";
+          String facilityOptions = "Clinic\n" + "Hospital\n";
 
           System.out.println(Format.enumeratedContent(facilityOptions));
           int chosenFacilityOption = stdin.nextInt();
@@ -243,7 +244,7 @@ public class MedicalConsole {
     } else {
       service.deleteMedicalFacility(facilityToDelete - 1);
     }
-		System.out.println("Removed facility successfully!");
+    System.out.println("Removed facility successfully!");
   }
 
   public static void deleteProcedure(HealthService service, Scanner stdin)
@@ -297,7 +298,7 @@ public class MedicalConsole {
   public static void deleteObject(HealthService service, Scanner stdin)
       throws InvalidOptionException, InvalidYesNoException {
     System.out.println("The following types of services are available: ");
-		String types = "Medical facility\n" + "Patient\n" + "Procedure\n";
+    String types = "Medical facility\n" + "Patient\n" + "Procedure\n";
 
     System.out.println(Format.enumeratedContent(types));
     System.out.print("Which type of object would you like to delete? ");
@@ -322,7 +323,7 @@ public class MedicalConsole {
         break;
       case 3:
         do {
-					deleteProcedure(service, stdin);
+          deleteProcedure(service, stdin);
           validInput = true;
         } while (!validInput);
         break;
@@ -355,43 +356,43 @@ public class MedicalConsole {
     return builder.toString();
   }
 
-	public static <T> void listObjectGroup(Stream<T> streamFrom, String name) {
-     String output = getObjectStreamDetails(streamFrom, name);
-     System.out.println(Format.enumeratedContent(output, 1));
-	}
+  public static <T> void listObjectGroup(Stream<T> streamFrom, String name) {
+    String output = getObjectStreamDetails(streamFrom, name);
+    System.out.println(Format.enumeratedContent(output, 1));
+  }
 
   public static void listObjects(HealthService service, Scanner stdin)
       throws InvalidOptionException {
     System.out.println("Which type of object would you like to see listed?");
     String options = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
     System.out.println(Format.enumeratedContent(options));
-		boolean validInput = false;
+    boolean validInput = false;
 
-		do {
-			System.out.print("Please select a type: ");
-			int chosenOption = stdin.nextInt();
-			stdin.nextLine();
+    do {
+      System.out.print("Please select a type: ");
+      int chosenOption = stdin.nextInt();
+      stdin.nextLine();
 
-			checkChosenOption(chosenOption, List.of(options.split("\n")));
+      checkChosenOption(chosenOption, List.of(options.split("\n")));
 
-			switch (chosenOption) {
-				case 1:
-				listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
-				break;
+      switch (chosenOption) {
+        case 1:
+          listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
+          break;
 
-				case 2:
-				listObjectGroup(service.getPatientsStream(), "patients");
-				break;
+        case 2:
+          listObjectGroup(service.getPatientsStream(), "patients");
+          break;
 
-				case 3:
-				Stream<Procedure> procedures =
-				service.getHospitals().flatMap(Hospital::getProceduresStream);
-				listObjectGroup(procedures, "procedures");
-				break;
-			}
+        case 3:
+          Stream<Procedure> procedures =
+              service.getHospitals().flatMap(Hospital::getProceduresStream);
+          listObjectGroup(procedures, "procedures");
+          break;
+      }
 
-			validInput = true;
-		} while(!validInput);
+      validInput = true;
+    } while (!validInput);
   }
 
   public static void simulateVisit(HealthService service, Scanner stdin)
@@ -410,16 +411,20 @@ public class MedicalConsole {
     int chosenFacility = stdin.nextInt();
     stdin.nextLine();
     checkChosenOption(chosenFacility, service.getMedicalFacilities());
-		MedicalFacility chosenFacilityObject = service.getMedicalFacilities().get(chosenFacility - 1);
-		Patient chosenPatientObject = service.getPatients().get(chosenPatient - 1);
+    MedicalFacility chosenFacilityObject = service.getMedicalFacilities().get(chosenFacility - 1);
+    Patient chosenPatientObject = service.getPatients().get(chosenPatient - 1);
 
-    boolean successfullVisit = chosenFacilityObject 
-        .visit(service.getPatients().get(chosenPatient - 1));
+    boolean successfullVisit =
+        chosenFacilityObject.visit(service.getPatients().get(chosenPatient - 1));
 
-		if(successfullVisit) 
-			System.out.println(chosenPatientObject.getName() + " successfully visited " + chosenFacilityObject.getName());
-		else 
-			System.out.println(chosenPatientObject.getName() + " failed to visit " + chosenFacilityObject.getName());
+    if (successfullVisit)
+      System.out.println(
+          chosenPatientObject.getName()
+              + " successfully visited "
+              + chosenFacilityObject.getName());
+    else
+      System.out.println(
+          chosenPatientObject.getName() + " failed to visit " + chosenFacilityObject.getName());
   }
 
   public static double getOperationCost(Patient patient, Procedure procedure) {
@@ -573,139 +578,143 @@ public class MedicalConsole {
     }
   }
 
-	public static void attemptEdit(Object toEdit, Scanner stdin) throws ClassIsNotEditableException {
-		System.out.println("Attempting edit");
-		Class<?> selectedClass = toEdit.getClass();
-		Field[] fields = selectedClass.getDeclaredFields();
-		int numEdited = 0;
+  public static void attemptEdit(Object toEdit, Scanner stdin) throws ClassIsNotEditableException {
+    System.out.println("Attempting edit");
+    Class<?> selectedClass = toEdit.getClass();
+    Field[] fields = selectedClass.getDeclaredFields();
+    int numEdited = 0;
 
-		for(Field field: fields){
-			Editable editable = field.getAnnotation(Editable.class);
-			if(editable != null){
-				Class<?> fieldType = field.getType();
-				char[] fieldNameChars = field.getName().toCharArray();
-				fieldNameChars[0] = Character.toUpperCase(field.getName().charAt(0));
-				String setterName = editable.setter().isEmpty() ? "set" + new String(fieldNameChars) : editable.setter();
-				
-				boolean validInput = false;
+    for (Field field : fields) {
+      Editable editable = field.getAnnotation(Editable.class);
+      if (editable != null) {
+        Class<?> fieldType = field.getType();
+        char[] fieldNameChars = field.getName().toCharArray();
+        fieldNameChars[0] = Character.toUpperCase(field.getName().charAt(0));
+        String setterName =
+            editable.setter().isEmpty() ? "set" + new String(fieldNameChars) : editable.setter();
 
-					do {
-						try {
-							Method setter;
-							
-							StringBuilder messageBuilder = new StringBuilder();
-							if(editable.message().isEmpty()){
-								messageBuilder.append("Please input new value to set for ").append(field.getName()).append(" ");
-							} else {
-								messageBuilder.append(editable.message()).append(" ");
-							}
-							System.out.print(messageBuilder.toString());
+        boolean validInput = false;
 
-								if(fieldType.equals(double.class)){
-									setter = selectedClass.getMethod(setterName, double.class);
-									setter.invoke(toEdit, stdin.nextDouble());
-									stdin.nextLine();
-								} else if(fieldType.equals(String.class)){
-									setter = selectedClass.getMethod(setterName, String.class);
-									String toSet = stdin.nextLine();
-									setter.invoke(toEdit, toSet);
-								} else if(fieldType.equals(int.class)){
-									setter = selectedClass.getMethod(setterName, int.class);
-									setter.invoke(toEdit, stdin.nextInt());
-									stdin.nextLine();
-								} else if(fieldType.equals(char.class)){
-									setter = selectedClass.getMethod(setterName, char.class);
-									setter.invoke(toEdit, stdin.next().charAt(0));
-									stdin.nextLine();
-								} else if(fieldType.equals(boolean.class)){
-									setter = selectedClass.getMethod(setterName, boolean.class);
-									String input = stdin.nextLine();
-									boolean isYes = testYesNo(input);
-									setter.invoke(toEdit, isYes);
-								}
+        do {
+          try {
+            Method setter;
 
-								validInput = true;
-						} catch (NoSuchMethodException e){
-							throw new RuntimeException("There is no setter for this field!");
-						} catch (InvocationTargetException e){
-							System.err.println(e.getMessage());
-						} catch(IllegalAccessException e){
-							System.err.println("Setters should be public");
-						} 
-						catch(InvalidYesNoException e){
-							System.err.println(e.getMessage());
-							System.out.println();
-						}
-				} while(!validInput); 
+            StringBuilder messageBuilder = new StringBuilder();
+            if (editable.message().isEmpty()) {
+              messageBuilder
+                  .append("Please input new value to set for ")
+                  .append(field.getName())
+                  .append(" ");
+            } else {
+              messageBuilder.append(editable.message()).append(" ");
+            }
+            System.out.print(messageBuilder.toString());
 
-				numEdited++;
-			}
-		}
+            if (fieldType.equals(double.class)) {
+              setter = selectedClass.getMethod(setterName, double.class);
+              setter.invoke(toEdit, stdin.nextDouble());
+              stdin.nextLine();
+            } else if (fieldType.equals(String.class)) {
+              setter = selectedClass.getMethod(setterName, String.class);
+              String toSet = stdin.nextLine();
+              setter.invoke(toEdit, toSet);
+            } else if (fieldType.equals(int.class)) {
+              setter = selectedClass.getMethod(setterName, int.class);
+              setter.invoke(toEdit, stdin.nextInt());
+              stdin.nextLine();
+            } else if (fieldType.equals(char.class)) {
+              setter = selectedClass.getMethod(setterName, char.class);
+              setter.invoke(toEdit, stdin.next().charAt(0));
+              stdin.nextLine();
+            } else if (fieldType.equals(boolean.class)) {
+              setter = selectedClass.getMethod(setterName, boolean.class);
+              String input = stdin.nextLine();
+              boolean isYes = testYesNo(input);
+              setter.invoke(toEdit, isYes);
+            }
 
-		if(numEdited > 0){
-			System.out.println("Edited object successfully! Results:");
-			System.out.println(toEdit.toString());
-		} else {
-			throw new ClassIsNotEditableException();
-		}
-		
-	}
+            validInput = true;
+          } catch (NoSuchMethodException e) {
+            throw new RuntimeException("There is no setter for this field!");
+          } catch (InvocationTargetException e) {
+            System.err.println(e.getMessage());
+          } catch (IllegalAccessException e) {
+            System.err.println("Setters should be public");
+          } catch (InvalidYesNoException e) {
+            System.err.println(e.getMessage());
+            System.out.println();
+          }
+        } while (!validInput);
 
-	public static void editObject(HealthService service, Scanner stdin) throws InvalidOptionException {
-		String types = "Health Service\n" + "Clinic\n" + "Hospital\n" + "Patient\n" + "Procedure\n"; 
-		System.out.println(Format.enumeratedContent(types));
-		System.out.print("Select the type of object you wish to edit: ");
-		int selectedType = stdin.nextInt();
-		stdin.nextLine();
-		checkChosenOption(selectedType, List.of(types.split("\n")));
+        numEdited++;
+      }
+    }
 
-		try {
-			switch(selectedType){
-				case 1: 
-					attemptEdit(service, stdin);
-					break;
-				case 2: 
-					String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
-					System.out.println(Format.enumeratedContent(clinics, 1));
-					System.out.print("Please select a clinic to edit: ");
-					int clinicToEdit = stdin.nextInt();
-					stdin.nextLine();
-					checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
-					attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
-					break;
-				case 3: 
-					String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");				
-					System.out.println(Format.enumeratedContent(hospitals, 1));
-					int hospitalToEdit = stdin.nextInt();
-					stdin.nextLine();
-					System.out.print("Please select a hospital to edit: ");
-					checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));
-					attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
-					break;
-				case 4: 
-					String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");				
-					System.out.println(Format.enumeratedContent(patients, 1));
-					System.out.print("Please select a patient to edit: ");
-					int patientToEdit = stdin.nextInt();
-					stdin.nextLine();
-					checkChosenOption(patientToEdit, List.of(patients.split("\n")));
-					attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
-					break;
-				case 5: 
-					List<Procedure> proceduresList = service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
-					String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");				
-					System.out.println(Format.enumeratedContent(procedures, 1));
-					System.out.print("Please select a procedure to edit: ");
-					int procedureToEdit = stdin.nextInt();
-					stdin.nextLine();
-					checkChosenOption(procedureToEdit, List.of(procedures.split("\n")));
-					attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
-					break;
-			}
-		} catch(ClassIsNotEditableException e){
-			System.err.println(e.getMessage());
-		}
-	}
+    if (numEdited > 0) {
+      System.out.println("Edited object successfully! Results:");
+      System.out.println(toEdit.toString());
+    } else {
+      throw new ClassIsNotEditableException();
+    }
+  }
+
+  public static void editObject(HealthService service, Scanner stdin)
+      throws InvalidOptionException {
+    String types = "Health Service\n" + "Clinic\n" + "Hospital\n" + "Patient\n" + "Procedure\n";
+    System.out.println(Format.enumeratedContent(types));
+    System.out.print("Select the type of object you wish to edit: ");
+    int selectedType = stdin.nextInt();
+    stdin.nextLine();
+    checkChosenOption(selectedType, List.of(types.split("\n")));
+
+    try {
+      switch (selectedType) {
+        case 1:
+          attemptEdit(service, stdin);
+          break;
+        case 2:
+          String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
+          System.out.println(Format.enumeratedContent(clinics, 1));
+          System.out.print("Please select a clinic to edit: ");
+          int clinicToEdit = stdin.nextInt();
+          stdin.nextLine();
+          checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
+          attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
+          break;
+        case 3:
+          String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");
+          System.out.println(Format.enumeratedContent(hospitals, 1));
+          int hospitalToEdit = stdin.nextInt();
+          stdin.nextLine();
+          System.out.print("Please select a hospital to edit: ");
+          checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));
+          attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
+          break;
+        case 4:
+          String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");
+          System.out.println(Format.enumeratedContent(patients, 1));
+          System.out.print("Please select a patient to edit: ");
+          int patientToEdit = stdin.nextInt();
+          stdin.nextLine();
+          checkChosenOption(patientToEdit, List.of(patients.split("\n")));
+          attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
+          break;
+        case 5:
+          List<Procedure> proceduresList =
+              service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
+          String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");
+          System.out.println(Format.enumeratedContent(procedures, 1));
+          System.out.print("Please select a procedure to edit: ");
+          int procedureToEdit = stdin.nextInt();
+          stdin.nextLine();
+          checkChosenOption(procedureToEdit, List.of(procedures.split("\n")));
+          attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
+          break;
+      }
+    } catch (ClassIsNotEditableException e) {
+      System.err.println(e.getMessage());
+    }
+  }
 
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
@@ -728,15 +737,15 @@ public class MedicalConsole {
       case OPERATE:
         operate(service, stdin);
         break;
-			case SORTED: 
-				sortObjects(service, stdin);
-				break;
+      case SORTED:
+        sortObjects(service, stdin);
+        break;
       case LIST:
         listObjects(service, stdin);
         break;
-			case EDIT: 
-				editObject(service, stdin);
-				break;
+      case EDIT:
+        editObject(service, stdin);
+        break;
       case QUIT:
         System.exit(0);
     }
@@ -787,7 +796,7 @@ public class MedicalConsole {
         }
       } catch (InputMismatchException exception) {
         System.err.println("Wrong input, please try again");
-				stdin.nextLine();
+        stdin.nextLine();
       } catch (InvalidOptionException exception) {
         System.err.println(exception.getMessage() + "\n");
       } catch (InvalidYesNoException exception) {
