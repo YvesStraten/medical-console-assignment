@@ -1,11 +1,11 @@
 package com.yvesstraten.medicalconsole;
 
 public class InvalidYesNoException extends Exception {
-	public InvalidYesNoException(){
-		super();
-	}
+  public InvalidYesNoException() {
+    super();
+  }
 
-	public InvalidYesNoException(String s){
-		super(s);
-	}
+  public InvalidYesNoException(String s) {
+    super(s);
+  }
 }

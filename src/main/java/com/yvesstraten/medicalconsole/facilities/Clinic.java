@@ -1,9 +1,12 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Patient;
 
 public class Clinic extends MedicalFacility {
-  private double fee;
+  @Editable private double fee;
+
+  @Editable(message = "What is the gap percentage?")
   private double gapPercent;
 
   public Clinic(int id, String name, double fee, double gapPercent) {
@@ -12,12 +15,10 @@ public class Clinic extends MedicalFacility {
     setGapPercent(gapPercent);
   }
 
-	/** 
-	 * {@inheritDoc}
-	*/
-	public Clinic(){
-		super();
-	}
+  /** {@inheritDoc} */
+  public Clinic() {
+    super();
+  }
 
   public double getFee() {
     return this.fee;
@@ -55,9 +56,8 @@ public class Clinic extends MedicalFacility {
     }
   }
 
-	@Override
-	public String toString(){
-		return "Clinic " + getName() + " fee " + getFee() + " and gap percent " + gapPercent;
-
-	}
+  @Override
+  public String toString() {
+    return "Clinic " + getName() + " fee " + getFee() + " and gap percent " + gapPercent;
+  }
 }

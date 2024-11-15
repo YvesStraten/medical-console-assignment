@@ -60,9 +60,6 @@ public class Format {
 
   public static String bulletedContent(String options) {
     String[] splitted = options.split("\n");
-    for (String split : splitted) {
-      System.out.println(split);
-    }
     return bulletedContent(splitted, 0, splitted.length);
   }
 }

@@ -2,18 +2,17 @@ package com.yvesstraten.medicalconsole.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.yvesstraten.medicalconsole.facilities.Clinic;
+import com.yvesstraten.medicalconsole.facilities.Hospital;
+import com.yvesstraten.medicalconsole.facilities.Procedure;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
-import com.yvesstraten.medicalconsole.facilities.Clinic;
-import com.yvesstraten.medicalconsole.facilities.Hospital;
-import com.yvesstraten.medicalconsole.facilities.Procedure;
-
 @Suite
 @SuiteDisplayName("Facilities tests")
-@SelectClasses({ FacilitiesTests.class, ClinicTests.class, HospitalTests.class })
+@SelectClasses({FacilitiesTests.class, ClinicTests.class, HospitalTests.class})
 public class FacilitiesTests {
   @Test
   public void shouldBeSameHashCode() {

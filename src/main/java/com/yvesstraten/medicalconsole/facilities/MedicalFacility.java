@@ -1,14 +1,15 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Patient;
 
 /**
- * This class outlines the basic properties 
- * that a <code>MedicalFacility</code> should have
+ * This class outlines the basic properties that a <code>MedicalFacility</code> should have
+ *
  * @author Yves Straten e2400068
-*/
+ */
 public abstract class MedicalFacility implements Comparable<MedicalFacility> {
-  private String name;
+  @Editable private String name;
   private int id;
 
   public MedicalFacility(int id, String name) {
@@ -16,14 +17,14 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
     setName(name);
   }
 
-	/** 
-	 * A medical facility must have an id, 
-	 * thus providing no details is <b>Unsupported</b>
-	 * @throws UnsupportedOperationException
-	*/
-	public MedicalFacility(){
-		throw new UnsupportedOperationException();
-	}
+  /**
+   * A medical facility must have an id, thus providing no details is <b>Unsupported</b>
+   *
+   * @throws UnsupportedOperationException
+   */
+  public MedicalFacility() {
+    throw new UnsupportedOperationException();
+  }
 
   public int getId() {
     return this.id;
@@ -37,38 +38,38 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
     this.name = name;
   }
 
-	private void setId(int id) {
-		this.id = id;
-	}
+  private void setId(int id) {
+    this.id = id;
+  }
 
-  public abstract boolean visit(Patient pat); 
+  public abstract boolean visit(Patient pat);
 
-	@Override
+  @Override
   public int hashCode() {
     return getId();
   }
 
-	@Override
-	public boolean equals(Object obj){
-		if(this == obj || this.hashCode() == obj.hashCode())
-			return true;
-		else {
-			if(obj instanceof MedicalFacility){
-				return this.getId() == ((MedicalFacility) obj).getId(); 
-			}
-		}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj || this.hashCode() == obj.hashCode()) return true;
+    else {
+      if (obj instanceof MedicalFacility) {
+        return this.getId() == ((MedicalFacility) obj).getId();
+      }
+    }
 
-		return false;
-	}
-	/** 
-	 * Compares this MedicalFacility to another 
-	 * The natural order of medical facilities 
-	 * is by their ids.
-	 * @param o - medical facility to compare
-	 * @return 0 - same id
-	 * @return 1 - larger id
-	 * @return -1 - smaller id
-	*/
+    return false;
+  }
+
+  /**
+   * Compares this MedicalFacility to another The natural order of medical facilities is by their
+   * ids.
+   *
+   * @param o - medical facility to compare
+   * @return 0 - same id
+   * @return 1 - larger id
+   * @return -1 - smaller id
+   */
   @Override
   public int compareTo(MedicalFacility o) {
     if (this == o) return 0;

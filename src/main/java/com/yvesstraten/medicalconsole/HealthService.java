@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * @author Yves Straten e2400068
  */
 public class HealthService implements Iterator<Integer> {
-  private String name;
+  @Editable private String name;
   private ArrayList<MedicalFacility> medicalFacilities;
   private ArrayList<Patient> patients;
   private int lastDispensedId;
@@ -62,19 +62,19 @@ public class HealthService implements Iterator<Integer> {
         .map(Hospital.class::cast);
   }
 
-	public Stream<Clinic> getClinics(){
+  public Stream<Clinic> getClinics() {
     return getMedicalFacilities().stream()
         .filter((facility) -> facility instanceof Clinic)
         .map(Clinic.class::cast);
-	}
+  }
 
   public ArrayList<Patient> getPatients() {
     return this.patients;
   }
 
-	public Stream<Patient> getPatientsStream(){
-		return getPatients().stream();
-	}
+  public Stream<Patient> getPatientsStream() {
+    return getPatients().stream();
+  }
 
   public int getLastDispensedId() {
     return this.lastDispensedId;
@@ -115,7 +115,9 @@ public class HealthService implements Iterator<Integer> {
   @Override
   public String toString() {
     StringBuilder base =
-        new StringBuilder("HealthService that manages the following medical facilities: \n");
+        new StringBuilder("HealthService ")
+            .append(getName())
+            .append(" that manages the following medical facilities: \n");
 
     getMedicalFacilities().stream()
         .map((facility) -> "- " + facility.toString() + "\n")
@@ -144,8 +146,8 @@ public class HealthService implements Iterator<Integer> {
   }
 
   public Integer next() {
-		int nextId = getLastDispensedId() + 1;
-		setLastDispensedId(nextId);
+    int nextId = getLastDispensedId() + 1;
+    setLastDispensedId(nextId);
     return nextId;
   }
 
