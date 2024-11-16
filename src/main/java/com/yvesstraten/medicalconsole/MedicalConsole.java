@@ -77,11 +77,11 @@ public class MedicalConsole {
   }
 
   public static void addClinic(HealthService service, Scanner stdin) {
-    System.out.println("What is the name of the clinic? ");
+    System.out.print("What is the name of the clinic? ");
     String name = stdin.nextLine();
-    System.out.println("What is the fee of the clinic? ");
+    System.out.print("What is the fee of the clinic? ");
     double fee = stdin.nextDouble();
-    System.out.println("What is the gap percent of the clinic? ");
+    System.out.print("What is the gap percent of the clinic? ");
     double gapPercent = stdin.nextDouble();
 
     stdin.nextLine();
@@ -101,7 +101,7 @@ public class MedicalConsole {
     System.out.print("What is the name of the patient? ");
     String name = stdin.nextLine();
 
-    System.out.print("Is the patient private? ");
+    System.out.print("Is the patient private? [y/n] ");
     String isPrivateString = stdin.nextLine();
     boolean isPrivate = testYesNo(isPrivateString);
 
@@ -174,6 +174,7 @@ public class MedicalConsole {
           String facilityOptions = "Clinic\n" + "Hospital\n";
 
           System.out.println(Format.enumeratedContent(facilityOptions));
+					System.out.print("Which medical facility would you like to add? ");
           int chosenFacilityOption = stdin.nextInt();
           stdin.nextLine();
           checkChosenOption(chosenFacilityOption, List.of(facilityOptions.split("\n")));
@@ -190,6 +191,9 @@ public class MedicalConsole {
           }
 
         } while (!validInput);
+
+				System.out.println("Added Medical facility successfully!");
+				System.out.println();
         break;
       case 2:
         do {
