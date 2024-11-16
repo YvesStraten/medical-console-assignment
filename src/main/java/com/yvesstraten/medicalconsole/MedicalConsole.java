@@ -174,7 +174,7 @@ public class MedicalConsole {
           String facilityOptions = "Clinic\n" + "Hospital\n";
 
           System.out.println(Format.enumeratedContent(facilityOptions));
-					System.out.print("Which medical facility would you like to add? ");
+          System.out.print("Which medical facility would you like to add? ");
           int chosenFacilityOption = stdin.nextInt();
           stdin.nextLine();
           checkChosenOption(chosenFacilityOption, List.of(facilityOptions.split("\n")));
@@ -192,8 +192,8 @@ public class MedicalConsole {
 
         } while (!validInput);
 
-				System.out.println("Added Medical facility successfully!");
-				System.out.println();
+        System.out.println("Added Medical facility successfully!");
+        System.out.println();
         break;
       case 2:
         do {
@@ -662,6 +662,7 @@ public class MedicalConsole {
     if (numEdited > 0) {
       System.out.println("Edited object successfully! Results:");
       System.out.println(toEdit.toString());
+      System.out.println();
     } else {
       throw new ClassIsNotEditableException();
     }
@@ -727,37 +728,44 @@ public class MedicalConsole {
 
   public static void executeOption(
       ConsoleOption selectedOption, HealthService service, Scanner stdin)
-      throws InvalidOptionException, InvalidYesNoException, InputMismatchException {
-    switch (selectedOption) {
-      case ADD:
-        boolean done = false;
-        do {
-          addObject(service, stdin);
-          done = true;
-        } while (!done);
-        break;
-      case DELETE:
-        // TODO
-        deleteObject(service, stdin);
-        break;
-      case SIMULATE:
-        simulateVisit(service, stdin);
-        break;
-      case OPERATE:
-        operate(service, stdin);
-        break;
-      case SORTED:
-        sortObjects(service, stdin);
-        break;
-      case LIST:
-        listObjects(service, stdin);
-        break;
-      case EDIT:
-        editObject(service, stdin);
-        break;
-      case QUIT:
-        System.exit(0);
-    }
+      throws InvalidYesNoException {
+    boolean done = false;
+    do {
+      try {
+        switch (selectedOption) {
+          case ADD:
+            addObject(service, stdin);
+            break;
+          case DELETE:
+            // TODO
+            deleteObject(service, stdin);
+            break;
+          case SIMULATE:
+            simulateVisit(service, stdin);
+            break;
+          case OPERATE:
+            operate(service, stdin);
+            break;
+          case SORTED:
+            sortObjects(service, stdin);
+            break;
+          case LIST:
+            listObjects(service, stdin);
+            break;
+          case EDIT:
+            editObject(service, stdin);
+            break;
+          case QUIT:
+            System.exit(0);
+        }
+        done = true;
+      } catch (InputMismatchException e) {
+        System.out.println("Wrong input!");
+        stdin.nextLine();
+      } catch (InvalidOptionException e) {
+        System.err.println(e.getMessage());
+      }
+    } while (!done);
   }
 
   public static boolean checkOption(int inputOption) throws InvalidOptionException {
