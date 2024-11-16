@@ -1,6 +1,21 @@
 package com.yvesstraten.medicalconsole;
 
+/** 
+ * This class holds a selection of pretty-printing methods 
+ * @author Yves Straten e2400068
+*/
 public class Format {
+	/** 
+	 * Default constructor for Format
+	 * @throws UnsupportedOperationException always 
+	*/
+	public Format(){
+		new UnsupportedOperationException();
+	}
+
+	/** 
+	 * Pretty-prints content in an enumerated format to the console
+	*/
   public static String enumeratedContent(String[] options, int startRange, int endRange) {
     StringBuilder builder = new StringBuilder();
     int currentIndex = 1;
@@ -37,6 +52,9 @@ public class Format {
     return enumeratedContent(options, startRange, options.length);
   }
 
+	/** 
+	 * Pretty prints content in a bulleted format to the console
+	*/
   public static String bulletedContent(String[] options, int startRange, int endRange) {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < options.length; i++) {

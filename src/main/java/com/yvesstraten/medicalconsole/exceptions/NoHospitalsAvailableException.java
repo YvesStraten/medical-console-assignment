@@ -6,6 +6,7 @@ import com.yvesstraten.medicalconsole.HealthService;
  * This exception is thrown when no hospitals have yet been added to the {@link HealthService} but
  * the user is trying to delete a procedure
  *
+ * @author Yves Straten e2400068
  * @see com.yvesstraten.medicalconsole.facilities.Hospital
  */
 public class NoHospitalsAvailableException extends Exception {
@@ -18,8 +19,8 @@ public class NoHospitalsAvailableException extends Exception {
     super(s);
   }
 
-  /** {@inheritDoc} */
+  /** Construct this exception with a predefined error message */
   public NoHospitalsAvailableException() {
-    super();
+    super("There are no hospitals available! Please add one first");
   }
 }

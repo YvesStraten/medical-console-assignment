@@ -3,7 +3,24 @@ package com.yvesstraten.medicalconsole.comparators;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 import java.util.Comparator;
 
+/**
+ * This class holds a selection of Comparator classes for comparing and sorting procedures
+ *
+ * @author Yves Straten e2400068
+ * @see Comparator
+ */
 public class ProcedureComparators {
+	/** 
+	 * Default constructor for ProcedureComparators
+	 * @throws UnsupportedOperationException always 
+	*/
+	public ProcedureComparators(){
+		new UnsupportedOperationException();
+	}
+
+	/** 
+	 * Helper class to sort procedures by price 
+	*/
   public static class SortByPrice implements Comparator<Procedure> {
     @Override
     public int compare(Procedure o1, Procedure o2) {
@@ -16,6 +33,9 @@ public class ProcedureComparators {
     }
   }
 
+	/** 
+	 * Helper class to sort procedures by name 
+	*/
   public static class SortByName implements Comparator<Procedure> {
     @Override
     public int compare(Procedure o1, Procedure o2) {
@@ -23,6 +43,9 @@ public class ProcedureComparators {
     }
   }
 
+	/** 
+	 * Helper class to sort procedures by their status 
+	*/
   public static class SortByElective implements Comparator<Procedure> {
     @Override
     public int compare(Procedure o1, Procedure o2) {

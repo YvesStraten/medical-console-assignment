@@ -12,15 +12,20 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
   @Editable private String name;
   private int id;
 
+	/** 
+	 * Constructs this medical facility 
+	 * @param id id of this facility
+	 * @param name name of this facility 
+	*/
   public MedicalFacility(int id, String name) {
     setId(id);
     setName(name);
   }
 
   /**
-   * A medical facility must have an id, thus providing no details is <b>Unsupported</b>
+   * This medical facility must have an id, thus providing no details is <b>Unsupported</b>
    *
-   * @throws UnsupportedOperationException
+   * @throws UnsupportedOperationException always
    */
   public MedicalFacility() {
     throw new UnsupportedOperationException();
@@ -61,6 +66,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
 	/** 
 	 * Make a patient visit this medical facility 
 	 * @param pat - patient that visits
+	 * @return true if visit was successful, false otherwise
 	*/
   public abstract boolean visit(Patient pat); 
 
@@ -76,8 +82,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
 	/** 
 	 * Compares this medical facility to another object 
 	 * @param obj - object to compare with
-	 * @return true - object is the same 
-	 * @return false - object is not the same
+	 * @return true if object is the same false otherwise
 	*/
 	@Override
 	public boolean equals(Object obj){
@@ -97,9 +102,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
    * ids.
    *
    * @param o - medical facility to compare
-   * @return 0 - same id
-   * @return 1 - larger id
-   * @return -1 - smaller id
+   * @return 0 if same id, 1 if larger id, -1 otherwise
    */
   @Override
   public int compareTo(MedicalFacility o) {

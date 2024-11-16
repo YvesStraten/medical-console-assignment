@@ -5,7 +5,24 @@ import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import java.util.Comparator;
 
+/**
+ * This class holds a selection of Comparator classes for comparing and sorting medical facilities
+ *
+ * @author Yves Straten e2400068
+ * @see Comparator
+ */
 public class MedicalFacilitiesComparators {
+	/** 
+	 * Default constructor for MedicalFacilitiesComparators
+	 * @throws UnsupportedOperationException always 
+	*/
+	public MedicalFacilitiesComparators(){
+		new UnsupportedOperationException();
+	}
+
+	/** 
+	 * Helper class to sort facilities by name 
+	*/
   public static class SortByName implements Comparator<MedicalFacility> {
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
@@ -13,6 +30,9 @@ public class MedicalFacilitiesComparators {
     }
   }
 
+	/** 
+	 * Helper class to sort facilities by hospital 
+	*/
   public static class SortByHospital implements Comparator<MedicalFacility> {
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
@@ -22,6 +42,9 @@ public class MedicalFacilitiesComparators {
     }
   }
 
+	/** 
+	 * Helper class to sort facilities by clinic 
+	*/
   public static class SortByClinic implements Comparator<MedicalFacility> {
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {

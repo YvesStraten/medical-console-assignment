@@ -12,10 +12,17 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Editable {
-  // Message that should be output when editing
+  /**
+   * Message that should be output when editing
+   *
+   * @return message to output
+   */
   String message() default "";
 
-  /* Name of setter, if it is different than
-  the field's name */
+  /**
+   * Name of setter, if it is different than the field's name
+   *
+   * @return name of setter
+   */
   String setter() default "";
 }
