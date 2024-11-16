@@ -1,4 +1,4 @@
-package com.yvesstraten.medicalconsole;
+package com.yvesstraten.medicalconsole.exceptions;
 
 public class InvalidOptionException extends Exception {
   public InvalidOptionException() {

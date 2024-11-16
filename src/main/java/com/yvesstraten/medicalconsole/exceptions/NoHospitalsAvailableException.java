@@ -1,4 +1,6 @@
-package com.yvesstraten.medicalconsole;
+package com.yvesstraten.medicalconsole.exceptions;
+
+import com.yvesstraten.medicalconsole.HealthService;
 
 /**
  * This exception is thrown when no hospitals have yet been added to the {@link HealthService} but

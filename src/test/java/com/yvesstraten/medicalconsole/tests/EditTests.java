@@ -3,12 +3,12 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.yvesstraten.medicalconsole.ClassIsNotEditableException;
 import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.HealthService;
-import com.yvesstraten.medicalconsole.InvalidOptionException;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.exceptions.ClassIsNotEditableException;
+import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;

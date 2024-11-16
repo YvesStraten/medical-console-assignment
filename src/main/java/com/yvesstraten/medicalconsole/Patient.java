@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole;
 
+import com.yvesstraten.medicalconsole.exceptions.WrongHospitalException;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 

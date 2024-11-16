@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.yvesstraten.medicalconsole.HealthService;
-import com.yvesstraten.medicalconsole.InvalidOptionException;
-import com.yvesstraten.medicalconsole.InvalidYesNoException;
 import com.yvesstraten.medicalconsole.MedicalConsole;
-import com.yvesstraten.medicalconsole.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.Patient;
+import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
+import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
+import com.yvesstraten.medicalconsole.exceptions.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
