@@ -13,12 +13,16 @@ import java.util.stream.Stream;
  * @author Yves Straten e2400068
  */
 public class HealthService implements Iterable<Integer> {
+<<<<<<< HEAD
   // Name of service
+=======
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
   @Editable private String name;
   // List of medical facilities
   private ArrayList<MedicalFacility> medicalFacilities;
   // List of patients
   private ArrayList<Patient> patients;
+<<<<<<< HEAD
 
   /** The id dispenser for this service The developer can provide their own id generator */
   private Iterator<Integer> idDispenser;
@@ -81,6 +85,48 @@ public class HealthService implements Iterable<Integer> {
       return false;
     }
   }
+=======
+	private Iterator<Integer> idDispenser;
+
+	private class SequentialIdDispenser implements Iterator<Integer> {
+		private int lastDispensedId;
+
+		public SequentialIdDispenser(){
+			setLastDispensedId(0);
+		}
+
+		public int getLastDispensedId(){
+			return this.lastDispensedId;
+		}
+
+		public void setLastDispensedId(int lastDispensedId){
+			this.lastDispensedId = lastDispensedId;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return lastDispensedId < Integer.MAX_VALUE;
+		}
+
+		@Override
+		public Integer next() {
+			int newId = getLastDispensedId() + 1;
+			setLastDispensedId(newId);
+
+			return newId;
+		}
+
+		@Override 
+		public boolean equals(Object other){
+			if(this == other)
+				return true;
+			else if(other instanceof SequentialIdDispenser)
+				return getLastDispensedId() == ((SequentialIdDispenser) other).getLastDispensedId();
+
+			return false;
+		}
+	}
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
 
   /**
    * Constructs a HealthService object
@@ -98,7 +144,11 @@ public class HealthService implements Iterable<Integer> {
     setName(name);
     setMedicalFacilities(medicalFacilities);
     setPatients(patients);
+<<<<<<< HEAD
     setIdDispenser(idDispenser);
+=======
+		setIdDispenser(new SequentialIdDispenser());
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
   }
 
   /**
@@ -185,6 +235,10 @@ public class HealthService implements Iterable<Integer> {
     return this.patients;
   }
 
+	public Iterator<Integer> getIdDispenser(){
+		return this.idDispenser;
+	}
+
   /**
    * Returns the id dispenser for this health service
    *
@@ -231,9 +285,15 @@ public class HealthService implements Iterable<Integer> {
     this.medicalFacilities = medicalFacilities;
   }
 
+<<<<<<< HEAD
   public void setIdDispenser(Iterator<Integer> dispenser) {
     this.idDispenser = dispenser;
   }
+=======
+	public void setIdDispenser(Iterator<Integer> dispenser){
+		this.idDispenser = dispenser;
+	}
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
 
   /**
    * Add a Patient to be managed by the service
@@ -327,20 +387,34 @@ public class HealthService implements Iterable<Integer> {
       return this.getName().equals(other.getName())
           && this.getPatients().equals(other.getPatients())
           && this.getMedicalFacilities().equals(other.getMedicalFacilities())
+<<<<<<< HEAD
           && this.iterator().equals(other.iterator());
+=======
+          && this.getIdDispenser().equals(other.getIdDispenser());
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
     }
 
     return false;
   }
 
+<<<<<<< HEAD
   /** {@inheritDoc} */
+=======
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
   public boolean hasNext() {
     return true;
   }
 
+<<<<<<< HEAD
   /** {@inheritDoc} */
   @Override
   public Iterator<Integer> iterator() {
     return getIdDispenser();
   }
+=======
+	@Override
+	public Iterator<Integer> iterator() {
+		return getIdDispenser();
+	}
+>>>>>>> 9c0b7ef (Changed the way IDs are dispensed)
 }

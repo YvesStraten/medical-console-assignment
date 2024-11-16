@@ -26,8 +26,8 @@ public class HealthServiceTests {
     HealthService testService =
         new HealthService("Test", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
 
-    assertEquals(1, testService.next());
-    assertEquals(2, testService.next());
+    assertEquals(1, testService.iterator().next());
+    assertEquals(2, testService.iterator().next());
   }
 
   /** Test to check that {@link HealthService#toString()} returns expected output */

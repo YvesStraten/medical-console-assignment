@@ -97,7 +97,7 @@ public class MedicalConsole {
     double gapPercent = stdin.nextDouble();
 
     stdin.nextLine();
-    Clinic clinicToAdd = new Clinic(service.next(), name, fee, gapPercent);
+    Clinic clinicToAdd = new Clinic(service.iterator().next(), name, fee, gapPercent);
     service.addMedicalFacility(clinicToAdd);
   }
 
@@ -109,7 +109,7 @@ public class MedicalConsole {
   public static void addHospital(HealthService service, Scanner stdin) {
     System.out.print("What is the name of the hospital? ");
     String name = stdin.nextLine();
-    Hospital hospitalToAdd = new Hospital(service.next(), name);
+    Hospital hospitalToAdd = new Hospital(service.iterator().next(), name);
 
     service.addMedicalFacility(hospitalToAdd);
   }
@@ -127,7 +127,7 @@ public class MedicalConsole {
     String isPrivateString = stdin.nextLine();
     boolean isPrivate = testYesNo(isPrivateString);
 
-    Patient patientToAdd = new Patient(service.next(), name, isPrivate);
+    Patient patientToAdd = new Patient(service.iterator().next(), name, isPrivate);
     service.addPatient(patientToAdd);
     System.out.println("Successfully added " + patientToAdd.toString());
     System.out.println();
@@ -166,7 +166,7 @@ public class MedicalConsole {
     stdin.nextLine();
 
     Procedure procedureToAdd =
-        new Procedure(service.next(), name, description, isElective, basicCost);
+        new Procedure(service.iterator().next(), name, description, isElective, basicCost);
     hospital.addProcedure(procedureToAdd);
   }
 
@@ -909,9 +909,9 @@ public class MedicalConsole {
     Patient patient = new Patient(idDispenser.next(), "Mark", false);
     hospital.addProcedure(
         new Procedure(
-            service.next(), "MRI scan", "Magnetic Resonance Imaging scan of patient", false, 700));
+            idDispenser.next(), "MRI scan", "Magnetic Resonance Imaging scan of patient", false, 700));
     hospital.addProcedure(
-        new Procedure(service.next(), "Radiological Inspection", "X-ray of patient", true, 300));
+        new Procedure(idDispenser.next(), "Radiological Inspection", "X-ray of patient", true, 300));
     service.addMedicalFacility(hospital);
     service.addMedicalFacility(clinic);
     service.addPatient(patient);
