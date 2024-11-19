@@ -27,7 +27,7 @@ public class Clinic extends MedicalFacility {
    * @param fee - base fee to give this clinic
    * @param gapPercent - gap percentage to give this clinic
    */
-  public Clinic(int id, String name, double fee, double gapPercent) {
+  public Clinic(final int id, String name, double fee, double gapPercent) {
     super(id, name);
     setFee(fee);
     setGapPercent(gapPercent);

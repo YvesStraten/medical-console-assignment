@@ -29,7 +29,7 @@ public class Hospital extends MedicalFacility {
    * @param name - name to give this hospital
    * @param procedures - procedures that this hospital offers
    */
-  public Hospital(int id, String name, ArrayList<Procedure> procedures) {
+  public Hospital(final int id, String name, ArrayList<Procedure> procedures) {
     super(id, name);
 
     setProbAdmit(new Random().nextDouble(1));

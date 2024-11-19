@@ -11,7 +11,7 @@ import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
  */
 public class Patient implements Comparable<Patient> {
   // Id of this patient
-  private int id;
+  private final int id;
   // Name of this patient
   @Editable private String name;
 
@@ -34,8 +34,8 @@ public class Patient implements Comparable<Patient> {
    * @param facility Starting medical facility of this patient
    * @see MedicalFacility
    */
-  public Patient(int id, String name, boolean isPrivate, double balance, MedicalFacility facility) {
-    setId(id);
+  public Patient(final int id, String name, boolean isPrivate, double balance, MedicalFacility facility) {
+		this.id = id;
     setName(name);
     setPrivate(isPrivate);
     setBalance(balance);
@@ -120,10 +120,6 @@ public class Patient implements Comparable<Patient> {
    */
   public MedicalFacility getCurrentFacility() {
     return this.currentFacility;
-  }
-
-  private void setId(int id) {
-    this.id = id;
   }
 
   /**

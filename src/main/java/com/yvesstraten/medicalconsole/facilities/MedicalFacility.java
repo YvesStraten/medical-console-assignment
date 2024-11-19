@@ -9,16 +9,16 @@ import com.yvesstraten.medicalconsole.Patient;
  * @author Yves Straten e2400068
  */
 public abstract class MedicalFacility implements Comparable<MedicalFacility> {
+	private final int id;
   @Editable private String name;
-  private int id;
 
 	/** 
 	 * Constructs this medical facility 
 	 * @param id id of this facility
 	 * @param name name of this facility 
 	*/
-  public MedicalFacility(int id, String name) {
-    setId(id);
+  public MedicalFacility(final int id, String name) {
+		this.id = id;
     setName(name);
   }
 
@@ -46,14 +46,6 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
   public String getName() {
     return this.name;
   }
-
-	/** 
-	 * Sets the id of this medical facility 
-	 * @param id - id to set
-	*/
-	private void setId(int id) {
-		this.id = id;
-	}
 
 	/** 
 	 * Sets the name of this medical facility

@@ -10,7 +10,7 @@ import com.yvesstraten.medicalconsole.Editable;
  */
 public class Procedure implements Comparable<Procedure> {
   // id of this procedure
-  private int id;
+  private final int id;
 
   // name of this procedure
   @Editable(message = "What should the name of this procedure be?")
@@ -36,8 +36,8 @@ public class Procedure implements Comparable<Procedure> {
    * @param isElective whether this procedure is elective
    * @param basicCost basicCost of this procedure
    */
-  public Procedure(int id, String name, String description, boolean isElective, double basicCost) {
-    setId(id);
+  public Procedure(final int id, String name, String description, boolean isElective, double basicCost) {
+		this.id = id;
     setName(name);
     setDescription(description);
     setIsElective(isElective);
@@ -97,10 +97,6 @@ public class Procedure implements Comparable<Procedure> {
    */
   public double getCost() {
     return this.cost;
-  }
-
-  private void setId(int id) {
-    this.id = id;
   }
 
   /**
