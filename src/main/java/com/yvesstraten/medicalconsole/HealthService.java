@@ -34,30 +34,30 @@ public class HealthService implements Iterable<Integer> {
     }
 
     /**
-     * Get last dispensed id
-     *
-     * @return last dispensed id
+		 * {@inheritDoc}
      */
     public int getLastDispensedId() {
       return this.lastDispensedId;
     }
 
     /**
-     * Set last dispensed id
-     *
-     * @param id id to set
+		 * {@inheritDoc}
      */
     public void setLastDispensedId(int id) {
       this.lastDispensedId = id;
     }
 
-    /** {@inheritDoc} */
+		/** 
+		 * @see Iterator#hasNext()
+		*/
     @Override
     public boolean hasNext() {
       return lastDispensedId < Integer.MAX_VALUE;
     }
 
-    /** {@inheritDoc} */
+    /** 
+		 * @see Iterator#next()
+		*/
     @Override
     public Integer next() {
       int newId = getLastDispensedId() + 1;
@@ -333,12 +333,9 @@ public class HealthService implements Iterable<Integer> {
     return false;
   }
 
-  /** {@inheritDoc} */
-  public boolean hasNext() {
-    return getIdDispenser().hasNext();
-  }
-
-  /** {@inheritDoc} */
+  /** 
+	 * @see Iterable#iterator()
+	*/
   @Override
   public Iterator<Integer> iterator() {
     return getIdDispenser();

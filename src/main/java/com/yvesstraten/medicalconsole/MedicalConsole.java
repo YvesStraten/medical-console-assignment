@@ -28,28 +28,60 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class MedicalConsole {
+  public MedicalConsole() {
+    throw new UnsupportedOperationException(
+        "This is the main class for the medical console terminal program. It is not meant to be"
+            + " constructed!");
+  }
+
+	/** 
+	 * This enum lists all possible main options available in this program
+	*/
   public enum ConsoleOption {
+		/** Add an object of type */
     ADD(1, "Add a service"),
+		/** List an object of type */
     LIST(2, "List all objects"),
+		/** Delete an object */
     DELETE(3, "Delete an object"),
+		/** Simulate a visit */
     SIMULATE(4, "Simulate a visit"),
+		/** Simulate an operation */
     OPERATE(5, "Operate a patient"),
+		/** Sort an object of type */
     SORTED(6, "Sort objects"),
+		/** Edit an object of type */
     EDIT(7, "Edit objects"),
+		/** Quit program */
     QUIT(8, "Quit program");
 
+		// Numeric input to choose option
     private final int value;
+		// Name of option 
     private final String optionName;
 
+		/** 
+		 * Construct an enum option 
+		 * @param value numeric input to associate this option 
+		 * @param optionName associated name for this option
+		*/
     private ConsoleOption(int value, String optionName) {
       this.value = value;
       this.optionName = optionName;
     }
 
+		/** 
+		 * Get numeric input for this option 
+		 * @return numeric input 
+		*/
     public int getValue() {
       return this.value;
     }
 
+		/** 
+		 * Get option name 
+		 * @return option name
+		*/
     public String getOptionName() {
       return this.optionName;
     }
@@ -415,6 +447,7 @@ public class MedicalConsole {
   /**
    * Gets details of provided object stream
    *
+   * @param <T> type of objects present in the stream
    * @param stream stream to get details from
    * @param name name that should be included in final string
    * @return String containing details of objects in the stream This String always has the following
@@ -438,6 +471,13 @@ public class MedicalConsole {
     return builder.toString();
   }
 
+  /**
+   * Print provided object stream details to the console
+   *
+   * @param streamFrom stream to get details from
+   * @param name name to be added to description
+   * @see #getObjectStreamDetails(Stream, String)
+   */
   public static <T> void listObjectGroup(Stream<T> streamFrom, String name) {
     String output = getObjectStreamDetails(streamFrom, name);
     System.out.println(Format.enumeratedContent(output, 1));
@@ -483,6 +523,12 @@ public class MedicalConsole {
     } while (!validInput);
   }
 
+  /**
+   * Control flow for when the user wishes to simulate a visit
+   *
+   * @param service health service to simulate visit on
+   * @param stdin standard in, preferably set to <code>System.in</code>
+   */
   public static void simulateVisit(HealthService service, Scanner stdin)
       throws InvalidOptionException {
     String patientsDetails = getObjectStreamDetails(service.getPatientsStream(), "patients");
@@ -545,6 +591,9 @@ public class MedicalConsole {
   /**
    * Control flow for when a user wishes to simulate an operation/procedure on a patient that is
    * currently in the selected hospital
+   *
+   * @param service health service to use
+   * @param stdin standard in, preferably set to <code>System.in</code>
    */
   public static void operate(HealthService service, Scanner stdin) throws InvalidOptionException {
     String hospitalsDetails = getObjectStreamDetails(service.getHospitals(), "hospitals");
@@ -703,20 +752,20 @@ public class MedicalConsole {
     // All fields, including private ones
     List<Field> fields = new ArrayList<Field>();
 
-		// Get fields of superclass, if any
+    // Get fields of superclass, if any
     Class<?> superClass = selectedClass.getSuperclass();
     while (superClass != null) {
-			// Fields are usually private
+      // Fields are usually private
       Field[] superClassFields = superClass.getDeclaredFields();
       for (Field superClassField : superClassFields) {
         fields.add(superClassField);
       }
 
-			// Repeat process until superclasses are exhausted
+      // Repeat process until superclasses are exhausted
       superClass = superClass.getSuperclass();
     }
 
-		// Get fields
+    // Get fields
     Field[] fetchedFields = selectedClass.getDeclaredFields();
     for (Field fetched : fetchedFields) {
       fields.add(fetched);
@@ -796,9 +845,9 @@ public class MedicalConsole {
           }
         } while (!validInput);
       }
-       System.out.println("Edited object successfully! Results:");
-       System.out.println(toEdit.toString());
-       System.out.println();
+      System.out.println("Edited object successfully! Results:");
+      System.out.println(toEdit.toString());
+      System.out.println();
     }
   }
 
@@ -834,7 +883,7 @@ public class MedicalConsole {
         case 3:
           String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");
           System.out.println(Format.enumeratedContent(hospitals, 1));
-					System.out.print("Please select a hospital to edit: ");
+          System.out.print("Please select a hospital to edit: ");
           int hospitalToEdit = stdin.nextInt();
           stdin.nextLine();
           checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));

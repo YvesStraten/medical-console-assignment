@@ -98,8 +98,7 @@ public class Patient implements Comparable<Patient> {
   /**
    * Get status of this patient
    *
-   * @return true if this patient is private
-   * @return false if this patient is not private
+   * @return true if this patient is private, false otherwise
    */
   public boolean isPrivate() {
     return this.isPrivate;
