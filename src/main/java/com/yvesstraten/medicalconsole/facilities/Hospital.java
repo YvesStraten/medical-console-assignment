@@ -137,6 +137,33 @@ public class Hospital extends MedicalFacility {
   }
 
   /**
+   * Helper function to get the cost of an operation
+   *
+   * @param patient patient to operate
+   * @param procedure procedure to undertake
+   * @return calculated cost
+   */
+  public static double getOperationCost(Patient patient, Procedure procedure) {
+    double cost;
+    if (patient.isPrivate()) {
+      if (procedure.isElective()) {
+        cost = 2000;
+      } else {
+        cost = 1000;
+      }
+    } else {
+      // Public patient
+      if (procedure.isElective()) {
+        cost = procedure.getCost();
+      } else {
+        cost = 0;
+      }
+    }
+
+    return cost;
+  }
+
+  /**
    * String representation of this hospital
    *
    * @return string representation

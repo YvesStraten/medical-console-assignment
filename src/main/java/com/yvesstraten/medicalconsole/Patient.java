@@ -34,8 +34,9 @@ public class Patient implements Comparable<Patient> {
    * @param facility Starting medical facility of this patient
    * @see MedicalFacility
    */
-  public Patient(final int id, String name, boolean isPrivate, double balance, MedicalFacility facility) {
-		this.id = id;
+  public Patient(
+      final int id, String name, boolean isPrivate, double balance, MedicalFacility facility) {
+    this.id = id;
     setName(name);
     setPrivate(isPrivate);
     setBalance(balance);
@@ -180,10 +181,8 @@ public class Patient implements Comparable<Patient> {
    * @return true if specified hospital is the same as the patient's {@link Patient#currentFacility}
    */
   public boolean isInThisHospital(Hospital hospitalToCheck) throws WrongHospitalException {
-    if (getCurrentFacility() == null) {
+    if (getCurrentFacility() == null || !getCurrentFacility().equals(hospitalToCheck)) {
       throw new WrongHospitalException("Patient has not visited any hospital yet!");
-    } else if (!getCurrentFacility().equals(hospitalToCheck)) {
-      throw new WrongHospitalException("Patient's current facility is not this hospital!");
     }
 
     return true;

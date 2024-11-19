@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.yvesstraten.medicalconsole.HealthService;
+import com.yvesstraten.medicalconsole.Input;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
@@ -61,7 +62,7 @@ public class MedicalConsoleTests {
     assertThrows(
         InvalidYesNoException.class,
         () -> {
-          MedicalConsole.testYesNo(input);
+          Input.testYesNo(input);
         });
   }
 
@@ -77,7 +78,7 @@ public class MedicalConsoleTests {
   @MethodSource("provideStringsForYesNo")
   public void validYesNoReturnsBoolean(String input, boolean expected)
       throws InvalidYesNoException {
-    boolean returned = MedicalConsole.testYesNo(input);
+    boolean returned = Input.testYesNo(input);
 
     assertEquals(expected, returned);
   }

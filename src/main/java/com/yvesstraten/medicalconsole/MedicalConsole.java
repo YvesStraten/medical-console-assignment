@@ -4,8 +4,6 @@ import com.yvesstraten.medicalconsole.comparators.MedicalFacilitiesComparators;
 import com.yvesstraten.medicalconsole.comparators.PatientComparators;
 import com.yvesstraten.medicalconsole.comparators.ProcedureComparators;
 import com.yvesstraten.medicalconsole.exceptions.ClassIsNotEditableException;
-import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
-import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
 import com.yvesstraten.medicalconsole.exceptions.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.exceptions.WrongHospitalException;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
@@ -17,9 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -102,35 +98,16 @@ public class MedicalConsole {
   }
 
   /**
-   * Checks whether the input option is valid when compared to a Collection containing all valid
-   * possible options
-   *
-   * @throws InvalidOptionException if chosenOption is invalid
-   */
-  public static <T> void checkChosenOption(int chosenOption, Collection<T> availableOptions)
-      throws InvalidOptionException {
-    chosenOption -= 1;
-    if (chosenOption < 0 || chosenOption >= availableOptions.size()) {
-      throw new InvalidOptionException(
-          String.format("Invalid option please select option [%d-%d]", 1, availableOptions.size()));
-    }
-  }
-
-  /**
    * Control flow for when a user wishes to add a clinic to the service
    *
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
   public static void addClinic(HealthService service, Scanner stdin) {
-    System.out.print("What is the name of the clinic? ");
-    String name = stdin.nextLine();
-    System.out.print("What is the fee of the clinic? ");
-    double fee = stdin.nextDouble();
-    System.out.print("What is the gap percent of the clinic? ");
-    double gapPercent = stdin.nextDouble();
+    String name = Input.getString("What is the name of the clinic?", stdin);
+    double fee = Input.getDouble("What is the fee of the clinic?", stdin);
+    double gapPercent = Input.getDouble("What is the gap percent of the clinic?", stdin);
 
-    stdin.nextLine();
     Clinic clinicToAdd = new Clinic(service.iterator().next(), name, fee, gapPercent);
     service.addMedicalFacility(clinicToAdd);
   }
@@ -142,8 +119,7 @@ public class MedicalConsole {
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
   public static void addHospital(HealthService service, Scanner stdin) {
-    System.out.print("What is the name of the hospital? ");
-    String name = stdin.nextLine();
+    String name = Input.getString("What is the name of the hospital?", stdin);
     Hospital hospitalToAdd = new Hospital(service.iterator().next(), name);
 
     service.addMedicalFacility(hospitalToAdd);
@@ -155,13 +131,9 @@ public class MedicalConsole {
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void addPatient(HealthService service, Scanner stdin) throws InvalidYesNoException {
-    System.out.print("What is the name of the patient? ");
-    String name = stdin.nextLine();
-
-    System.out.print("Is the patient private? [y/n] ");
-    String isPrivateString = stdin.nextLine();
-    boolean isPrivate = testYesNo(isPrivateString);
+  public static void addPatient(HealthService service, Scanner stdin) {
+    String name = Input.getString("What is the name of the patient?", stdin);
+    boolean isPrivate = Input.getYesNoInput("Is the patient private? [y/n]", stdin);
 
     Patient patientToAdd = new Patient(service.iterator().next(), name, isPrivate);
     service.addPatient(patientToAdd);
@@ -176,52 +148,26 @@ public class MedicalConsole {
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
   public static void addProcedure(HealthService service, Scanner stdin)
-      throws NoHospitalsAvailableException, InvalidOptionException, InvalidYesNoException {
-    if (service.getMedicalFacilities().size() == 0) {
+      throws NoHospitalsAvailableException {
+    if (service.getHospitals().count() == 0) {
       throw new NoHospitalsAvailableException();
     }
 
     List<Hospital> filteredHospitals = service.getHospitals().toList();
-    String hospitalDetails = getObjectStreamDetails(service.getHospitals(), "hospitals");
+		listObjectGroup(service.getHospitals(), "hospitals");
 
-    System.out.println(Format.enumeratedContent(hospitalDetails, 1));
-    System.out.print("Please select a hospital to add the procedure to: ");
-    int chosenHospital = stdin.nextInt();
-    checkChosenOption(chosenHospital, service.getHospitals().toList());
-    stdin.nextLine();
+    int chosenHospital = Input.chooseOption("Please select a hospital to add the procedure to:", filteredHospitals.size(), stdin);
 
-    Hospital hospital = (Hospital) (filteredHospitals.get(chosenHospital - 1));
+    Hospital hospital = filteredHospitals.get(chosenHospital - 1);
 
-    System.out.print("Name of procedure? ");
-    String name = stdin.nextLine();
-    System.out.print("Description of procedure? ");
-    String description = stdin.nextLine();
-    System.out.print("Is the procedure elective? ");
-    boolean isElective = testYesNo(stdin.nextLine());
-    System.out.print("What is the basic cost of the procedure? ");
-    double basicCost = stdin.nextDouble();
-    stdin.nextLine();
+    String name = Input.getString("Name of procedure?", stdin);
+    String description = Input.getString("Description of procedure?", stdin);
+    boolean isElective = Input.getYesNoInput("Is the procedure elective?", stdin);
+    double basicCost = Input.getDouble("What is the basic cost of the procedure?", stdin);
 
     Procedure procedureToAdd =
         new Procedure(service.iterator().next(), name, description, isElective, basicCost);
     hospital.addProcedure(procedureToAdd);
-  }
-
-  /**
-   * Helper function to test a yes/no answer
-   *
-   * @param stringToTest input that should be tested
-   */
-  public static boolean testYesNo(String stringToTest) throws InvalidYesNoException {
-    if (stringToTest.startsWith("y") || stringToTest.startsWith("Y")) {
-      return true;
-    } else if (stringToTest.startsWith("n") || stringToTest.startsWith("N")) {
-      return false;
-    } else {
-      // Not a yes/no answer
-      throw new InvalidYesNoException(
-          stringToTest + " is not a yes/no answer, please input yes/no");
-    }
   }
 
   /**
@@ -241,64 +187,43 @@ public class MedicalConsole {
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void addObject(HealthService service, Scanner stdin)
-      throws InvalidOptionException, InvalidYesNoException {
-    String mainOptions = "Medical facility\n" + "Patient\n" + "Procedure\n";
+  public static void addObject(HealthService service, Scanner stdin) {
+    String[] mainOptions = new String[] { "Medical facility", "Patient", "Procedure" } ;
 
     System.out.println(Format.enumeratedContent(mainOptions));
 
-    System.out.print("Which service would you like to add? ");
-    int chosenOption = stdin.nextInt();
-    stdin.nextLine();
+    int chosenOption = Input.chooseOption("Which service would you like to add?", mainOptions.length, stdin);
 
-    checkChosenOption(chosenOption, List.of(mainOptions.split("\n")));
-
-    boolean validInput = false;
     switch (chosenOption) {
       case 1:
-        do {
-          System.out.println("The following medical facilities are available");
-          String facilityOptions = "Clinic\n" + "Hospital\n";
+        System.out.println("The following medical facilities are available");
+        String facilityOptions = "Clinic\n" + "Hospital\n";
 
-          System.out.println(Format.enumeratedContent(facilityOptions));
-          System.out.print("Which medical facility would you like to add? ");
-          int chosenFacilityOption = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(chosenFacilityOption, List.of(facilityOptions.split("\n")));
+        System.out.println(Format.enumeratedContent(facilityOptions));
+        int chosenFacilityOption = Input.chooseOption("Which medical facility would you like to add?", facilityOptions.split("\n").length, stdin);
 
-          switch (chosenFacilityOption) {
-            case 1:
-              addClinic(service, stdin);
-              validInput = true;
-              break;
-            case 2:
-              addHospital(service, stdin);
-              validInput = true;
-              break;
-          }
-
-        } while (!validInput);
+        switch (chosenFacilityOption) {
+          case 1:
+            addClinic(service, stdin);
+            break;
+          case 2:
+            addHospital(service, stdin);
+            break;
+        }
 
         System.out.println("Added Medical facility successfully!");
         System.out.println();
         break;
       case 2:
-        do {
-          addPatient(service, stdin);
-          validInput = true;
-        } while (!validInput);
+        addPatient(service, stdin);
         break;
       case 3:
-        do {
-          try {
-            addProcedure(service, stdin);
-            validInput = true;
-          } catch (NoHospitalsAvailableException e) {
-            System.err.println(e);
-            addHospital(service, stdin);
-          }
-        } while (!validInput);
-        break;
+        try {
+          addProcedure(service, stdin);
+        } catch (NoHospitalsAvailableException e) {
+          System.err.println(e);
+          addHospital(service, stdin);
+        }
     }
   }
 
@@ -308,17 +233,16 @@ public class MedicalConsole {
    * @param service Health service to delete from
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void deletePatient(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
-    String patientsDetails = getObjectStreamDetails(service.getPatientsStream(), "patients");
+  public static void deletePatient(HealthService service, Scanner stdin) {
+		int numPatients = service.getPatients().size();
+		listObjectGroup(service.getPatientsStream(), "patients");
 
-    System.out.println(Format.enumeratedContent(patientsDetails, 1));
-    System.out.print("Which patient would you like to remove? ");
-    int patientToRemove = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(patientToRemove, service.getPatients());
-    service.deletePatient(patientToRemove - 1);
-    System.out.println("Removed patient successfully!");
+		if(numPatients != 0){
+			int patientToRemove = Input.chooseOption("Which patient would you like to remove?", numPatients, stdin);
+			service.deletePatient(patientToRemove - 1);
+			System.out.println("Removed patient successfully!");
+		}
+
   }
 
   /**
@@ -327,32 +251,29 @@ public class MedicalConsole {
    * @param service Health service to delete from
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void deleteFacility(HealthService service, Scanner stdin)
-      throws InvalidOptionException, InvalidYesNoException {
-    String facilitiesDetails =
-        getObjectStreamDetails(service.getMedicalFacilitiesStream(), "facilities");
-    System.out.println(Format.enumeratedContent(facilitiesDetails, 1));
-    System.out.print("Which facility would you like to delete? ");
-    int facilityToDelete = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(facilityToDelete, service.getMedicalFacilities());
-    MedicalFacility facilityToBeDeleted = service.getMedicalFacilities().get(facilityToDelete - 1);
-    if (facilityToBeDeleted instanceof Hospital) {
-      int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
-      if (numProcedures > 0) {
-        System.out.print(
-            "This hospital can perform "
-                + numProcedures
-                + " procedures - do you still wish to delete it? [y/n]");
-        String choice = stdin.nextLine();
-        if (testYesNo(choice)) {
-          service.deleteMedicalFacility(facilityToDelete - 1);
-        }
-      }
-    } else {
-      service.deleteMedicalFacility(facilityToDelete - 1);
-    }
-    System.out.println("Removed facility successfully!");
+  public static void deleteFacility(HealthService service, Scanner stdin) {
+		int numFacilities = service.getMedicalFacilities().size();
+		listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
+
+		if(numFacilities != 0){
+			int facilityToDelete = Input.chooseOption("Which facility would you like to delete?", numFacilities, stdin);
+			MedicalFacility facilityToBeDeleted = service.getMedicalFacilities().get(facilityToDelete - 1);
+			if (facilityToBeDeleted instanceof Hospital) {
+				int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
+				if (numProcedures > 0) {
+					String prompt = 
+					"This hospital can perform "
+					+ numProcedures
+					+ " procedures - do you still wish to delete it? [y/n]";
+					if (Input.getYesNoInput(prompt, stdin)) {
+						service.deleteMedicalFacility(facilityToDelete - 1);
+					}
+				}
+			} else {
+				service.deleteMedicalFacility(facilityToDelete - 1);
+			}
+			System.out.println("Removed facility successfully!");
+		}
   }
 
   /**
@@ -361,9 +282,7 @@ public class MedicalConsole {
    * @param service Health service to delete from
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void deleteProcedure(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
-    System.out.println("The following procedures are stored: ");
+  public static void deleteProcedure(HealthService service, Scanner stdin) {
     List<Hospital> hospitals = service.getHospitals().toList();
     HashMap<Procedure, Hospital> map = new HashMap<Procedure, Hospital>();
 
@@ -371,33 +290,30 @@ public class MedicalConsole {
       for (Procedure procedure : hospital.getProcedures()) map.put(procedure, hospital);
     }
 
-    String procedureDetails =
-        map.keySet().stream()
-            .map(procedure -> procedure.toString())
-            .reduce("", (before, next) -> before + next + "\n");
+		listObjectGroup(map.keySet().stream(), "procedures");
 
-    System.out.println(Format.enumeratedContent(procedureDetails));
-    System.out.print("Choose a procedure to remove: ");
-    int toDelete = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(toDelete, map.keySet());
+		if(map.keySet().size() != 0){
 
-    int i = 0;
-    Iterator<Entry<Procedure, Hospital>> iterator = map.entrySet().iterator();
-    Hospital hospitalToAffect = null;
-    Procedure procedureToDelete = null;
+			System.out.print("Choose a procedure to remove: ");
+			int toDelete = Input.chooseOption("Choose a procedure to remove:", map.keySet().size(), stdin);
 
-    while (iterator.hasNext()) {
-      Entry<Procedure, Hospital> current = iterator.next();
-      if (i == toDelete - 1) {
-        procedureToDelete = current.getKey();
-        hospitalToAffect = current.getValue();
-      }
-      i++;
-    }
+			int i = 0;
+			Iterator<Entry<Procedure, Hospital>> iterator = map.entrySet().iterator();
+			Hospital hospitalToAffect = null;
+			Procedure procedureToDelete = null;
 
-    hospitalToAffect.removeProcedure(procedureToDelete);
-    System.out.println("Selected procedure was removed successfully!");
+			while (iterator.hasNext()) {
+				Entry<Procedure, Hospital> current = iterator.next();
+				if (i == toDelete - 1) {
+					procedureToDelete = current.getKey();
+					hospitalToAffect = current.getValue();
+				}
+				i++;
+			}
+
+			hospitalToAffect.removeProcedure(procedureToDelete);
+			System.out.println("Selected procedure was removed successfully!");
+		}
   }
 
   /**
@@ -406,40 +322,23 @@ public class MedicalConsole {
    *
    * @param service <code>HealthService</code> object to delete an object from
    * @param stdin <code>Scanner</code> object which preferably iterates over <code>System.in</code>
-   * @throws InvalidOptionException if the option selected by the user was invalid
-   * @throws InvalidYesNoException if the answer for a yes no prompt was invalid
    */
-  public static void deleteObject(HealthService service, Scanner stdin)
-      throws InvalidOptionException, InvalidYesNoException {
+  public static void deleteObject(HealthService service, Scanner stdin) {
     System.out.println("The following types of services are available: ");
-    String types = "Medical facility\n" + "Patient\n" + "Procedure\n";
+    String[] types = new String[] { "Medical facility", "Patient", "Procedure" };
 
     System.out.println(Format.enumeratedContent(types));
-    System.out.print("Which type of object would you like to delete? ");
-    int chosenOption = stdin.nextInt();
-    checkChosenOption(chosenOption, List.of(types.split("\n")));
-    stdin.nextLine();
+    int chosenOption = Input.chooseOption("Which type of object would you like to delete?", types.length, stdin);
 
-    boolean validInput = false;
     switch (chosenOption) {
       case 1:
-        do {
-          deleteFacility(service, stdin);
-          validInput = true;
-        } while (!validInput);
+        deleteFacility(service, stdin);
         break;
       case 2:
-        do {
-          deletePatient(service, stdin);
-          validInput = true;
-        } while (!validInput);
-
+        deletePatient(service, stdin);
         break;
       case 3:
-        do {
-          deleteProcedure(service, stdin);
-          validInput = true;
-        } while (!validInput);
+        deleteProcedure(service, stdin);
         break;
     }
   }
@@ -489,38 +388,28 @@ public class MedicalConsole {
    * @param service health service to list from
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void listObjects(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
+  public static void listObjects(HealthService service, Scanner stdin) {
     System.out.println("Which type of object would you like to see listed?");
-    String options = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
+    String[] options = new String[] { "Medical Facilities", "Patients", "Procedures" };
     System.out.println(Format.enumeratedContent(options));
-    boolean validInput = false;
 
-    do {
-      System.out.print("Please select a type: ");
-      int chosenOption = stdin.nextInt();
-      stdin.nextLine();
+    int chosenOption = Input.chooseOption("Please select a type:", options.length, stdin); 
 
-      checkChosenOption(chosenOption, List.of(options.split("\n")));
+    switch (chosenOption) {
+      case 1:
+        listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
+        break;
 
-      switch (chosenOption) {
-        case 1:
-          listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
-          break;
+      case 2:
+        listObjectGroup(service.getPatientsStream(), "patients");
+        break;
 
-        case 2:
-          listObjectGroup(service.getPatientsStream(), "patients");
-          break;
-
-        case 3:
-          Stream<Procedure> procedures =
-              service.getHospitals().flatMap(Hospital::getProceduresStream);
-          listObjectGroup(procedures, "procedures");
-          break;
-      }
-
-      validInput = true;
-    } while (!validInput);
+      case 3:
+        Stream<Procedure> procedures =
+            service.getHospitals().flatMap(Hospital::getProceduresStream);
+        listObjectGroup(procedures, "procedures");
+        break;
+    }
   }
 
   /**
@@ -529,22 +418,12 @@ public class MedicalConsole {
    * @param service health service to simulate visit on
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void simulateVisit(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
-    String patientsDetails = getObjectStreamDetails(service.getPatientsStream(), "patients");
-    System.out.println(Format.enumeratedContent(patientsDetails, 1));
-    System.out.print("Please choose a patient to simulate a visit: ");
-    int chosenPatient = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(chosenPatient, service.getPatients());
+  public static void simulateVisit(HealthService service, Scanner stdin) {
+		listObjectGroup(service.getPatientsStream(), "patients");
+    int chosenPatient = Input.chooseOption("Please choose a patient to simulate a visit:", service.getPatients().size(), stdin); 
 
-    String medicalFacilitiesDetails =
-        getObjectStreamDetails(service.getMedicalFacilitiesStream(), "facilities");
-    System.out.println(Format.enumeratedContent(medicalFacilitiesDetails, 1));
-    System.out.print("Please choose a facility the patient should visit: ");
-    int chosenFacility = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(chosenFacility, service.getMedicalFacilities());
+		listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
+    int chosenFacility = Input.chooseOption("Please choose a facility the patient should visit:", service.getMedicalFacilities().size(), stdin);
     MedicalFacility chosenFacilityObject = service.getMedicalFacilities().get(chosenFacility - 1);
     Patient chosenPatientObject = service.getPatients().get(chosenPatient - 1);
 
@@ -562,69 +441,32 @@ public class MedicalConsole {
   }
 
   /**
-   * Helper function to get the cost of an operation
-   *
-   * @param patient patient to operate
-   * @param procedure procedure to undertake
-   * @return calculated cost
-   */
-  public static double getOperationCost(Patient patient, Procedure procedure) {
-    double cost;
-    if (patient.isPrivate()) {
-      if (procedure.isElective()) {
-        cost = 2000;
-      } else {
-        cost = 1000;
-      }
-    } else {
-      // Public patient
-      if (procedure.isElective()) {
-        cost = procedure.getCost();
-      } else {
-        cost = 0;
-      }
-    }
-
-    return cost;
-  }
-
-  /**
    * Control flow for when a user wishes to simulate an operation/procedure on a patient that is
    * currently in the selected hospital
    *
    * @param service health service to use
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void operate(HealthService service, Scanner stdin) throws InvalidOptionException {
-    String hospitalsDetails = getObjectStreamDetails(service.getHospitals(), "hospitals");
-    System.out.println(Format.enumeratedContent(hospitalsDetails, 1));
-    System.out.print("Please select which hospital to operate in: ");
-    int selectedHospitalIndex = stdin.nextInt();
-    checkChosenOption(selectedHospitalIndex, service.getHospitals().toList());
+  public static void operate(HealthService service, Scanner stdin) {
+		listObjectGroup(service.getHospitals(), "hospitals");
+    int selectedHospitalIndex = Input.chooseOption("Please select which hospital to operate in:", service.getHospitals().toList().size(), stdin);
 
-    String patientDetails = getObjectStreamDetails(service.getPatientsStream(), "patients");
-    System.out.println(Format.enumeratedContent(patientDetails, 1));
+		listObjectGroup(service.getPatientsStream(), "patients");
     System.out.print("Please select which patient to operate: ");
-    int selectedPatientIndex = stdin.nextInt();
-    checkChosenOption(selectedPatientIndex, service.getPatients());
+    int selectedPatientIndex = Input.chooseOption("Please select which patient to operate:", service.getPatients().size(), stdin); 
 
     Hospital selectedHospital = service.getHospitals().toList().get(selectedHospitalIndex - 1);
     Patient selectedPatient = service.getPatients().get(selectedPatientIndex - 1);
 
     try {
       if (selectedPatient.isInThisHospital(selectedHospital)) {
-        String procedureDetails =
-            getObjectStreamDetails(selectedHospital.getProcedures().stream(), "procedures");
-        System.out.println(Format.enumeratedContent(procedureDetails, 1));
-        System.out.print("Please select which procedure to undertake: ");
-        int selectedProcedureIndex = stdin.nextInt();
-        checkChosenOption(selectedProcedureIndex, selectedHospital.getProcedures());
-        stdin.nextLine();
+				listObjectGroup(selectedHospital.getProceduresStream(), "procedures");
+        int selectedProcedureIndex = Input.chooseOption("Please select which procedure to undertake:", selectedHospital.getProcedures().size(), stdin); 
 
         Procedure selectedProcedure =
             selectedHospital.getProcedures().get(selectedProcedureIndex - 1);
 
-        double cost = getOperationCost(selectedPatient, selectedProcedure);
+        double cost = Hospital.getOperationCost(selectedPatient, selectedProcedure);
         selectedPatient.addBalance(cost);
 
         double randomNum = new Random().nextDouble(1);
@@ -646,27 +488,24 @@ public class MedicalConsole {
    * @param stdin standard in preferably set to <code>System.in</code>
    */
   public static void sortObjects(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
-    String types = "Medical Facilities\n" + "Patients\n" + "Procedures\n";
+ {
+    String[] types = new String [] {
+			"Medical Facilities", "Patients", "Procedures"};
 
     System.out.println(Format.enumeratedContent(types));
     System.out.print("Which object type would you like to see sorted? ");
-    int selectedOpt = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(selectedOpt, List.of(types.split("\n")));
+    int selectedOpt = Input.chooseOption("Which object type would you like to see sorted?", types.length, stdin);
 
-    String sortingCriteria;
+    String[] sortingCriteria;
     int selectedCriteria;
 
     switch (selectedOpt) {
       case 1:
         // Sort medical facilities
-        sortingCriteria = "Name\n" + "Hospital\n" + "Clinic\n";
+        sortingCriteria = new String[] { "Name", "Hospital", "Clinic" };
         System.out.println(Format.enumeratedContent(sortingCriteria));
         System.out.print("Which criteria would you like to sort them by? ");
-        selectedCriteria = stdin.nextInt();
-        stdin.nextLine();
-        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        selectedCriteria = Input.chooseOption("Which criteria would you like to sort them by?", sortingCriteria.length, stdin);
         Stream<MedicalFacility> facilities = service.getMedicalFacilitiesStream();
         // Invoke comparators according to input
         switch (selectedCriteria) {
@@ -686,12 +525,9 @@ public class MedicalConsole {
         break;
       case 2:
         // Sort patients
-        sortingCriteria = "Name\n" + "Balance\n";
+        sortingCriteria = new String[] { "Name", "Balance"};
         System.out.println(Format.enumeratedContent(sortingCriteria));
-        System.out.print("Which criteria would you like to sort them by? ");
-        selectedCriteria = stdin.nextInt();
-        stdin.nextLine();
-        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        selectedCriteria = Input.chooseOption("Which criteria would you like to sort them by?", sortingCriteria.length, stdin);
         Stream<Patient> patients = service.getPatientsStream();
 
         switch (selectedCriteria) {
@@ -707,12 +543,9 @@ public class MedicalConsole {
         break;
       case 3:
         // Sort procedures
-        sortingCriteria = "Name\n" + "Base cost\n" + "Elective\n" + "Non elective\n";
+        sortingCriteria = new String[] { "Name", "Base cost", "Elective", "Non elective"};
         System.out.println(Format.enumeratedContent(sortingCriteria));
-        System.out.print("Which criteria would you like to sort them by? ");
-        selectedCriteria = stdin.nextInt();
-        stdin.nextLine();
-        checkChosenOption(selectedCriteria, List.of(sortingCriteria.split("\n")));
+        selectedCriteria = Input.chooseOption("Which criteria would you like to sort them by?", sortingCriteria.length, stdin);
         Stream<Procedure> procedures =
             service.getHospitals().flatMap(hospital -> hospital.getProceduresStream());
 
@@ -797,38 +630,33 @@ public class MedicalConsole {
             if (editable.message().isEmpty()) {
               // Annotation was not provided a message to output
               messageBuilder
-                  .append("Please input new value to set for ")
-                  .append(editableField.getName())
-                  .append(" ");
+                  .append("Please input new value to set for")
+									.append(" ")
+                  .append(editableField.getName());
             } else {
               // Annotation was provided a message to output
-              messageBuilder.append(editable.message()).append(" ");
+              messageBuilder.append(editable.message());
             }
-            System.out.print(messageBuilder.toString());
+
+						String prompt = messageBuilder.toString();
 
             // Check the type of field, invoke the respective setter with name
             // and appropriate input from the scanner
             if (fieldType.equals(double.class)) {
               setter = selectedClass.getMethod(setterName, double.class);
-              setter.invoke(toEdit, stdin.nextDouble());
-              stdin.nextLine();
+              setter.invoke(toEdit, Input.getDouble(prompt, stdin));
             } else if (fieldType.equals(String.class)) {
               setter = selectedClass.getMethod(setterName, String.class);
-              String toSet = stdin.nextLine();
-              setter.invoke(toEdit, toSet);
+              setter.invoke(toEdit, Input.getString(prompt, stdin));
             } else if (fieldType.equals(int.class)) {
               setter = selectedClass.getMethod(setterName, int.class);
-              setter.invoke(toEdit, stdin.nextInt());
-              stdin.nextLine();
+              setter.invoke(toEdit, Input.getInt(prompt, stdin));
             } else if (fieldType.equals(char.class)) {
               setter = selectedClass.getMethod(setterName, char.class);
-              setter.invoke(toEdit, stdin.next().charAt(0));
-              stdin.nextLine();
+              setter.invoke(toEdit, Input.getChar(prompt, stdin));
             } else if (fieldType.equals(boolean.class)) {
               setter = selectedClass.getMethod(setterName, boolean.class);
-              String input = stdin.nextLine();
-              boolean isYes = testYesNo(input);
-              setter.invoke(toEdit, isYes);
+              setter.invoke(toEdit, Input.getYesNoInput(prompt, stdin));
             }
 
             validInput = true;
@@ -838,12 +666,8 @@ public class MedicalConsole {
             System.err.println(e.getMessage());
           } catch (IllegalAccessException e) {
             System.err.println("Setters should be public");
-          } catch (InvalidYesNoException e) {
-            // Yes no input was invalid
-            System.err.println(e.getMessage());
-            System.out.println();
-          }
-        } while (!validInput);
+          }         
+				} while (!validInput);
       }
       System.out.println("Edited object successfully! Results:");
       System.out.println(toEdit.toString());
@@ -857,14 +681,10 @@ public class MedicalConsole {
    * @param service service to edit from
    * @param stdin standard in source, preferably <code>System.in</code>
    */
-  public static void editObject(HealthService service, Scanner stdin)
-      throws InvalidOptionException {
-    String types = "Health Service\n" + "Clinic\n" + "Hospital\n" + "Patient\n" + "Procedure\n";
+  public static void editObject(HealthService service, Scanner stdin) {
+    String[] types = new String [] {"Health Service", "Clinic", "Hospital", "Patient", "Procedure"};
     System.out.println(Format.enumeratedContent(types));
-    System.out.print("Select the type of object you wish to edit: ");
-    int selectedType = stdin.nextInt();
-    stdin.nextLine();
-    checkChosenOption(selectedType, List.of(types.split("\n")));
+    int selectedType = Input.chooseOption("Select the type of object you wish to edit:", types.length, stdin); 
 
     try {
       switch (selectedType) {
@@ -874,28 +694,19 @@ public class MedicalConsole {
         case 2:
           String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
           System.out.println(Format.enumeratedContent(clinics, 1));
-          System.out.print("Please select a clinic to edit: ");
-          int clinicToEdit = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(clinicToEdit, List.of(clinics.split("\n")));
+          int clinicToEdit = Input.chooseOption("Please select a clinic to edit:", service.getClinics().toList().size(), stdin); 
           attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
           break;
         case 3:
           String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");
           System.out.println(Format.enumeratedContent(hospitals, 1));
-          System.out.print("Please select a hospital to edit: ");
-          int hospitalToEdit = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(hospitalToEdit, List.of(hospitals.split("\n")));
+          int hospitalToEdit = Input.chooseOption("Please select a hospital to edit:", service.getHospitals().toList().size(), stdin);
           attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
           break;
         case 4:
           String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");
           System.out.println(Format.enumeratedContent(patients, 1));
-          System.out.print("Please select a patient to edit: ");
-          int patientToEdit = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(patientToEdit, List.of(patients.split("\n")));
+          int patientToEdit = Input.chooseOption("Please select a patient to edit:", service.getPatients().size(), stdin);
           attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
           break;
         case 5:
@@ -903,10 +714,8 @@ public class MedicalConsole {
               service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
           String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");
           System.out.println(Format.enumeratedContent(procedures, 1));
-          System.out.print("Please select a procedure to edit: ");
-          int procedureToEdit = stdin.nextInt();
-          stdin.nextLine();
-          checkChosenOption(procedureToEdit, List.of(procedures.split("\n")));
+          System.out.print("");
+          int procedureToEdit = Input.chooseOption("Please select a procedure to edit:", proceduresList.size(), stdin);
           attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
           break;
       }
@@ -916,61 +725,32 @@ public class MedicalConsole {
   }
 
   public static void executeOption(
-      ConsoleOption selectedOption, HealthService service, Scanner stdin)
-      throws InvalidYesNoException {
-    boolean done = false;
-    do {
-      try {
-        switch (selectedOption) {
-          case ADD:
-            addObject(service, stdin);
-            break;
-          case DELETE:
-            deleteObject(service, stdin);
-            break;
-          case SIMULATE:
-            simulateVisit(service, stdin);
-            break;
-          case OPERATE:
-            operate(service, stdin);
-            break;
-          case SORTED:
-            sortObjects(service, stdin);
-            break;
-          case LIST:
-            listObjects(service, stdin);
-            break;
-          case EDIT:
-            editObject(service, stdin);
-            break;
-          case QUIT:
-            System.exit(0);
-        }
-        done = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Wrong input!");
-        stdin.nextLine();
-      } catch (InvalidOptionException e) {
-        System.err.println(e.getMessage());
-      }
-    } while (!done);
-  }
-
-  public static boolean checkOption(int inputOption) throws InvalidOptionException {
-    ConsoleOption[] optionValues = ConsoleOption.values();
-
-    if (inputOption - 1 >= optionValues.length) {
-      throw new InvalidOptionException(
-          String.format(
-              "This option is invalid, please input a number from [%d-%d]",
-              1, optionValues.length));
-    } else if (inputOption == optionValues[inputOption - 1].getValue()) {
-      return true;
+      ConsoleOption selectedOption, HealthService service, Scanner stdin) {
+    switch (selectedOption) {
+      case ADD:
+        addObject(service, stdin);
+        break;
+      case DELETE:
+        deleteObject(service, stdin);
+        break;
+      case SIMULATE:
+        simulateVisit(service, stdin);
+        break;
+      case OPERATE:
+        operate(service, stdin);
+        break;
+      case SORTED:
+        sortObjects(service, stdin);
+        break;
+      case LIST:
+        listObjects(service, stdin);
+        break;
+      case EDIT:
+        editObject(service, stdin);
+        break;
+      case QUIT:
+        System.exit(0);
     }
-
-    throw new InvalidOptionException(
-        String.format(
-            "This option is invalid, please input a number from [%d-%d]", 1, optionValues.length));
   }
 
   /**
@@ -1003,26 +783,12 @@ public class MedicalConsole {
     service.addPatient(patient);
 
     Scanner stdin = new Scanner(System.in);
+		boolean done = false;
 
     do {
       printIntroduction();
-      System.out.print("Select an option: ");
-      try {
-        int inputOption = stdin.nextInt();
-        boolean validOption = checkOption(inputOption);
-
-        if (validOption) {
-          executeOption(ConsoleOption.values()[inputOption - 1], service, stdin);
-        }
-      } catch (InputMismatchException exception) {
-        System.err.println("Wrong input, please try again");
-        stdin.nextLine();
-      } catch (InvalidOptionException exception) {
-        System.err.println(exception.getMessage() + "\n");
-      } catch (InvalidYesNoException exception) {
-        System.err.println(exception.getMessage() + "\n");
-      }
-
-    } while (true);
+      int inputOption = Input.chooseOption("Select an option:", ConsoleOption.values().length, stdin);
+      executeOption(ConsoleOption.values()[inputOption - 1], service, stdin);
+		} while (!done);
   }
 }
