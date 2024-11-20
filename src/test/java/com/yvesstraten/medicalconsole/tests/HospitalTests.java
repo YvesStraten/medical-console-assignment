@@ -19,7 +19,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  */
 @Suite
 @SuiteDisplayName("Hospital Tests")
-@SelectClasses({FacilitiesTests.class})
+@SelectClasses({ProcedureTests.class})
 public class HospitalTests {
   @RepeatedTest(5)
   public void visitBehavesCorrectly() {

@@ -3,23 +3,16 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.Input;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
 import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
-import com.yvesstraten.medicalconsole.exceptions.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
-import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -31,30 +24,24 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
 @SuiteDisplayName("Medical console tests")
-@SelectClasses({EditTests.class})
+@SelectClasses({AddTests.class, DeleteTests.class, EditTests.class})
 public class MedicalConsoleTests {
   @ParameterizedTest
-  @ValueSource(ints = {-1, 7})
-  public void invalidOptionShouldThrow(int selectedOption) {
-    String options =
-        "Add a service"
-            + "List all services"
-            + "Delete a service"
-            + "Simulate patient visit"
-            + "Operate"
-            + "Quit";
-
-    System.out.println(selectedOption);
-
+	@MethodSource("invalidOptions")
+  public void invalidOptionShouldThrow(int selectedOption, int maxOption) {
     InvalidOptionException e =
         assertThrows(
             InvalidOptionException.class,
-            () -> MedicalConsole.checkChosenOption(selectedOption, List.of(options.split("\n"))));
+            () -> Input.checkOption(selectedOption, maxOption));
 
     assertEquals(
-        String.format("Invalid option please select option [%d-%d]", 1, options.split("\n").length),
+        String.format("Invalid option please select option [%d-%d]", 1, maxOption),
         e.getMessage());
   }
+
+	public static Stream<Arguments> invalidOptions() {
+		return Stream.of(Arguments.of(-1, 1), Arguments.of(6, 5));
+	}
 
   @ParameterizedTest
   @ValueSource(strings = {"l", "z"})
@@ -81,40 +68,6 @@ public class MedicalConsoleTests {
     boolean returned = Input.testYesNo(input);
 
     assertEquals(expected, returned);
-  }
-
-  @Test
-  public void addingProcedureWithNoHospitalsThrows() {
-    HealthService testService =
-        new HealthService(
-            "Test service", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
-    ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    assertThrows(
-        NoHospitalsAvailableException.class,
-        () -> MedicalConsole.addProcedure(testService, mockInput));
-  }
-
-  @Test
-  public void addingProcedureWithHospital()
-      throws InvalidYesNoException, InvalidOptionException, NoHospitalsAvailableException {
-    ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();
-    expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
-
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(new Hospital(0, "Test hospital"));
-
-    HealthService testService =
-        new HealthService("Test service", facilities, new ArrayList<Patient>());
-    ByteArrayInputStream input =
-        new ByteArrayInputStream("1\nTestName\nTestDesc\nyes\n300.0\n".getBytes());
-
-    Scanner mockInput = new Scanner(input);
-
-    MedicalConsole.addProcedure(testService, mockInput);
-    assertEquals(
-        expectedProcedures, ((Hospital) testService.getMedicalFacilities().get(0)).getProcedures());
   }
 
   @Test
@@ -149,7 +102,7 @@ public class MedicalConsoleTests {
   @MethodSource("operationCostsArguments")
   public void gettingOperationCostReturnsProperResults(
       Patient patient, Procedure procedure, double expected) {
-    double result = MedicalConsole.getOperationCost(patient, procedure);
+    double result = Hospital.getOperationCost(patient, procedure);
 
     assertEquals(expected, result);
   }
@@ -178,58 +131,4 @@ public class MedicalConsoleTests {
             0));
   }
 
-  @Test
-  public void deletePatientDeletes() throws InvalidOptionException {
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Test patient", true));
-
-    HealthService testService =
-        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
-    ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    MedicalConsole.deletePatient(testService, mockInput);
-    assertEquals(new ArrayList<Patient>(), testService.getPatients());
-  }
-
-  @Test
-  public void invalidPatientDeletionChoiceThrows() {
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Test patient", true));
-
-    HealthService testService =
-        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
-    ByteArrayInputStream input = new ByteArrayInputStream("2\n".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    assertThrows(
-        InvalidOptionException.class, () -> MedicalConsole.deletePatient(testService, mockInput));
-  }
-
-  @Test
-  public void deleteFacilityDeletes() throws InvalidOptionException, InvalidYesNoException {
-    ArrayList<Procedure> procedures = new ArrayList<Procedure>();
-    procedures.add(new Procedure(2, "Test proc", "Desc", true, 300));
-    Clinic clinic1 = new Clinic(0, "Test clinic", 300, 0.2);
-    Hospital hospital1 = new Hospital(1, "Test", procedures);
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(clinic1);
-    facilities.add(hospital1);
-
-    HealthService testService =
-        new HealthService("Test service", facilities, new ArrayList<Patient>());
-    ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    MedicalConsole.deleteFacility(testService, mockInput);
-    assertEquals(List.of(hospital1), testService.getMedicalFacilities());
-    mockInput.close();
-
-    ByteArrayInputStream nextInput = new ByteArrayInputStream("1\nyes\n".getBytes());
-    Scanner nextMock = new Scanner(nextInput);
-    MedicalConsole.deleteFacility(testService, nextMock);
-
-    assertEquals(List.of(), testService.getMedicalFacilities());
-    nextMock.close();
-  }
 }

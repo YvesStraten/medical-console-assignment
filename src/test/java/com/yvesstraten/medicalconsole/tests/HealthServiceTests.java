@@ -30,19 +30,6 @@ public class HealthServiceTests {
     assertEquals(2, testService.iterator().next());
   }
 
-  /** Test to check that {@link HealthService#toString()} returns expected output */
-  // TODO fix
-  @Test
-  public void toStringExpectedOutput() {
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(new Clinic(0, "Test", 300, 1.2));
-
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Mark", false, 0.0, facilities.get(0)));
-
-    HealthService service = new HealthService("TestService", facilities, patients);
-  }
-
   /** Test factory for all tests related to the sorting of {@link HealthService} objects */
   @TestFactory
   public Stream<DynamicTest> comparatorTests() {

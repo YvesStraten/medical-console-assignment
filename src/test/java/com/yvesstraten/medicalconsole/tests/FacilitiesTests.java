@@ -12,7 +12,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
 @SuiteDisplayName("Facilities tests")
-@SelectClasses({FacilitiesTests.class, ClinicTests.class, HospitalTests.class})
+@SelectClasses({ClinicTests.class, HospitalTests.class})
 public class FacilitiesTests {
   @Test
   public void shouldBeSameHashCode() {
