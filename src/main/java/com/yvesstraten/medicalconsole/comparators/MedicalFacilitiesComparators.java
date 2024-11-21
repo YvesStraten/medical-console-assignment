@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole.comparators;
 
+import com.yvesstraten.medicalconsole.comparators.PatientComparators.SortByName;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
@@ -24,6 +25,13 @@ public class MedicalFacilitiesComparators {
 	 * Helper class to sort facilities by name 
 	*/
   public static class SortByName implements Comparator<MedicalFacility> {
+		/** 
+			* Construct this Comparator 
+		*/
+		public SortByName(){
+
+		}
+
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
       return o1.getName().compareTo(o2.getName());
@@ -34,6 +42,13 @@ public class MedicalFacilitiesComparators {
 	 * Helper class to sort facilities by hospital 
 	*/
   public static class SortByHospital implements Comparator<MedicalFacility> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByHospital(){
+
+		}
+
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
       if (o1 == o2) return 0;
@@ -46,6 +61,12 @@ public class MedicalFacilitiesComparators {
 	 * Helper class to sort facilities by clinic 
 	*/
   public static class SortByClinic implements Comparator<MedicalFacility> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByClinic(){
+		}
+
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
       if (o1 == o2) return 0;

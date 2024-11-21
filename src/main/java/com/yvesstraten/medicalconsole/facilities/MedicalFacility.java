@@ -1,5 +1,7 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import java.io.Serializable;
+
 import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Patient;
 
@@ -8,7 +10,7 @@ import com.yvesstraten.medicalconsole.Patient;
  *
  * @author Yves Straten e2400068
  */
-public abstract class MedicalFacility implements Comparable<MedicalFacility> {
+public abstract class MedicalFacility implements Comparable<MedicalFacility>, Serializable {
 	private final int id;
   @Editable private String name;
 
@@ -18,6 +20,8 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility> {
 	 * @param name name of this facility 
 	*/
   public MedicalFacility(final int id, String name) {
+		// final fields cannot be initialized through a setter
+		// they must be initialized in the constructor
 		this.id = id;
     setName(name);
   }

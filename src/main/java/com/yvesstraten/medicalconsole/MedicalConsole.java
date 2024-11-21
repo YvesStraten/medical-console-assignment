@@ -23,7 +23,16 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+/**
+ * Main driver class for the medical console program 
+ *
+ * @author Yves Straten e2400068
+*/
 public class MedicalConsole {
+	/** 
+	 * Default constructor for MedicalConsole 
+	 * @throws UnsupportedOperationException always
+	*/
   public MedicalConsole() {
     throw new UnsupportedOperationException(
         "This is the main class for the medical console terminal program. It is not meant to be"
@@ -135,6 +144,7 @@ public class MedicalConsole {
    *
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
+	 * @throws NoHospitalsAvailableException if no hospitals are managed by the service
    */
   public static void addProcedure(HealthService service, Scanner stdin)
       throws NoHospitalsAvailableException {
@@ -362,6 +372,7 @@ public class MedicalConsole {
    *
    * @param streamFrom stream to get details from
    * @param name name to be added to description
+	 * @param <T> type of stream
    * @see #getObjectStreamDetails(Stream, String)
    */
   public static <T> void listObjectGroup(Stream<T> streamFrom, String name) {
@@ -711,9 +722,16 @@ public class MedicalConsole {
     }
   }
 
+	/** 
+	 * Executes an available main option given an integer input 
+	 * @param inputOption selected option number
+	 * @param service healthservice to run option under
+	 * @param stdin standard in to run option under, preferably set to <code>System.in</code>
+	*/
   public static void executeOption(
-      ConsoleOption selectedOption, HealthService service, Scanner stdin) {
-    switch (selectedOption) {
+      int inputOption, HealthService service, Scanner stdin) {
+		ConsoleOption selectedOption = ConsoleOption.values()[inputOption - 1];
+  	switch (selectedOption) {
       case ADD:
         addObject(service, stdin);
         break;
@@ -743,6 +761,7 @@ public class MedicalConsole {
 	/** 
 	 * Generates sample data for running this application without 
 	 * having to generate everything
+	 * @return HealthService which includes all generated sample data
 	*/
 	public static HealthService generateSampleData(){
     // Starting service
@@ -786,7 +805,7 @@ public class MedicalConsole {
     do {
       printIntroduction();
       int inputOption = Input.chooseOption("Select an option:", ConsoleOption.values().length, stdin);
-      executeOption(ConsoleOption.values()[inputOption - 1], service, stdin);
+      executeOption(inputOption, service, stdin);
 		} while (!done);
   }
 }

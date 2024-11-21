@@ -23,7 +23,7 @@ public class HealthService implements Iterable<Integer> {
   private ArrayList<Patient> patients;
 
   /** The id dispenser for this service The developer can provide their own id generator */
-  private IdGenerator idDispenser;
+  private final IdGenerator idDispenser;
 
   /** This class provides a system for unique and sequential ids */
   public static class SequentialIdDispenser implements IdGenerator {
@@ -96,11 +96,13 @@ public class HealthService implements Iterable<Integer> {
       String name,
       ArrayList<MedicalFacility> medicalFacilities,
       ArrayList<Patient> patients,
-      IdGenerator idDispenser) {
+      final IdGenerator idDispenser) {
     setName(name);
     setMedicalFacilities(medicalFacilities);
     setPatients(patients);
-    setIdDispenser(idDispenser);
+		// final fields cannot be initialized using setters
+		// only through the constructor
+		this.idDispenser = idDispenser;
   }
 
   /**
@@ -233,10 +235,6 @@ public class HealthService implements Iterable<Integer> {
     this.medicalFacilities = medicalFacilities;
   }
 
-  public void setIdDispenser(IdGenerator dispenser) {
-    this.idDispenser = dispenser;
-  }
-
   /**
    * Add a Patient to be managed by this service
    *
@@ -272,7 +270,6 @@ public class HealthService implements Iterable<Integer> {
    * Initialize a Hospital to be managed by this service
    *
    * @param name hospital name 
-   * @param procedures procedures list 
    * @see Hospital
    */
   public void initializeHospital(String name) {
@@ -303,6 +300,14 @@ public class HealthService implements Iterable<Integer> {
     hospital.getProcedures().add(procedure);
   }
 
+	/** 
+	 * Initialize a Procedure to be managed by the service
+	 * @param hospital specified hospital
+	 * @param name name of procedure 
+	 * @param description description of procedure 
+	 * @param isElective whether the procedure is elective 
+	 * @param cost basic cost of procedure
+	*/
 	public void initializeProcedure(Hospital hospital, String name, String description, boolean isElective, double cost){
 		Procedure procedureToAdd = new Procedure(iterator().next(), name, description, isElective, cost);
 	

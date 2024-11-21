@@ -1,5 +1,6 @@
 package com.yvesstraten.medicalconsole.comparators;
 
+import com.yvesstraten.medicalconsole.comparators.PatientComparators.SortByName;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 import java.util.Comparator;
 
@@ -22,6 +23,13 @@ public class ProcedureComparators {
 	 * Helper class to sort procedures by price 
 	*/
   public static class SortByPrice implements Comparator<Procedure> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByPrice(){
+
+		}
+
     @Override
     public int compare(Procedure o1, Procedure o2) {
       double cost1 = o1.getCost();
@@ -37,6 +45,13 @@ public class ProcedureComparators {
 	 * Helper class to sort procedures by name 
 	*/
   public static class SortByName implements Comparator<Procedure> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByName(){
+
+		}
+
     @Override
     public int compare(Procedure o1, Procedure o2) {
       return o1.getName().compareTo(o2.getName());
@@ -47,6 +62,12 @@ public class ProcedureComparators {
 	 * Helper class to sort procedures by their status 
 	*/
   public static class SortByElective implements Comparator<Procedure> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByElective(){
+		}
+
     @Override
     public int compare(Procedure o1, Procedure o2) {
       int elective = o1.isElective() ? -1 : 1;

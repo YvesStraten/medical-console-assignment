@@ -22,6 +22,13 @@ public class PatientComparators {
 	 * Helper class to sort patients by balance
 	*/
   public static class SortByBalance implements Comparator<Patient> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByBalance(){
+
+		}
+
     @Override
     public int compare(Patient o1, Patient o2) {
       double balance1 = o1.getBalance();
@@ -37,6 +44,12 @@ public class PatientComparators {
 	 * Helper class to sort patients by name
 	*/
   public static class SortByName implements Comparator<Patient> {
+		/** 
+		 * Construct this Comparator 
+		*/
+		public SortByName(){
+		}
+
     @Override
     public int compare(Patient o1, Patient o2) {
       return o1.getName().compareTo(o2.getName());
