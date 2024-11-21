@@ -101,16 +101,7 @@ public class Hospital extends MedicalFacility {
   }
 
   /**
-   * Adds a procedure to this hospital
-   *
-   * @param procedure - procedure to add
-   */
-  public void addProcedure(Procedure procedure) {
-    getProcedures().add(procedure);
-  }
-
-  /**
-   * Removes a procedure to this hospital
+   * Removes a procedure from this hospital
    *
    * @param toRemove - procedure to remove
    */

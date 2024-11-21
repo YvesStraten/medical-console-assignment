@@ -3,6 +3,8 @@ package com.yvesstraten.medicalconsole;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
+import com.yvesstraten.medicalconsole.facilities.Procedure;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -236,7 +238,7 @@ public class HealthService implements Iterable<Integer> {
   }
 
   /**
-   * Add a Patient to be managed by the service
+   * Add a Patient to be managed by this service
    *
    * @param patient Patient to add
    * @see Patient
@@ -245,15 +247,67 @@ public class HealthService implements Iterable<Integer> {
     getPatients().add(patient);
   }
 
+	/** 
+	 * Initialize a Patient to be managed by this service 
+	 *
+	 * @param name name of patient 
+	 * @param isPrivate private status of patient
+	*/
+	public void initializePatient(String name, boolean isPrivate) {
+		Patient patientToAdd = new Patient(iterator().next(), name, isPrivate);
+
+		addPatient(patientToAdd);
+	}
+
+	/** 
+	 * Add a MedicalFacility to be managed by this service 
+	 * @param facility facility to add 
+	 * @see MedicalFacility
+	*/
+	public void addMedicalFacility(MedicalFacility facility){
+		getMedicalFacilities().add(facility);
+	}
+
   /**
-   * Add a MedicalFacility to be managed by the service
+   * Initialize a Hospital to be managed by this service
    *
-   * @param facility MedicalFacility to add
-   * @see MedicalFacility
+   * @param name hospital name 
+   * @param procedures procedures list 
+   * @see Hospital
    */
-  public void addMedicalFacility(MedicalFacility facility) {
-    getMedicalFacilities().add(facility);
+  public void initializeHospital(String name) {
+		Hospital hospitalToAdd = new Hospital(getIdDispenser().next(), name);
+
+		addMedicalFacility(hospitalToAdd);
   }
+
+	/** 
+	 * Initialize a Clinic to be managed by the service
+	 * @param name name of clinic 
+	 * @param fee fee of clinic 
+	 * @param gapPercent gap percentage of clinic
+	*/
+	public void initializeClinic(String name, double fee, double gapPercent){
+		Clinic clinicToAdd = new Clinic(iterator().next(), name, fee, gapPercent);
+
+		addMedicalFacility(clinicToAdd);
+	}
+
+  /**
+   * Adds a procedure to specified hospital
+   *
+	 * @param hospital specified hospital
+   * @param procedure procedure to add
+   */
+  public void addProcedure(Hospital hospital, Procedure procedure) {
+    hospital.getProcedures().add(procedure);
+  }
+
+	public void initializeProcedure(Hospital hospital, String name, String description, boolean isElective, double cost){
+		Procedure procedureToAdd = new Procedure(iterator().next(), name, description, isElective, cost);
+	
+		addProcedure(hospital, procedureToAdd);
+	}
 
   /**
    * Remove a MedicalFacility from this service, and its management

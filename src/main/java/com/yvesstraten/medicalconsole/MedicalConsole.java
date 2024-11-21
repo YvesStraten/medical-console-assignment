@@ -35,43 +35,31 @@ public class MedicalConsole {
 	*/
   public enum ConsoleOption {
 		/** Add an object of type */
-    ADD(1, "Add a service"),
+    ADD("Add a service"),
 		/** List an object of type */
-    LIST(2, "List all objects"),
+    LIST("List all objects"),
 		/** Delete an object */
-    DELETE(3, "Delete an object"),
+    DELETE("Delete an object"),
 		/** Simulate a visit */
-    SIMULATE(4, "Simulate a visit"),
+    SIMULATE("Simulate a visit"),
 		/** Simulate an operation */
-    OPERATE(5, "Operate a patient"),
+    OPERATE("Operate a patient"),
 		/** Sort an object of type */
-    SORTED(6, "Sort objects"),
+    SORTED("Sort objects"),
 		/** Edit an object of type */
-    EDIT(7, "Edit objects"),
+    EDIT("Edit objects"),
 		/** Quit program */
-    QUIT(8, "Quit program");
+    QUIT("Quit program");
 
-		// Numeric input to choose option
-    private final int value;
 		// Name of option 
     private final String optionName;
 
 		/** 
 		 * Construct an enum option 
-		 * @param value numeric input to associate this option 
 		 * @param optionName associated name for this option
 		*/
-    private ConsoleOption(int value, String optionName) {
-      this.value = value;
+    private ConsoleOption(String optionName) {
       this.optionName = optionName;
-    }
-
-		/** 
-		 * Get numeric input for this option 
-		 * @return numeric input 
-		*/
-    public int getValue() {
-      return this.value;
     }
 
 		/** 
@@ -110,6 +98,8 @@ public class MedicalConsole {
 
     Clinic clinicToAdd = new Clinic(service.iterator().next(), name, fee, gapPercent);
     service.addMedicalFacility(clinicToAdd);
+    System.out.println("Added clinic successfully!");
+    System.out.println();
   }
 
   /**
@@ -120,9 +110,9 @@ public class MedicalConsole {
    */
   public static void addHospital(HealthService service, Scanner stdin) {
     String name = Input.getString("What is the name of the hospital?", stdin);
-    Hospital hospitalToAdd = new Hospital(service.iterator().next(), name);
-
-    service.addMedicalFacility(hospitalToAdd);
+    service.initializeHospital(name);
+    System.out.println("Added hospital successfully!");
+    System.out.println();
   }
 
   /**
@@ -135,9 +125,8 @@ public class MedicalConsole {
     String name = Input.getString("What is the name of the patient?", stdin);
     boolean isPrivate = Input.getYesNoInput("Is the patient private? [y/n]", stdin);
 
-    Patient patientToAdd = new Patient(service.iterator().next(), name, isPrivate);
-    service.addPatient(patientToAdd);
-    System.out.println("Successfully added " + patientToAdd.toString());
+    service.initializePatient(name, isPrivate);
+    System.out.println("Successfully added new patient!");
     System.out.println();
   }
 
@@ -165,9 +154,9 @@ public class MedicalConsole {
     boolean isElective = Input.getYesNoInput("Is the procedure elective?", stdin);
     double basicCost = Input.getDouble("What is the basic cost of the procedure?", stdin);
 
-    Procedure procedureToAdd =
-        new Procedure(service.iterator().next(), name, description, isElective, basicCost);
-    hospital.addProcedure(procedureToAdd);
+    service.initializeProcedure(hospital, name, description, isElective, basicCost);
+		System.out.println("Added procedure successfully!");
+		System.out.println();
   }
 
   /**
@@ -211,8 +200,6 @@ public class MedicalConsole {
             break;
         }
 
-        System.out.println("Added Medical facility successfully!");
-        System.out.println();
         break;
       case 2:
         addPatient(service, stdin);
@@ -707,7 +694,7 @@ public class MedicalConsole {
           String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");
           System.out.println(Format.enumeratedContent(patients, 1));
           int patientToEdit = Input.chooseOption("Please select a patient to edit:", service.getPatients().size(), stdin);
-          attemptEdit(service.getPatientsStream().toList().get(patientToEdit - 1), stdin);
+          attemptEdit(service.getPatients().get(patientToEdit - 1), stdin);
           break;
         case 5:
           List<Procedure> proceduresList =
@@ -753,12 +740,11 @@ public class MedicalConsole {
     }
   }
 
-  /**
-   * Main entry point for the medical console
-   *
-   * @param args arguments passed
-   */
-  public static void main(String[] args) {
+	/** 
+	 * Generates sample data for running this application without 
+	 * having to generate everything
+	*/
+	public static HealthService generateSampleData(){
     // Starting service
     HealthService service = new HealthService();
     // Id generator
@@ -768,20 +754,32 @@ public class MedicalConsole {
     Hospital hospital = new Hospital(idDispenser.next(), "TestHospital");
     Clinic clinic = new Clinic(idDispenser.next(), "Croix", 1000, 0.3);
     Patient patient = new Patient(idDispenser.next(), "Mark", false);
-    hospital.addProcedure(
+    service.addProcedure(
+				hospital,
         new Procedure(
             idDispenser.next(),
             "MRI scan",
             "Magnetic Resonance Imaging scan of patient",
             false,
             700));
-    hospital.addProcedure(
+    service.addProcedure(
+				hospital,
         new Procedure(
             idDispenser.next(), "Radiological Inspection", "X-ray of patient", true, 300));
     service.addMedicalFacility(hospital);
     service.addMedicalFacility(clinic);
     service.addPatient(patient);
 
+		return service;
+	}
+
+  /**
+   * Main entry point for the medical console
+   *
+   * @param args arguments passed
+   */
+  public static void main(String[] args) {
+		HealthService service = generateSampleData();
     Scanner stdin = new Scanner(System.in);
 		boolean done = false;
 
