@@ -54,6 +54,6 @@ public class ClinicTests {
     assertEquals(privatePatient.getBalance(), fee);
 
     clinic.visit(publicPatient);
-    assertEquals(publicPatient.getBalance(), fee * gapPercent);
+    assertEquals(publicPatient.getBalance(), fee + (fee * gapPercent));
   }
 }

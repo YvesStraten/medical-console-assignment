@@ -9,13 +9,15 @@ import com.yvesstraten.medicalconsole.Patient;
  * @author Yves Straten e2400068
  */
 public class Clinic extends MedicalFacility {
-  // The visit fee when a private patient
-  // visits
+  /** The visit fee when a private patient
+		* visits 
+	*/
   @Editable private double fee;
 
-  // The percentage, in decimal format,
-  // that is added the fee when a public
-  // patient visits
+  /** The percentage, in decimal format,
+  	* that is added the fee when a public
+  	* patient visits
+	*/
   @Editable(message = "What is the gap percentage?")
   private double gapPercent;
 
@@ -99,7 +101,7 @@ public class Clinic extends MedicalFacility {
 				// Private patient
         cost = getFee();
       } else {
-        cost = getFee() * getGapPercent();
+        cost = getFee() + (getFee() * getGapPercent());
       }
 
       pat.addBalance(cost);

@@ -11,7 +11,9 @@ import com.yvesstraten.medicalconsole.Patient;
  * @author Yves Straten e2400068
  */
 public abstract class MedicalFacility implements Comparable<MedicalFacility>, Serializable {
+	/** id of this medical facility */
 	private final int id;
+	/** name of this medical facility */
   @Editable private String name;
 
 	/** 
