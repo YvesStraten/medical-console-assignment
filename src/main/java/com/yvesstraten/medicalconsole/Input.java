@@ -30,8 +30,7 @@ public class Input {
    */
   public static void checkOption(int chosenOption, int maxOptions) throws InvalidOptionException {
     if (chosenOption < 0 || chosenOption > maxOptions) {
-      throw new InvalidOptionException(
-          String.format("Invalid option please select option [%d-%d]", 1, maxOptions));
+      throw new InvalidOptionException(maxOptions);
     }
   }
 
@@ -123,7 +122,7 @@ public class Input {
    * @param stdin standard in preferably set to <code>System.in</code>
    * @return entered integer value
    */
-  public static int getInt(String prompt, Scanner stdin) {
+  public static int getInt(String prompt, Scanner stdin, boolean allowNegative) {
     do {
       try {
         System.out.print(prompt + " ");
@@ -135,6 +134,10 @@ public class Input {
         System.err.println("Wrong input! Please input a non-negative integer!");
       }
     } while (true);
+  }
+
+  public static int getInt(String prompt, Scanner stdin) {
+		return getInt(prompt, stdin, false);
   }
 
   /**

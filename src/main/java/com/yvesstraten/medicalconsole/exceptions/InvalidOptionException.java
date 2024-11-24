@@ -6,6 +6,14 @@ package com.yvesstraten.medicalconsole.exceptions;
 */
 public class InvalidOptionException extends Exception {
 	/**  
+	 * Construct this exception with a customized error message 
+	 * @param maxOptions max options that were available
+	*/
+  public InvalidOptionException(int maxOptions) {
+		this(String.format("Invalid option please select option [%d-%d]", 1, maxOptions));
+  }
+
+	/**  
 	 * Construct this exception with a default error message 
 	*/
   public InvalidOptionException() {
