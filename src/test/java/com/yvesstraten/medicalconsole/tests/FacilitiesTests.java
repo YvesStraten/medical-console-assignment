@@ -3,16 +3,35 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+
+import com.yvesstraten.medicalconsole.facilities.Clinic;
+import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
+/** 
+ * Test suite for all tests related to facilities 
+ * @see MedicalFacility 
+ * @see Clinic
+ * @see Hospital
+*/
 @Suite
 @SuiteDisplayName("Facilities tests")
 @SelectClasses({ClinicTests.class, HospitalTests.class})
 public class FacilitiesTests extends MedicalConsoleTest {
+	/** 
+	 * Construct this test class 
+	*/
+	public FacilitiesTests(){
+		super();
+	}
+
+	/** 
+	 * This test tests whether medicalfacilities have the correct hashcode, that is their ids of these are used
+	*/
   @Test
   public void shouldBeSameHashCode() {
 		List<Integer> fetchedHashCodes = testService.getMedicalFacilitiesStream().map(Object::hashCode).toList();

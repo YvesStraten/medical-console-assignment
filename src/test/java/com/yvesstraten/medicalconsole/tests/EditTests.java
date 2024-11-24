@@ -24,8 +24,22 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
+/** 
+ * This class contains all tests related to editing
+ * @see MedicalConsole
+*/
 @DisplayName("Edit Tests")
 public class EditTests extends MedicalConsoleTest {
+	/** 
+	 * Construct this test class 
+	*/
+	public EditTests(){
+		super();
+	}
+
+	/** 
+	 * This test tests that ClassIsNotEditableException is thrown when no {@link Editable} annotation is present
+	*/
   @Test
   public void attemptEditNoEditableThrows() {
     class ClassWithNoEditable {}
@@ -35,6 +49,9 @@ public class EditTests extends MedicalConsoleTest {
     assertThrows(ClassIsNotEditableException.class, () -> MedicalConsole.attemptEdit(test, stdin));
   }
 
+	/** 
+	 * This test tests that a RuntimeException is thrown when the setter of an {@link Editable} field is wrong 
+	*/
   @Test
   public void attemptEditWrongSetterThrows() {
     class TestClassWithWrongSetter {

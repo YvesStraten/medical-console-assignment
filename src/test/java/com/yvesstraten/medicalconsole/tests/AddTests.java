@@ -19,8 +19,18 @@ import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 
+/** 
+ * This class contains all tests related to adding objects 
+*/
 @DisplayName("Medical Console adding tests")
 public class AddTests extends MedicalConsoleTest {
+	/** 
+	 * Construct this test class 
+	*/
+	public AddTests(){
+		super();
+	}
+
 	/** 
 	 * This test tests that {@link NoHospitalsAvailableException} is thrown when no Hospitals are available to add a procedure to
 	*/
@@ -36,6 +46,10 @@ public class AddTests extends MedicalConsoleTest {
         () -> MedicalConsole.addProcedure(testService, mockInput));
   }
 
+	/** 
+	 * This test tests for procedure adding functionality
+	 * @throws NoHospitalsAvailableException when a hospital is not successfully added
+	*/
   @Test
   public void addingProcedureWithHospital() throws NoHospitalsAvailableException {
     ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();

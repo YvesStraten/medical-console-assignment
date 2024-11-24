@@ -13,30 +13,44 @@ import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 
+/** 
+ * This class contains all tests related to deleting 
+ * @see MedicalConsole
+*/
 @DisplayName("Medical console delete tests")
 public class DeleteTests extends MedicalConsoleTest {
+	/** 
+	 * Construct this test class 
+	*/
+	public DeleteTests(){
+		super();
+	}
+
+	/** 
+	 * This test tests whether deleting a patient actually deletes
+	*/
   @Test
   public void deletePatientDeletes() {
 		int priorSize = testService.getPatients().size();
-    ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
-    Scanner mockInput = new Scanner(input);
+    Scanner mockInput = new Scanner("1\n");
 
     MedicalConsole.deletePatient(testService, mockInput);
     assertEquals(priorSize - 1, testService.getPatients().size());
   }
 
+	/** 
+	 * This test tests whether deleting a facility actually deletes
+	*/
   @Test
   public void deleteFacilityDeletes() {
 		int priorNum = testService.getMedicalFacilities().size();
-    ByteArrayInputStream input = new ByteArrayInputStream("2\n".getBytes());
-    Scanner mockInput = new Scanner(input);
+    Scanner mockInput = new Scanner("2\n");
 
     MedicalConsole.deleteFacility(testService, mockInput);
     assertEquals(priorNum - 1, testService.getMedicalFacilities().size());
 
 		priorNum = testService.getMedicalFacilities().size();
-    ByteArrayInputStream nextInput = new ByteArrayInputStream("1\nyes\n".getBytes());
-    Scanner nextMock = new Scanner(nextInput);
+    Scanner nextMock = new Scanner("1\nyes\n");
     MedicalConsole.deleteFacility(testService, nextMock);
 
     assertEquals(priorNum - 1, testService.getMedicalFacilities().size());

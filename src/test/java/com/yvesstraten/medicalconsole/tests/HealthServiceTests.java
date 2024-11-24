@@ -20,6 +20,13 @@ import org.junit.jupiter.api.TestFactory;
 /** This class holds all tests related to a {@link HealthService} object */
 @DisplayName("HealthService Tests")
 public class HealthServiceTests extends MedicalConsoleTest {
+	/** 
+	 * Construct this test class 
+	*/
+	public HealthServiceTests(){
+		super();
+	}
+
   /** Test to check that id is sequential */
   @Test
   public void idIsSequential() {
@@ -30,7 +37,10 @@ public class HealthServiceTests extends MedicalConsoleTest {
     assertEquals(2, testService.iterator().next());
   }
 
-  /** Test factory for all tests related to the sorting of {@link HealthService} objects */
+  /** 
+	 * Test factory for all tests related to the sorting of {@link HealthService} objects
+	 * @return stream of tests
+	*/
   @TestFactory
   public Stream<DynamicTest> comparatorTests() {
     MedicalFacility facility1 = new Hospital(0, "Zeta");

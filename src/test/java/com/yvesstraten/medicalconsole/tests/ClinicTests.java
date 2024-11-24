@@ -8,7 +8,17 @@ import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import org.junit.jupiter.api.Test;
 
+/** 
+ * This class contains all tests related to clinics 
+*/
 public class ClinicTests {
+	/** Construct this test class 
+	 */
+	public ClinicTests(){}
+
+	/** 
+	 * This test tests whether a first visit of a Clinic returns false
+	*/
   @Test
   public void firstVisitReturnsFalse() {
     Clinic clinic = new Clinic(0, "Test clinic", 0.0, 0.0);
@@ -17,6 +27,9 @@ public class ClinicTests {
     assertFalse(clinic.visit(patient));
   }
 
+	/** 
+	 * This test tests whether a visit from a registered patient returns true 
+	*/
   @Test
   public void registeredPatientVisitReturnsTrue() {
     Clinic clinic = new Clinic(0, "Test clinic", 0.0, 0.0);
@@ -25,6 +38,9 @@ public class ClinicTests {
     assertTrue(clinic.visit(patient));
   }
 
+	/** 
+	 * This test tests whether a visit from a registered patient adds the right balance 
+	*/
   @Test
   public void patientVisitAddsBalance() {
     Clinic clinic = new Clinic(0, "Test clinic", 300, 1.2);

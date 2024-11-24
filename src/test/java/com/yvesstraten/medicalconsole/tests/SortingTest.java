@@ -7,6 +7,7 @@ import java.util.List;
  * This class represents a setup for a sorting test
  *
  * @author Yves Straten e2400068
+ * @param <T> Type of item that will be sorted and tested
  */
 public class SortingTest<T> {
   // Name of test
