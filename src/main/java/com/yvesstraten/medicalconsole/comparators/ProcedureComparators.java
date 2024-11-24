@@ -1,6 +1,5 @@
 package com.yvesstraten.medicalconsole.comparators;
 
-import com.yvesstraten.medicalconsole.comparators.PatientComparators.SortByName;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 import java.util.Comparator;
 

@@ -19,15 +19,15 @@ import org.junit.jupiter.api.TestFactory;
 
 /** Test suite for all tests related to the {@code Patient} class */
 @DisplayName("Patient tests")
-public class PatientTests {
+public class PatientTests extends MedicalConsoleTest {
   /**
    * Test to check that the id returned by {@link Patient#hashCode()} is the same as the id of this
    * Patient
    */
   @Test
   public void shouldBeSameHashCode() {
-    Patient patient = new Patient(0, "Mark", false, 0.0, new Clinic(1, "Victory", 300, 0.3));
-    assertEquals(patient.hashCode(), patient.getId());
+    Patient patient = testService.getPatients().get(0);
+    assertEquals(patient.getId(), patient.hashCode());
   }
 
   /**

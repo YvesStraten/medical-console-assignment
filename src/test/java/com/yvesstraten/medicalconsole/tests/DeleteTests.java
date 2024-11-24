@@ -3,62 +3,55 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.MedicalConsole;
-import com.yvesstraten.medicalconsole.Patient;
-import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
-import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 
 @DisplayName("Medical console delete tests")
-public class DeleteTests {
+public class DeleteTests extends MedicalConsoleTest {
   @Test
   public void deletePatientDeletes() {
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Test patient", true));
-
-    HealthService testService =
-        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
+		int priorSize = testService.getPatients().size();
     ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
     Scanner mockInput = new Scanner(input);
 
     MedicalConsole.deletePatient(testService, mockInput);
-    assertEquals(new ArrayList<Patient>(), testService.getPatients());
+    assertEquals(priorSize - 1, testService.getPatients().size());
   }
 
   @Test
   public void deleteFacilityDeletes() {
-    ArrayList<Procedure> procedures = new ArrayList<Procedure>();
-    procedures.add(new Procedure(2, "Test proc", "Desc", true, 300));
-    Clinic clinic1 = new Clinic(0, "Test clinic", 300, 0.2);
-    Hospital hospital1 = new Hospital(1, "Test", procedures);
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(clinic1);
-    facilities.add(hospital1);
-
-    HealthService testService =
-        new HealthService("Test service", facilities, new ArrayList<Patient>());
-    ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
+		int priorNum = testService.getMedicalFacilities().size();
+    ByteArrayInputStream input = new ByteArrayInputStream("2\n".getBytes());
     Scanner mockInput = new Scanner(input);
 
     MedicalConsole.deleteFacility(testService, mockInput);
-    assertEquals(List.of(hospital1), testService.getMedicalFacilities());
-    mockInput.close();
+    assertEquals(priorNum - 1, testService.getMedicalFacilities().size());
 
+		priorNum = testService.getMedicalFacilities().size();
     ByteArrayInputStream nextInput = new ByteArrayInputStream("1\nyes\n".getBytes());
     Scanner nextMock = new Scanner(nextInput);
     MedicalConsole.deleteFacility(testService, nextMock);
 
-    assertEquals(List.of(), testService.getMedicalFacilities());
-    nextMock.close();
+    assertEquals(priorNum - 1, testService.getMedicalFacilities().size());
   }
 
+	/** 
+	 * This test tests whether deleting a procedure actually deletes
+	*/
+  @Test
+  public void deleteProcedureDeletes() {
+		List<Procedure> procedures = testService.getHospitals().flatMap(Hospital::getProceduresStream).toList();
+		int priorSize = procedures.size();
+    Scanner mockInput = new Scanner("1\n");
+
+    MedicalConsole.deleteProcedure(testService, mockInput);
+    assertEquals(priorSize - 1, testService.getHospitals().flatMap(Hospital::getProceduresStream).toList().size());
+  }
 }

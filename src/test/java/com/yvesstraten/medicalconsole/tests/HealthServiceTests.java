@@ -19,7 +19,7 @@ import org.junit.jupiter.api.TestFactory;
 
 /** This class holds all tests related to a {@link HealthService} object */
 @DisplayName("HealthService Tests")
-public class HealthServiceTests {
+public class HealthServiceTests extends MedicalConsoleTest {
   /** Test to check that id is sequential */
   @Test
   public void idIsSequential() {

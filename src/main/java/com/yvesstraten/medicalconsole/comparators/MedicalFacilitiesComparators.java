@@ -1,6 +1,5 @@
 package com.yvesstraten.medicalconsole.comparators;
 
-import com.yvesstraten.medicalconsole.comparators.PatientComparators.SortByName;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;

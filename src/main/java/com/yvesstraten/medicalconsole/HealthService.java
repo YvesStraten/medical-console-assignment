@@ -194,7 +194,7 @@ public class HealthService implements Iterable<Integer> {
    *
    * @return id dispenser
    */
-  public Iterator<Integer> getIdDispenser() {
+  public IdGenerator getIdDispenser() {
     return this.idDispenser;
   }
 
