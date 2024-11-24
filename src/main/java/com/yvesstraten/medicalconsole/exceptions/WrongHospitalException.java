@@ -1,4 +1,6 @@
-package com.yvesstraten.medicalconsole;
+package com.yvesstraten.medicalconsole.exceptions;
+
+import com.yvesstraten.medicalconsole.Patient;
 
 /**
  * This exception is thrown when this patient has not yet visited a hospital and the hospital that

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
+import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.platform.suite.api.SelectClasses;
@@ -19,8 +20,19 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  */
 @Suite
 @SuiteDisplayName("Hospital Tests")
-@SelectClasses({FacilitiesTests.class})
+@SelectClasses({ProcedureTests.class})
 public class HospitalTests {
+	/**  
+	 * Construct this test class
+	*/
+	public HospitalTests(){
+
+	}
+
+	/** 
+	 * This test tests whether a patient visiting a hospital behaves correctly
+	 * @see MedicalFacility
+	*/
   @RepeatedTest(5)
   public void visitBehavesCorrectly() {
     Hospital hospital = new Hospital(0, "Test");

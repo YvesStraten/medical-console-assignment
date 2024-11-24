@@ -3,22 +3,15 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.yvesstraten.medicalconsole.HealthService;
-import com.yvesstraten.medicalconsole.InvalidOptionException;
-import com.yvesstraten.medicalconsole.InvalidYesNoException;
+import com.yvesstraten.medicalconsole.Input;
 import com.yvesstraten.medicalconsole.MedicalConsole;
-import com.yvesstraten.medicalconsole.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.Patient;
-import com.yvesstraten.medicalconsole.facilities.Clinic;
+import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
+import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
-import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -28,44 +21,68 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
+/** 
+ * This test suite groups all integration tests related to the medical console program 
+ * @see MedicalConsole
+*/
 @Suite
 @SuiteDisplayName("Medical console tests")
-@SelectClasses({EditTests.class})
-public class MedicalConsoleTests {
+@SelectClasses({AddTests.class, DeleteTests.class, EditTests.class})
+public class MedicalConsoleTests extends MedicalConsoleTest {
+	/**  
+	 * Construct this test class
+	*/
+	public MedicalConsoleTests(){
+		super();
+	}
+
+	/** 
+	 * This test tests that an invalid select option throws 
+	 * @param selectedOption selected test option 
+	 * @param maxOption maxOptions available
+	 * @see InvalidOptionException
+	*/
   @ParameterizedTest
-  @ValueSource(ints = {-1, 7})
-  public void invalidOptionShouldThrow(int selectedOption) {
-    String options =
-        "Add a service"
-            + "List all services"
-            + "Delete a service"
-            + "Simulate patient visit"
-            + "Operate"
-            + "Quit";
-
-    System.out.println(selectedOption);
-
+	@MethodSource("invalidOptions")
+  public void invalidOptionShouldThrow(int selectedOption, int maxOption) {
     InvalidOptionException e =
         assertThrows(
             InvalidOptionException.class,
-            () -> MedicalConsole.checkChosenOption(selectedOption, List.of(options.split("\n"))));
+            () -> Input.checkOption(selectedOption, maxOption));
 
     assertEquals(
-        String.format("Invalid option please select option [%d-%d]", 1, options.split("\n").length),
+        String.format("Invalid option please select option [%d-%d]", 1, maxOption),
         e.getMessage());
   }
 
+	/** 
+	 * This method provides the needed arguments for {@link #invalidOptionShouldThrow(int, int)} test
+	 * @return stream of arguments
+	*/
+	public static Stream<Arguments> invalidOptions() {
+		return Stream.of(Arguments.of(-1, 1), Arguments.of(6, 5));
+	}
+
+	/** 
+	 * This test tests whether an invalid yes no input throws 
+	 * @param input test String input
+	 * @see InvalidYesNoException
+	*/
   @ParameterizedTest
   @ValueSource(strings = {"l", "z"})
   public void invalidYesNoInputShouldThrow(String input) {
     assertThrows(
         InvalidYesNoException.class,
         () -> {
-          MedicalConsole.testYesNo(input);
+          Input.testYesNo(input);
         });
   }
 
-  private static Stream<Arguments> provideStringsForYesNo() {
+	/** 
+	 * This method provides the needed arguments for {@link #validYesNoReturnsBoolean(String, boolean)} test
+	 * @return stream of arguments
+	*/
+  public static Stream<Arguments> provideStringsForYesNo() {
     return Stream.of(
         Arguments.of("y", true),
         Arguments.of("yes", true),
@@ -73,49 +90,25 @@ public class MedicalConsoleTests {
         Arguments.of("no", false));
   }
 
+	/** 
+	 * This test tests that {@link Input#testYesNo(String)} returns a boolean only when inputs are y, yes, n, no. 
+	 * @param input input test String 
+	 * @param expected expected boolean output
+	 * @throws InvalidYesNoException when yes no is not valid
+	*/
   @ParameterizedTest
   @MethodSource("provideStringsForYesNo")
   public void validYesNoReturnsBoolean(String input, boolean expected)
       throws InvalidYesNoException {
-    boolean returned = MedicalConsole.testYesNo(input);
+    boolean returned = Input.testYesNo(input);
 
     assertEquals(expected, returned);
   }
 
-  @Test
-  public void addingProcedureWithNoHospitalsThrows() {
-    HealthService testService =
-        new HealthService(
-            "Test service", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
-    ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    assertThrows(
-        NoHospitalsAvailableException.class,
-        () -> MedicalConsole.addProcedure(testService, mockInput));
-  }
-
-  @Test
-  public void addingProcedureWithHospital()
-      throws InvalidYesNoException, InvalidOptionException, NoHospitalsAvailableException {
-    ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();
-    expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
-
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(new Hospital(0, "Test hospital"));
-
-    HealthService testService =
-        new HealthService("Test service", facilities, new ArrayList<Patient>());
-    ByteArrayInputStream input =
-        new ByteArrayInputStream("1\nTestName\nTestDesc\nyes\n300.0\n".getBytes());
-
-    Scanner mockInput = new Scanner(input);
-
-    MedicalConsole.addProcedure(testService, mockInput);
-    assertEquals(
-        expectedProcedures, ((Hospital) testService.getMedicalFacilities().get(0)).getProcedures());
-  }
-
+	/** 
+	 * This test tests that an empty stream returns an appropriate message when using 
+	 * {@link MedicalConsole#getObjectStreamDetails(Stream, String)} 
+	*/
   @Test
   public void emptyStreamShouldReturnNoDetailsString() {
     Stream<Object> stream = Stream.of();
@@ -124,6 +117,13 @@ public class MedicalConsoleTests {
     assertEquals("There are no test for this service", result);
   }
 
+	/** 
+	 * This test tests that a filled stream returns an appropriate message when using 
+	 * {@link MedicalConsole#getObjectStreamDetails(Stream, String)}, that is by combining the toString() of each element in the stream 
+	 * @param <T> type of list 
+	 * @param listToTest list that should be used for testing 
+	 * @param name to be given as argument for testing
+	*/
   @ParameterizedTest
   @MethodSource("objectStreams")
   public <T> void filledStreamShouldReturnDetailsString(List<T> listToTest, String name) {
@@ -135,24 +135,38 @@ public class MedicalConsoleTests {
     assertEquals(builder.toString(), result);
   }
 
+	/** 
+	 * This method provides the needed arguments for {@link #filledStreamShouldReturnDetailsString(List, String)} test
+	 * @return stream of arguments
+	*/
   public static Stream<Arguments> objectStreams() {
     return Stream.of(
         Arguments.of(
-            List.of(new Patient(0, "Mark", false), new Patient(1, "John", true)), "patients"),
+            testService.getPatients(), "patients"),
         Arguments.of(
-            List.of(new Clinic(0, "Victoria", 400, 0.3), new Clinic(1, "Saint Croix", 1000, 1.2)),
+            testService.getMedicalFacilities(),
             "facilities"));
   }
 
+	/** 
+	 * This test tests whether trying to get the cost of an operation returns appropriate results according to conditions 
+	 * @param patient patient to test with
+	 * @param procedure procedure to test with 
+	 * @param expected expected result
+	*/
   @ParameterizedTest
   @MethodSource("operationCostsArguments")
   public void gettingOperationCostReturnsProperResults(
       Patient patient, Procedure procedure, double expected) {
-    double result = MedicalConsole.getOperationCost(patient, procedure);
+    double result = Hospital.getOperationCost(patient, procedure);
 
     assertEquals(expected, result);
   }
 
+	/** 
+	 * This method provides the needed arguments for {@link #gettingOperationCostReturnsProperResults(Patient, Procedure, double)} test
+	 * @return stream of arguments
+	*/
   public static Stream<Arguments> operationCostsArguments() {
     return Stream.of(
         // Private, elective
@@ -175,60 +189,5 @@ public class MedicalConsoleTests {
             new Patient(0, "TestPatient", false),
             new Procedure(1, "TestProcedure", "TestDesc", false, 300),
             0));
-  }
-
-  @Test
-  public void deletePatientDeletes() throws InvalidOptionException {
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Test patient", true));
-
-    HealthService testService =
-        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
-    ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    MedicalConsole.deletePatient(testService, mockInput);
-    assertEquals(new ArrayList<Patient>(), testService.getPatients());
-  }
-
-  @Test
-  public void invalidPatientDeletionChoiceThrows() {
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Test patient", true));
-
-    HealthService testService =
-        new HealthService("Test service", new ArrayList<MedicalFacility>(), patients);
-    ByteArrayInputStream input = new ByteArrayInputStream("2\n".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    assertThrows(
-        InvalidOptionException.class, () -> MedicalConsole.deletePatient(testService, mockInput));
-  }
-
-  @Test
-  public void deleteFacilityDeletes() throws InvalidOptionException, InvalidYesNoException {
-    ArrayList<Procedure> procedures = new ArrayList<Procedure>();
-    procedures.add(new Procedure(2, "Test proc", "Desc", true, 300));
-    Clinic clinic1 = new Clinic(0, "Test clinic", 300, 0.2);
-    Hospital hospital1 = new Hospital(1, "Test", procedures);
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(clinic1);
-    facilities.add(hospital1);
-
-    HealthService testService =
-        new HealthService("Test service", facilities, new ArrayList<Patient>());
-    ByteArrayInputStream input = new ByteArrayInputStream("1\n".getBytes());
-    Scanner mockInput = new Scanner(input);
-
-    MedicalConsole.deleteFacility(testService, mockInput);
-    assertEquals(List.of(hospital1), testService.getMedicalFacilities());
-    mockInput.close();
-
-    ByteArrayInputStream nextInput = new ByteArrayInputStream("1\nyes\n".getBytes());
-    Scanner nextMock = new Scanner(nextInput);
-    MedicalConsole.deleteFacility(testService, nextMock);
-
-    assertEquals(List.of(), testService.getMedicalFacilities());
-    nextMock.close();
   }
 }

@@ -14,7 +14,16 @@ import org.junit.jupiter.api.TestFactory;
 /** This class holds all tests related to a {@link Procedure} object */
 @DisplayName("Procedure tests")
 public class ProcedureTests {
-  /** Test factory for all tests related to the sorting of {@link Procedure} objects */
+	/** 
+	 * Construct this test class 
+	*/
+	public ProcedureTests(){
+	}
+
+  /** 
+	 * Test factory for all tests related to the sorting of {@link Procedure} objects
+	 * @return stream of tests 
+	*/
   @TestFactory
   public Stream<DynamicTest> sortProcedures() {
     Procedure procedure1 = new Procedure(1, "X-ray", "Desc", false, 1000);

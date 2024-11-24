@@ -19,31 +19,28 @@ import org.junit.jupiter.api.TestFactory;
 
 /** This class holds all tests related to a {@link HealthService} object */
 @DisplayName("HealthService Tests")
-public class HealthServiceTests {
+public class HealthServiceTests extends MedicalConsoleTest {
+	/** 
+	 * Construct this test class 
+	*/
+	public HealthServiceTests(){
+		super();
+	}
+
   /** Test to check that id is sequential */
   @Test
   public void idIsSequential() {
     HealthService testService =
         new HealthService("Test", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
 
-    assertEquals(1, testService.next());
-    assertEquals(2, testService.next());
+    assertEquals(1, testService.iterator().next());
+    assertEquals(2, testService.iterator().next());
   }
 
-  /** Test to check that {@link HealthService#toString()} returns expected output */
-  // TODO fix
-  @Test
-  public void toStringExpectedOutput() {
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
-    facilities.add(new Clinic(0, "Test", 300, 1.2));
-
-    ArrayList<Patient> patients = new ArrayList<Patient>();
-    patients.add(new Patient(0, "Mark", false, 0.0, facilities.get(0)));
-
-    HealthService service = new HealthService("TestService", facilities, patients);
-  }
-
-  /** Test factory for all tests related to the sorting of {@link HealthService} objects */
+  /** 
+	 * Test factory for all tests related to the sorting of {@link HealthService} objects
+	 * @return stream of tests
+	*/
   @TestFactory
   public Stream<DynamicTest> comparatorTests() {
     MedicalFacility facility1 = new Hospital(0, "Zeta");
