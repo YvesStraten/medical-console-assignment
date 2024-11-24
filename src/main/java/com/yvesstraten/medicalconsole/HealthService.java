@@ -285,6 +285,11 @@ public class HealthService implements Iterable<Integer> {
 	 * @param gapPercent gap percentage of clinic
 	*/
 	public void initializeClinic(String name, double fee, double gapPercent){
+		if(gapPercent > 1){
+			// Percentage in non-decimal format, e.g 3%.
+			gapPercent /= 100;
+		}
+
 		Clinic clinicToAdd = new Clinic(iterator().next(), name, fee, gapPercent);
 
 		addMedicalFacility(clinicToAdd);

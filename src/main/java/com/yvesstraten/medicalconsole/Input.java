@@ -99,27 +99,43 @@ public class Input {
    *
    * @param prompt prompt to print to console
    * @param stdin standard in preferably set to <code>System.in</code>
+   * @param allowNegative whether to allow negative decimals
    * @return entered decimal value
    */
-  public static double getDouble(String prompt, Scanner stdin) {
+  public static double getDouble(String prompt, Scanner stdin, boolean allowNegative) {
     do {
       try {
         System.out.print(prompt + " ");
         double value = stdin.nextDouble();
+				if(!allowNegative && value < 0){
+					throw new InputMismatchException("Wrong input! Please input a non-negative decimal number!");
+				}
         stdin.nextLine();
         return value;
       } catch (InputMismatchException e) {
         stdin.nextLine();
-        System.err.println("Wrong input! Please input a non-negative decimal number!");
+        System.err.println(e.getMessage());
       }
     } while (true);
   }
+
+  /**
+   * Helper function to allow the user to enter a positive decimal value
+   *
+   * @param prompt prompt to print to console
+   * @param stdin standard in preferably set to <code>System.in</code>
+   * @return entered positive decimal value
+   */
+	public static double getDouble(String prompt, Scanner stdin){
+		return getDouble(prompt, stdin, false);
+	}
 
   /**
    * Helper function to allow the user to enter an integer value
    *
    * @param prompt prompt to print to console
    * @param stdin standard in preferably set to <code>System.in</code>
+   * @param allowNegative whether to allow negative integers
    * @return entered integer value
    */
   public static int getInt(String prompt, Scanner stdin, boolean allowNegative) {
@@ -127,15 +143,25 @@ public class Input {
       try {
         System.out.print(prompt + " ");
         int value = stdin.nextInt();
+
+				if(!allowNegative && value < 0)
+					throw new InputMismatchException("Wrong input! Please input a non-negative integer!");
         stdin.nextLine();
         return value;
       } catch (InputMismatchException e) {
         stdin.nextLine();
-        System.err.println("Wrong input! Please input a non-negative integer!");
+				System.err.print(e.getMessage());
       }
     } while (true);
   }
 
+  /**
+   * Helper function to allow the user to enter a positive integer value
+   *
+   * @param prompt prompt to print to console
+   * @param stdin standard in preferably set to <code>System.in</code>
+   * @return entered positive integer value
+   */
   public static int getInt(String prompt, Scanner stdin) {
 		return getInt(prompt, stdin, false);
   }

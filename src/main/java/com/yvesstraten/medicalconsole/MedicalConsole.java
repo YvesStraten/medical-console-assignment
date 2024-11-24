@@ -105,8 +105,7 @@ public class MedicalConsole {
     double fee = Input.getDouble("What is the fee of the clinic?", stdin);
     double gapPercent = Input.getDouble("What is the gap percent of the clinic?", stdin);
 
-    Clinic clinicToAdd = new Clinic(service.iterator().next(), name, fee, gapPercent);
-    service.addMedicalFacility(clinicToAdd);
+		service.initializeClinic(name, fee, gapPercent);
     System.out.println("Added clinic successfully!");
     System.out.println();
   }
