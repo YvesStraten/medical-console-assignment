@@ -18,8 +18,9 @@ public class Input {
    */
   public Input() {
     throw new UnsupportedOperationException(
-        "This class contains a collection of helper functions to aid in parsing user input, it is"
-            + " not meant to be constructed!");
+        "This class contains a collection of helper functions to" 
+				+ " aid in parsing user input, it is"
+        + " not meant to be constructed!");
   }
 
   /**
@@ -29,7 +30,8 @@ public class Input {
    * @param maxOptions max num of options available
    * @throws InvalidOptionException integer input is negative or more than max available options
    */
-  public static void checkOption(int chosenOption, int maxOptions) throws InvalidOptionException {
+  public static void checkOption(int chosenOption, int maxOptions) 
+	throws InvalidOptionException {
     if (chosenOption < 0 || chosenOption > maxOptions) {
       throw new InvalidOptionException(maxOptions);
     }
@@ -43,7 +45,8 @@ public class Input {
    * @param stdin standard in preferably set to <code>System.in</code>
    * @return chosen option
    */
-  public static int chooseOption(String prompt, int maxOptions, Scanner stdin) {
+  public static int chooseOption(String prompt, int maxOptions, 
+		Scanner stdin) {
     do {
       try {
         System.out.print(prompt + " ");
@@ -103,7 +106,8 @@ public class Input {
    * @param allowNegative whether to allow negative decimals
    * @return entered decimal value
    */
-  public static double getDouble(String prompt, Scanner stdin, boolean allowNegative) {
+  public static double getDouble(String prompt, Scanner stdin, 
+		boolean allowNegative) {
     do {
       try {
         System.out.print(prompt + " ");

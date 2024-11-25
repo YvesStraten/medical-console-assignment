@@ -36,8 +36,9 @@ public class MedicalConsole {
    */
   public MedicalConsole() {
     throw new UnsupportedOperationException(
-        "This is the main class for the medical console terminal program. It is not meant to be"
-            + " constructed!");
+        "This is the main class for the medical console terminal program." 
+			+ " It is not meant to be"
+      + " constructed!");
   }
 
   /** This enum lists all possible main options available in this program */
@@ -250,7 +251,7 @@ public class MedicalConsole {
   }
 
   /**
-   * Control flow for when a user wishes to delete a facility from the service
+   * Control flow for when a user wishes to delete a facility
    *
    * @param service Health service to delete from
    * @param stdin standard in, preferably set to <code>System.in</code>
@@ -283,7 +284,7 @@ public class MedicalConsole {
   }
 
   /**
-   * Control flow for when a user wishes to delete a procedure from the service
+   * Control flow for when a user wishes to delete a procedure
    *
    * @param service Health service to delete from
    * @param stdin standard in, preferably set to <code>System.in</code>
@@ -452,7 +453,9 @@ public class MedicalConsole {
               + chosenFacilityObject.getName());
     else
       System.out.println(
-          chosenPatientObject.getName() + " failed to visit " + chosenFacilityObject.getName());
+      chosenPatientObject.getName() 
+			+ " failed to visit " 
+			+ chosenFacilityObject.getName());
   }
 
   /**
@@ -670,8 +673,8 @@ public class MedicalConsole {
 
             String prompt = messageBuilder.toString();
 
-            // Check the type of field, invoke the respective setter with name
-            // and appropriate input from the scanner
+            // Check the type of field, invoke the respective setter
+						// with name and appropriate input from the scanner
             if (fieldType.equals(double.class)) {
               setter = selectedClass.getMethod(setterName, double.class);
               setter.invoke(toEdit, Input.getDouble(prompt, stdin));
@@ -770,7 +773,7 @@ public class MedicalConsole {
    *
    * @param inputOption selected option number
    * @param service healthservice to run option under
-   * @param stdin standard in to run option under, preferably set to <code>System.in</code>
+   * @param stdin standard preferably set to <code>System.in</code>
    */
   public static void executeOption(int inputOption, HealthService service, Scanner stdin) {
     ConsoleOption selectedOption = ConsoleOption.values()[inputOption - 1];
@@ -802,7 +805,7 @@ public class MedicalConsole {
   }
 
   /**
-   * Generates sample data for running this application without having to generate everything
+   * Generates sample data for running this application
    *
    * @return HealthService which includes all generated sample data
    */
@@ -827,7 +830,11 @@ public class MedicalConsole {
     service.addProcedure(
         hospital,
         new Procedure(
-            idDispenser.next(), "Radiological Inspection", "X-ray of patient", true, 300));
+            idDispenser.next(),
+			      "Radiological Inspection", 
+			      "X-ray of patient", 
+			      true, 
+			      300));
     service.addMedicalFacility(hospital);
     service.addMedicalFacility(clinic);
     service.addPatient(patient);

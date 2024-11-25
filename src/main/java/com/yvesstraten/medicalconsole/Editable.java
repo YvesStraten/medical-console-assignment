@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This interface acts a marker on fields. When used on a class, the field is made legal to be
+ * This interface acts a marker on fields, making the field legal to be
  * edited
  */
 @Retention(RetentionPolicy.RUNTIME)

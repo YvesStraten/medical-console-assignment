@@ -72,8 +72,11 @@ public class HealthService implements Iterable<Integer> {
     @Override
     public boolean equals(Object other) {
       if (this == other) return true;
-      else if (other instanceof SequentialIdDispenser)
-        return getLastDispensedId() == ((SequentialIdDispenser) other).getLastDispensedId();
+      else if (other instanceof SequentialIdDispenser){
+				SequentialIdDispenser dispenser = (SequentialIdDispenser) other;
+				return getLastDispensedId() == 
+				dispenser.getLastDispensedId();
+			}
 
       return false;
     }
@@ -314,7 +317,11 @@ public class HealthService implements Iterable<Integer> {
   public void initializeProcedure(
       Hospital hospital, String name, String description, boolean isElective, double cost) {
     Procedure procedureToAdd =
-        new Procedure(iterator().next(), name, description, isElective, cost);
+        new Procedure(iterator().next(), 
+				name, 
+				description, 
+				isElective, 
+				cost);
 
     addProcedure(hospital, procedureToAdd);
   }
