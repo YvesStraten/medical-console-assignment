@@ -31,13 +31,14 @@ public class Procedure implements Comparable<Procedure> {
    * Construct this procedure
    *
    * @param id id of this procedure
-	 * @param name name of this procedure
+   * @param name name of this procedure
    * @param description description of this procedure
    * @param isElective whether this procedure is elective
    * @param basicCost basicCost of this procedure
    */
-  public Procedure(final int id, String name, String description, boolean isElective, double basicCost) {
-		this.id = id;
+  public Procedure(
+      final int id, String name, String description, boolean isElective, double basicCost) {
+    this.id = id;
     setName(name);
     setDescription(description);
     setIsElective(isElective);

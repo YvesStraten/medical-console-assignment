@@ -21,53 +21,53 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
-/** 
- * This test suite groups all integration tests related to the medical console program 
+/**
+ * This test suite groups all integration tests related to the medical console program
+ *
  * @see MedicalConsole
-*/
+ */
 @Suite
 @SuiteDisplayName("Medical console tests")
 @SelectClasses({AddTests.class, DeleteTests.class, EditTests.class})
 public class MedicalConsoleTests extends MedicalConsoleTest {
-	/**  
-	 * Construct this test class
-	*/
-	public MedicalConsoleTests(){
-		super();
-	}
+  /** Construct this test class */
+  public MedicalConsoleTests() {
+    super();
+  }
 
-	/** 
-	 * This test tests that an invalid select option throws 
-	 * @param selectedOption selected test option 
-	 * @param maxOption maxOptions available
-	 * @see InvalidOptionException
-	*/
+  /**
+   * This test tests that an invalid select option throws
+   *
+   * @param selectedOption selected test option
+   * @param maxOption maxOptions available
+   * @see InvalidOptionException
+   */
   @ParameterizedTest
-	@MethodSource("invalidOptions")
+  @MethodSource("invalidOptions")
   public void invalidOptionShouldThrow(int selectedOption, int maxOption) {
     InvalidOptionException e =
         assertThrows(
-            InvalidOptionException.class,
-            () -> Input.checkOption(selectedOption, maxOption));
+            InvalidOptionException.class, () -> Input.checkOption(selectedOption, maxOption));
 
     assertEquals(
-        String.format("Invalid option please select option [%d-%d]", 1, maxOption),
-        e.getMessage());
+        String.format("Invalid option please select option [%d-%d]", 1, maxOption), e.getMessage());
   }
 
-	/** 
-	 * This method provides the needed arguments for {@link #invalidOptionShouldThrow(int, int)} test
-	 * @return stream of arguments
-	*/
-	public static Stream<Arguments> invalidOptions() {
-		return Stream.of(Arguments.of(-1, 1), Arguments.of(6, 5));
-	}
+  /**
+   * This method provides the needed arguments for {@link #invalidOptionShouldThrow(int, int)} test
+   *
+   * @return stream of arguments
+   */
+  public static Stream<Arguments> invalidOptions() {
+    return Stream.of(Arguments.of(-1, 1), Arguments.of(6, 5));
+  }
 
-	/** 
-	 * This test tests whether an invalid yes no input throws 
-	 * @param input test String input
-	 * @see InvalidYesNoException
-	*/
+  /**
+   * This test tests whether an invalid yes no input throws
+   *
+   * @param input test String input
+   * @see InvalidYesNoException
+   */
   @ParameterizedTest
   @ValueSource(strings = {"l", "z"})
   public void invalidYesNoInputShouldThrow(String input) {
@@ -78,10 +78,12 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
         });
   }
 
-	/** 
-	 * This method provides the needed arguments for {@link #validYesNoReturnsBoolean(String, boolean)} test
-	 * @return stream of arguments
-	*/
+  /**
+   * This method provides the needed arguments for {@link #validYesNoReturnsBoolean(String,
+   * boolean)} test
+   *
+   * @return stream of arguments
+   */
   public static Stream<Arguments> provideStringsForYesNo() {
     return Stream.of(
         Arguments.of("y", true),
@@ -90,12 +92,14 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
         Arguments.of("no", false));
   }
 
-	/** 
-	 * This test tests that {@link Input#testYesNo(String)} returns a boolean only when inputs are y, yes, n, no. 
-	 * @param input input test String 
-	 * @param expected expected boolean output
-	 * @throws InvalidYesNoException when yes no is not valid
-	*/
+  /**
+   * This test tests that {@link Input#testYesNo(String)} returns a boolean only when inputs are y,
+   * yes, n, no.
+   *
+   * @param input input test String
+   * @param expected expected boolean output
+   * @throws InvalidYesNoException when yes no is not valid
+   */
   @ParameterizedTest
   @MethodSource("provideStringsForYesNo")
   public void validYesNoReturnsBoolean(String input, boolean expected)
@@ -105,10 +109,10 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
     assertEquals(expected, returned);
   }
 
-	/** 
-	 * This test tests that an empty stream returns an appropriate message when using 
-	 * {@link MedicalConsole#getObjectStreamDetails(Stream, String)} 
-	*/
+  /**
+   * This test tests that an empty stream returns an appropriate message when using {@link
+   * MedicalConsole#getObjectStreamDetails(Stream, String)}
+   */
   @Test
   public void emptyStreamShouldReturnNoDetailsString() {
     Stream<Object> stream = Stream.of();
@@ -117,13 +121,15 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
     assertEquals("There are no test for this service", result);
   }
 
-	/** 
-	 * This test tests that a filled stream returns an appropriate message when using 
-	 * {@link MedicalConsole#getObjectStreamDetails(Stream, String)}, that is by combining the toString() of each element in the stream 
-	 * @param <T> type of list 
-	 * @param listToTest list that should be used for testing 
-	 * @param name to be given as argument for testing
-	*/
+  /**
+   * This test tests that a filled stream returns an appropriate message when using {@link
+   * MedicalConsole#getObjectStreamDetails(Stream, String)}, that is by combining the toString() of
+   * each element in the stream
+   *
+   * @param <T> type of list
+   * @param listToTest list that should be used for testing
+   * @param name to be given as argument for testing
+   */
   @ParameterizedTest
   @MethodSource("objectStreams")
   public <T> void filledStreamShouldReturnDetailsString(List<T> listToTest, String name) {
@@ -135,25 +141,26 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
     assertEquals(builder.toString(), result);
   }
 
-	/** 
-	 * This method provides the needed arguments for {@link #filledStreamShouldReturnDetailsString(List, String)} test
-	 * @return stream of arguments
-	*/
+  /**
+   * This method provides the needed arguments for {@link
+   * #filledStreamShouldReturnDetailsString(List, String)} test
+   *
+   * @return stream of arguments
+   */
   public static Stream<Arguments> objectStreams() {
     return Stream.of(
-        Arguments.of(
-            testService.getPatients(), "patients"),
-        Arguments.of(
-            testService.getMedicalFacilities(),
-            "facilities"));
+        Arguments.of(testService.getPatients(), "patients"),
+        Arguments.of(testService.getMedicalFacilities(), "facilities"));
   }
 
-	/** 
-	 * This test tests whether trying to get the cost of an operation returns appropriate results according to conditions 
-	 * @param patient patient to test with
-	 * @param procedure procedure to test with 
-	 * @param expected expected result
-	*/
+  /**
+   * This test tests whether trying to get the cost of an operation returns appropriate results
+   * according to conditions
+   *
+   * @param patient patient to test with
+   * @param procedure procedure to test with
+   * @param expected expected result
+   */
   @ParameterizedTest
   @MethodSource("operationCostsArguments")
   public void gettingOperationCostReturnsProperResults(
@@ -163,10 +170,12 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
     assertEquals(expected, result);
   }
 
-	/** 
-	 * This method provides the needed arguments for {@link #gettingOperationCostReturnsProperResults(Patient, Procedure, double)} test
-	 * @return stream of arguments
-	*/
+  /**
+   * This method provides the needed arguments for {@link
+   * #gettingOperationCostReturnsProperResults(Patient, Procedure, double)} test
+   *
+   * @return stream of arguments
+   */
   public static Stream<Arguments> operationCostsArguments() {
     return Stream.of(
         // Private, elective

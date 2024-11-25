@@ -1,10 +1,9 @@
 package com.yvesstraten.medicalconsole;
 
-import java.io.Serializable;
-
 import com.yvesstraten.medicalconsole.exceptions.WrongHospitalException;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
+import java.io.Serializable;
 
 /**
  * This class represents a patient
@@ -14,6 +13,7 @@ import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 public class Patient implements Comparable<Patient>, Serializable {
   /** Id of this patient */
   private final int id;
+
   /** Name of this patient */
   @Editable private String name;
 
@@ -23,6 +23,7 @@ public class Patient implements Comparable<Patient>, Serializable {
 
   /** Balance of this patient */
   @Editable private double balance;
+
   /** Current facility of this patient */
   private MedicalFacility currentFacility;
 
@@ -38,8 +39,8 @@ public class Patient implements Comparable<Patient>, Serializable {
    */
   public Patient(
       final int id, String name, boolean isPrivate, double balance, MedicalFacility facility) {
-		// final fields cannot be initialized through a setter
-		// they must be initialized in the constructor
+    // final fields cannot be initialized through a setter
+    // they must be initialized in the constructor
     this.id = id;
     setName(name);
     setPrivate(isPrivate);

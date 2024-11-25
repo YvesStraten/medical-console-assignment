@@ -12,24 +12,19 @@ import java.util.Comparator;
  * @see Comparator
  */
 public class MedicalFacilitiesComparators {
-	/** 
-	 * Default constructor for MedicalFacilitiesComparators
-	 * @throws UnsupportedOperationException always 
-	*/
-	public MedicalFacilitiesComparators(){
-		new UnsupportedOperationException();
-	}
+  /**
+   * Default constructor for MedicalFacilitiesComparators
+   *
+   * @throws UnsupportedOperationException always
+   */
+  public MedicalFacilitiesComparators() {
+    new UnsupportedOperationException();
+  }
 
-	/** 
-	 * Helper class to sort facilities by name 
-	*/
+  /** Helper class to sort facilities by name */
   public static class SortByName implements Comparator<MedicalFacility> {
-		/** 
-			* Construct this Comparator 
-		*/
-		public SortByName(){
-
-		}
+    /** Construct this Comparator */
+    public SortByName() {}
 
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
@@ -37,16 +32,10 @@ public class MedicalFacilitiesComparators {
     }
   }
 
-	/** 
-	 * Helper class to sort facilities by hospital 
-	*/
+  /** Helper class to sort facilities by hospital */
   public static class SortByHospital implements Comparator<MedicalFacility> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByHospital(){
-
-		}
+    /** Construct this Comparator */
+    public SortByHospital() {}
 
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {
@@ -56,15 +45,10 @@ public class MedicalFacilitiesComparators {
     }
   }
 
-	/** 
-	 * Helper class to sort facilities by clinic 
-	*/
+  /** Helper class to sort facilities by clinic */
   public static class SortByClinic implements Comparator<MedicalFacility> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByClinic(){
-		}
+    /** Construct this Comparator */
+    public SortByClinic() {}
 
     @Override
     public int compare(MedicalFacility o1, MedicalFacility o2) {

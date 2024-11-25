@@ -20,12 +20,10 @@ import org.junit.jupiter.api.TestFactory;
 /** Test suite for all tests related to the {@code Patient} class */
 @DisplayName("Patient tests")
 public class PatientTests extends MedicalConsoleTest {
-	/** 
-	 * Construct this test class 
-	*/
-	public PatientTests(){
-		super();
-	}
+  /** Construct this test class */
+  public PatientTests() {
+    super();
+  }
 
   /**
    * Test to check that the id returned by {@link Patient#hashCode()} is the same as the id of this
@@ -72,8 +70,8 @@ public class PatientTests extends MedicalConsoleTest {
 
   /**
    * Test factory for all tests related to the sorting of Patient objects
-	 * @return stream of tests
    *
+   * @return stream of tests
    * @see PatientComparators
    */
   @TestFactory

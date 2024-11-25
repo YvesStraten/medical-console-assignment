@@ -11,10 +11,11 @@ import java.util.Scanner;
  * @author Yves Straten e2400068
  */
 public class Input {
-	/** 
-	 * Default constructor for Input 
-	 * @throws UnsupportedOperationException always
-	*/
+  /**
+   * Default constructor for Input
+   *
+   * @throws UnsupportedOperationException always
+   */
   public Input() {
     throw new UnsupportedOperationException(
         "This class contains a collection of helper functions to aid in parsing user input, it is"
@@ -24,8 +25,8 @@ public class Input {
   /**
    * This helper functions checks an integer input against the max available options
    *
-	 * @param chosenOption integer input 
-	 * @param maxOptions max num of options available
+   * @param chosenOption integer input
+   * @param maxOptions max num of options available
    * @throws InvalidOptionException integer input is negative or more than max available options
    */
   public static void checkOption(int chosenOption, int maxOptions) throws InvalidOptionException {
@@ -38,7 +39,7 @@ public class Input {
    * Helper function to allow the user to choose an option from the maximum options available
    *
    * @param prompt prompt to print to console
-	 * @param maxOptions maximum num of options available
+   * @param maxOptions maximum num of options available
    * @param stdin standard in preferably set to <code>System.in</code>
    * @return chosen option
    */
@@ -107,9 +108,10 @@ public class Input {
       try {
         System.out.print(prompt + " ");
         double value = stdin.nextDouble();
-				if(!allowNegative && value < 0){
-					throw new InputMismatchException("Wrong input! Please input a non-negative decimal number!");
-				}
+        if (!allowNegative && value < 0) {
+          throw new InputMismatchException(
+              "Wrong input! Please input a non-negative decimal number!");
+        }
         stdin.nextLine();
         return value;
       } catch (InputMismatchException e) {
@@ -126,9 +128,9 @@ public class Input {
    * @param stdin standard in preferably set to <code>System.in</code>
    * @return entered positive decimal value
    */
-	public static double getDouble(String prompt, Scanner stdin){
-		return getDouble(prompt, stdin, false);
-	}
+  public static double getDouble(String prompt, Scanner stdin) {
+    return getDouble(prompt, stdin, false);
+  }
 
   /**
    * Helper function to allow the user to enter an integer value
@@ -144,13 +146,13 @@ public class Input {
         System.out.print(prompt + " ");
         int value = stdin.nextInt();
 
-				if(!allowNegative && value < 0)
-					throw new InputMismatchException("Wrong input! Please input a non-negative integer!");
+        if (!allowNegative && value < 0)
+          throw new InputMismatchException("Wrong input! Please input a non-negative integer!");
         stdin.nextLine();
         return value;
       } catch (InputMismatchException e) {
         stdin.nextLine();
-				System.err.print(e.getMessage());
+        System.err.print(e.getMessage());
       }
     } while (true);
   }
@@ -163,7 +165,7 @@ public class Input {
    * @return entered positive integer value
    */
   public static int getInt(String prompt, Scanner stdin) {
-		return getInt(prompt, stdin, false);
+    return getInt(prompt, stdin, false);
   }
 
   /**
@@ -171,7 +173,7 @@ public class Input {
    *
    * @param prompt prompt to print to console
    * @param stdin standard in preferably set to <code>System.in</code>
-   * @return entered String 
+   * @return entered String
    */
   public static String getString(String prompt, Scanner stdin) {
     do {
@@ -186,7 +188,7 @@ public class Input {
   }
 
   /**
-   * Helper function to allow the user to enter a char 
+   * Helper function to allow the user to enter a char
    *
    * @param prompt prompt to print to console
    * @param stdin standard in preferably set to <code>System.in</code>

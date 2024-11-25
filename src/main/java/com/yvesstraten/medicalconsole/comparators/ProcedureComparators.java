@@ -10,24 +10,19 @@ import java.util.Comparator;
  * @see Comparator
  */
 public class ProcedureComparators {
-	/** 
-	 * Default constructor for ProcedureComparators
-	 * @throws UnsupportedOperationException always 
-	*/
-	public ProcedureComparators(){
-		new UnsupportedOperationException();
-	}
+  /**
+   * Default constructor for ProcedureComparators
+   *
+   * @throws UnsupportedOperationException always
+   */
+  public ProcedureComparators() {
+    new UnsupportedOperationException();
+  }
 
-	/** 
-	 * Helper class to sort procedures by price 
-	*/
+  /** Helper class to sort procedures by price */
   public static class SortByPrice implements Comparator<Procedure> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByPrice(){
-
-		}
+    /** Construct this Comparator */
+    public SortByPrice() {}
 
     @Override
     public int compare(Procedure o1, Procedure o2) {
@@ -40,16 +35,10 @@ public class ProcedureComparators {
     }
   }
 
-	/** 
-	 * Helper class to sort procedures by name 
-	*/
+  /** Helper class to sort procedures by name */
   public static class SortByName implements Comparator<Procedure> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByName(){
-
-		}
+    /** Construct this Comparator */
+    public SortByName() {}
 
     @Override
     public int compare(Procedure o1, Procedure o2) {
@@ -57,15 +46,10 @@ public class ProcedureComparators {
     }
   }
 
-	/** 
-	 * Helper class to sort procedures by their status 
-	*/
+  /** Helper class to sort procedures by their status */
   public static class SortByElective implements Comparator<Procedure> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByElective(){
-		}
+    /** Construct this Comparator */
+    public SortByElective() {}
 
     @Override
     public int compare(Procedure o1, Procedure o2) {

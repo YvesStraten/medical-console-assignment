@@ -4,7 +4,6 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -35,31 +34,27 @@ public class HealthService implements Iterable<Integer> {
       setLastDispensedId(0);
     }
 
-    /**
-		 * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public int getLastDispensedId() {
       return this.lastDispensedId;
     }
 
-    /**
-		 * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void setLastDispensedId(int id) {
       this.lastDispensedId = id;
     }
 
-		/** 
-		 * @see Iterator#hasNext()
-		*/
+    /**
+     * @see Iterator#hasNext()
+     */
     @Override
     public boolean hasNext() {
       return lastDispensedId < Integer.MAX_VALUE;
     }
 
-    /** 
-		 * @see Iterator#next()
-		*/
+    /**
+     * @see Iterator#next()
+     */
     @Override
     public Integer next() {
       int newId = getLastDispensedId() + 1;
@@ -100,9 +95,9 @@ public class HealthService implements Iterable<Integer> {
     setName(name);
     setMedicalFacilities(medicalFacilities);
     setPatients(patients);
-		// final fields cannot be initialized using setters
-		// only through the constructor
-		this.idDispenser = idDispenser;
+    // final fields cannot be initialized using setters
+    // only through the constructor
+    this.idDispenser = idDispenser;
   }
 
   /**
@@ -245,79 +240,84 @@ public class HealthService implements Iterable<Integer> {
     getPatients().add(patient);
   }
 
-	/** 
-	 * Initialize a Patient to be managed by this service 
-	 *
-	 * @param name name of patient 
-	 * @param isPrivate private status of patient
-	*/
-	public void initializePatient(String name, boolean isPrivate) {
-		Patient patientToAdd = new Patient(iterator().next(), name, isPrivate);
+  /**
+   * Initialize a Patient to be managed by this service
+   *
+   * @param name name of patient
+   * @param isPrivate private status of patient
+   */
+  public void initializePatient(String name, boolean isPrivate) {
+    Patient patientToAdd = new Patient(iterator().next(), name, isPrivate);
 
-		addPatient(patientToAdd);
-	}
+    addPatient(patientToAdd);
+  }
 
-	/** 
-	 * Add a MedicalFacility to be managed by this service 
-	 * @param facility facility to add 
-	 * @see MedicalFacility
-	*/
-	public void addMedicalFacility(MedicalFacility facility){
-		getMedicalFacilities().add(facility);
-	}
+  /**
+   * Add a MedicalFacility to be managed by this service
+   *
+   * @param facility facility to add
+   * @see MedicalFacility
+   */
+  public void addMedicalFacility(MedicalFacility facility) {
+    getMedicalFacilities().add(facility);
+  }
 
   /**
    * Initialize a Hospital to be managed by this service
    *
-   * @param name hospital name 
+   * @param name hospital name
    * @see Hospital
    */
   public void initializeHospital(String name) {
-		Hospital hospitalToAdd = new Hospital(getIdDispenser().next(), name);
+    Hospital hospitalToAdd = new Hospital(getIdDispenser().next(), name);
 
-		addMedicalFacility(hospitalToAdd);
+    addMedicalFacility(hospitalToAdd);
   }
 
-	/** 
-	 * Initialize a Clinic to be managed by the service
-	 * @param name name of clinic 
-	 * @param fee fee of clinic 
-	 * @param gapPercent gap percentage of clinic
-	*/
-	public void initializeClinic(String name, double fee, double gapPercent){
-		if(gapPercent > 1){
-			// Percentage in non-decimal format, e.g 3%.
-			gapPercent /= 100;
-		}
+  /**
+   * Initialize a Clinic to be managed by the service
+   *
+   * @param name name of clinic
+   * @param fee fee of clinic
+   * @param gapPercent gap percentage of clinic
+   */
+  public void initializeClinic(String name, double fee, double gapPercent) {
+    if (gapPercent > 1) {
+      // Percentage in non-decimal format, e.g 3%.
+      gapPercent /= 100;
+    }
 
-		Clinic clinicToAdd = new Clinic(iterator().next(), name, fee, gapPercent);
+    Clinic clinicToAdd = new Clinic(iterator().next(), name, fee, gapPercent);
 
-		addMedicalFacility(clinicToAdd);
-	}
+    addMedicalFacility(clinicToAdd);
+  }
 
   /**
    * Adds a procedure to specified hospital
    *
-	 * @param hospital specified hospital
+   * @param hospital specified hospital
    * @param procedure procedure to add
    */
   public void addProcedure(Hospital hospital, Procedure procedure) {
     hospital.getProcedures().add(procedure);
   }
 
-	/** 
-	 * Initialize a Procedure to be managed by the service
-	 * @param hospital specified hospital
-	 * @param name name of procedure 
-	 * @param description description of procedure 
-	 * @param isElective whether the procedure is elective 
-	 * @param cost basic cost of procedure
-	*/
-	public void initializeProcedure(Hospital hospital, String name, String description, boolean isElective, double cost){
-		Procedure procedureToAdd = new Procedure(iterator().next(), name, description, isElective, cost);
-	
-		addProcedure(hospital, procedureToAdd);
-	}
+  /**
+   * Initialize a Procedure to be managed by the service
+   *
+   * @param hospital specified hospital
+   * @param name name of procedure
+   * @param description description of procedure
+   * @param isElective whether the procedure is elective
+   * @param cost basic cost of procedure
+   */
+  public void initializeProcedure(
+      Hospital hospital, String name, String description, boolean isElective, double cost) {
+    Procedure procedureToAdd =
+        new Procedure(iterator().next(), name, description, isElective, cost);
+
+    addProcedure(hospital, procedureToAdd);
+  }
 
   /**
    * Remove a MedicalFacility from this service, and its management
@@ -397,9 +397,9 @@ public class HealthService implements Iterable<Integer> {
     return false;
   }
 
-  /** 
-	 * @see Iterable#iterator()
-	*/
+  /**
+   * @see Iterable#iterator()
+   */
   @Override
   public Iterator<Integer> iterator() {
     return getIdDispenser();

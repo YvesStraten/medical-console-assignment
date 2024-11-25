@@ -10,24 +10,19 @@ import java.util.Comparator;
  * @see Comparator
  */
 public class PatientComparators {
-	/** 
-	 * Default constructor for PatientComparators
-	 * @throws UnsupportedOperationException always 
-	*/
-	public PatientComparators(){
-		new UnsupportedOperationException();
-	}
+  /**
+   * Default constructor for PatientComparators
+   *
+   * @throws UnsupportedOperationException always
+   */
+  public PatientComparators() {
+    new UnsupportedOperationException();
+  }
 
-	/** 
-	 * Helper class to sort patients by balance
-	*/
+  /** Helper class to sort patients by balance */
   public static class SortByBalance implements Comparator<Patient> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByBalance(){
-
-		}
+    /** Construct this Comparator */
+    public SortByBalance() {}
 
     @Override
     public int compare(Patient o1, Patient o2) {
@@ -40,15 +35,10 @@ public class PatientComparators {
     }
   }
 
-	/** 
-	 * Helper class to sort patients by name
-	*/
+  /** Helper class to sort patients by name */
   public static class SortByName implements Comparator<Patient> {
-		/** 
-		 * Construct this Comparator 
-		*/
-		public SortByName(){
-		}
+    /** Construct this Comparator */
+    public SortByName() {}
 
     @Override
     public int compare(Patient o1, Patient o2) {

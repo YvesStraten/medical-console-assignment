@@ -22,17 +22,14 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SuiteDisplayName("Hospital Tests")
 @SelectClasses({ProcedureTests.class})
 public class HospitalTests {
-	/**  
-	 * Construct this test class
-	*/
-	public HospitalTests(){
+  /** Construct this test class */
+  public HospitalTests() {}
 
-	}
-
-	/** 
-	 * This test tests whether a patient visiting a hospital behaves correctly
-	 * @see MedicalFacility
-	*/
+  /**
+   * This test tests whether a patient visiting a hospital behaves correctly
+   *
+   * @see MedicalFacility
+   */
   @RepeatedTest(5)
   public void visitBehavesCorrectly() {
     Hospital hospital = new Hospital(0, "Test");

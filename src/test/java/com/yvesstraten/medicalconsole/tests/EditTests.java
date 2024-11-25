@@ -5,17 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import com.yvesstraten.medicalconsole.Editable;
-import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.exceptions.ClassIsNotEditableException;
-import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
-import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -24,22 +20,22 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-/** 
+/**
  * This class contains all tests related to editing
+ *
  * @see MedicalConsole
-*/
+ */
 @DisplayName("Edit Tests")
 public class EditTests extends MedicalConsoleTest {
-	/** 
-	 * Construct this test class 
-	*/
-	public EditTests(){
-		super();
-	}
+  /** Construct this test class */
+  public EditTests() {
+    super();
+  }
 
-	/** 
-	 * This test tests that ClassIsNotEditableException is thrown when no {@link Editable} annotation is present
-	*/
+  /**
+   * This test tests that ClassIsNotEditableException is thrown when no {@link Editable} annotation
+   * is present
+   */
   @Test
   public void attemptEditNoEditableThrows() {
     class ClassWithNoEditable {}
@@ -49,9 +45,10 @@ public class EditTests extends MedicalConsoleTest {
     assertThrows(ClassIsNotEditableException.class, () -> MedicalConsole.attemptEdit(test, stdin));
   }
 
-	/** 
-	 * This test tests that a RuntimeException is thrown when the setter of an {@link Editable} field is wrong 
-	*/
+  /**
+   * This test tests that a RuntimeException is thrown when the setter of an {@link Editable} field
+   * is wrong
+   */
   @Test
   public void attemptEditWrongSetterThrows() {
     class TestClassWithWrongSetter {
@@ -68,10 +65,11 @@ public class EditTests extends MedicalConsoleTest {
     assertThrows(RuntimeException.class, () -> MedicalConsole.attemptEdit(test, stdin));
   }
 
-	/** 
-	 * Test factory for all tests related to editing 
-	 * @return stream of tests
-	*/
+  /**
+   * Test factory for all tests related to editing
+   *
+   * @return stream of tests
+   */
   @TestFactory
   public Stream<DynamicTest> editTests() {
     List<String> inputs =
@@ -82,10 +80,7 @@ public class EditTests extends MedicalConsoleTest {
             "Mark\nyes\n300\n",
             "TestProc\nTestDesc\nyes\n300\n");
 
-    List<Scanner> scanners =
-        inputs.stream()
-            .map(Scanner::new)
-            .toList();
+    List<Scanner> scanners = inputs.stream().map(Scanner::new).toList();
 
     return Stream.of(
         dynamicTest(

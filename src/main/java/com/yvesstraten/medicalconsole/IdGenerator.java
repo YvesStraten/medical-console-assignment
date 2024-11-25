@@ -2,9 +2,7 @@ package com.yvesstraten.medicalconsole;
 
 import java.util.Iterator;
 
-/**
- * This interface outlines methods that an Id Generator should have
- */
+/** This interface outlines methods that an Id Generator should have */
 public interface IdGenerator extends Iterator<Integer> {
   /**
    * Get last dispensed id
