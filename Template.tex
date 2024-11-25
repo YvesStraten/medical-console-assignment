@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{courier}
+\setminted[python]{fontfamily=courier}
+
+\begin{document}
+	\section{Source code}\label{sec:code} % (fold)
+	The source code of this application, in its entirety can be found below, split up as follows: 
+	\begin{itemize}
+		\item Main source code 
+		\item Facilities
+		\item Exceptions
+		\item Comparators
+	\end{itemize}
+
+	\subsection{Main source code}\label{sub:main_source_code} % (fold)
+	\textit{MedicalConsole.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/MedicalConsole.java}
+
+	\textit{Format.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Format.java}
+
+	\textit{Editable.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Editable.java}
+
+	\textit{Input.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Input.java}
+
+	\textit{HealthService.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/HealthService.java}
+
+	\textit{IdGenerator.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/IdGenerator.java}
+	% subsection Main source code (end)
+
+	\subsection{Facilities}\label{sub:facilities} % (fold)
+	\textit{Clinic.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/facilities/Clinic.java}
+
+	\textit{Hospital.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/facilities/Hospital.java}
+
+	\textit{MedicalFacility.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/facilities/MedicalFacility.java}
+
+	\textit{Procedure.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/facilities/Procedure.java}
+
+	\textit{Patient.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Patient.java}
+	% subsection Facilities (end)
+
+	\subsection{Comparators}\label{sub:comparators} % (fold)
+	\textit{MedicalFacilitiesComparators.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/comparators/MedicalFacilitiesComparators.java}
+
+	\textit{PatientComparators.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/comparators/PatientComparators.java}
+
+	\textit{ProcedureComparators.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/comparators/ProcedureComparators.java}
+	% subsection Comparators (end)
+
+	\subsection{Exceptions}\label{sub:exceptions} % (fold)
+	\textit{ClassIsNotEditableException.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/ClassIsNotEditableException.java}
+
+	\textit{InvalidOptionException.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/InvalidOptionException.java}
+
+	\textit{InvalidYesNoException.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/InvalidYesNoException.java}
+
+	\textit{NoHospitalsAvailableException.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/NoHospitalsAvailableException.java}
+
+	\textit{WrongHospitalException.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/WrongHospitalException.java}
+	% subsection Exceptions (end)
+
+	\section{Unit tests}\label{sec:unit_tests} % (fold)
+	For this assignment, unit tests were used extensively. Each unit test is show as follows:
+	
+	\subsection{AddTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/AddTests.java}
+
+	\subsection{ClinicTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/ClinicTests.java}
+
+	\subsection{DeleteTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/DeleteTests.java}
+
+	\subsection{EditTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/EditTests.java}
+
+	\subsection{FacilitiesTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/FacilitiesTests.java}
+
+	\subsection{FormatTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/FormatTests.java}
+
+	\subsection{HealthServiceTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/HealthServiceTests.java}
+
+	\subsection{HospitalTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/HospitalTests.java}
+
+	\subsection{MedicalConsoleTest.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/MedicalConsoleTest.java}
+
+	\subsection{MedicalConsoleTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/MedicalConsoleTests.java}
+
+	\subsection{PatientTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/PatientTests.java}
+
+	\subsection{ProcedureTests.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/ProcedureTests.java}
+
+	\subsection{SortingTest.java} 
+	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/SortingTest.java}
+	% section Unit tests (end)
+
+\end{document}
