@@ -155,16 +155,74 @@
 	Several runtime tests have been undertaken as well to test all functions of the program. These are:
 	\begin{itemize}
 		\item Adding objects
-		\item Deleting objects 
-		\item Sorting objects 
+		\item Listing objects
 		\item Deleting objects
+		\item Simulate a visit
+		\item Operate on a patient
+		\item Sorting objects 
+		\item Edit objects
 	\end{itemize}
 
 	\subsection{Adding objects}\label{sub:adding_objects} % (fold)
-	In this test, addition of objects will be tested with random misinputs to also check for the robustness of the system.
+	In this test, addition of objects will be tested with random misinputs to also check for the robustness of the system. The tests are undertaken in the following order: 
+	\begin{itemize}
+		\item Clinic 
+		\item Hospital 
+		\item Patient
+		\item Procedure
+	\end{itemize}
 
+	\textit{Clinic}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.7\textwidth]{figures/Adding/Clinic/Clinic_01.png}
+		\end{center}
+		\caption{Getting to the addition menu}\label{fig:clinic_01}
+	\end{figure}
 
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.7\textwidth]{figures/Adding/Clinic/Clinic_02.png}
+		\end{center}
+		\caption{Adding clinic}\label{fig:clinic_02}
+	\end{figure}
+
+	\textit{Hospital}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{figures/Adding/Hospital/Hospital_01.png}
+		\end{center}
+		\caption{Adding a hospital}\label{fig:hospital_01}
+	\end{figure}
+
+	\newpage
+
+	\textit{Patient}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{figures/Adding/Patient/Patient_01.png}
+		\end{center}
+		\caption{Adding a patient}\label{fig:patient_01}
+	\end{figure}
+
+	\textit{Procedure}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.7\textwidth]{figures/Adding/Procedure/Procedure_01.png}
+		\end{center}
+		\caption{Getting to the procedure menu}\label{fig:procedure_01}
+	\end{figure}
+	
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.7\textwidth]{figures/Adding/Procedure/Procedure_02.png}
+		\end{center}
+		\caption{Adding a procedure}\label{fig:procedure_02}
+	\end{figure}
+
+	As you can see, objects can be freely added, and each input is checked for validity. Furthermore, each input can be repeated on error, without sending the user back to the main menu each time.
 	% subsection Adding objects (end)
+
 	
 	% section Runtime output (end)
 
