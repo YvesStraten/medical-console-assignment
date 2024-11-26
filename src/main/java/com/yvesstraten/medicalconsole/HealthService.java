@@ -4,7 +4,6 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -17,9 +16,9 @@ public class HealthService implements Iterable<Integer> {
   // Name of service
   @Editable private String name;
   // List of medical facilities
-  private ArrayList<MedicalFacility> medicalFacilities;
+  private ArrayListSet<MedicalFacility> medicalFacilities;
   // List of patients
-  private ArrayList<Patient> patients;
+  private ArrayListSet<Patient> patients;
 
   /** The id dispenser for this service The developer can provide their own id generator */
   private final IdGenerator idDispenser;
@@ -92,8 +91,8 @@ public class HealthService implements Iterable<Integer> {
    */
   public HealthService(
       String name,
-      ArrayList<MedicalFacility> medicalFacilities,
-      ArrayList<Patient> patients,
+      ArrayListSet<MedicalFacility> medicalFacilities,
+      ArrayListSet<Patient> patients,
       final IdGenerator idDispenser) {
     setName(name);
     setMedicalFacilities(medicalFacilities);
@@ -111,16 +110,27 @@ public class HealthService implements Iterable<Integer> {
    * @param patients The patients to be managed
    */
   public HealthService(
-      String name, ArrayList<MedicalFacility> medicalFacilities, ArrayList<Patient> patients) {
+      String name, ArrayListSet<MedicalFacility> medicalFacilities, ArrayListSet<Patient> patients) {
     this(name, medicalFacilities, patients, new SequentialIdDispenser());
+  }
+
+  /** Alternate constructor for a HealthService object 
+	 * @param name name of service 
+	*/
+  public HealthService(String name) {
+    this(
+        name,
+        new ArrayListSet<MedicalFacility>(),
+        new ArrayListSet<Patient>(),
+        new SequentialIdDispenser());
   }
 
   /** Alternate constructor for a HealthService object */
   public HealthService() {
     this(
         "undefined",
-        new ArrayList<MedicalFacility>(),
-        new ArrayList<Patient>(),
+        new ArrayListSet<MedicalFacility>(),
+        new ArrayListSet<Patient>(),
         new SequentialIdDispenser());
   }
 
@@ -139,7 +149,7 @@ public class HealthService implements Iterable<Integer> {
    * @return list of MedicalFacility
    * @see MedicalFacility
    */
-  public ArrayList<MedicalFacility> getMedicalFacilities() {
+  public ArrayListSet<MedicalFacility> getMedicalFacilities() {
     return this.medicalFacilities;
   }
 
@@ -183,7 +193,7 @@ public class HealthService implements Iterable<Integer> {
    * @return list of Patient
    * @see Patient
    */
-  public ArrayList<Patient> getPatients() {
+  public ArrayListSet<Patient> getPatients() {
     return this.patients;
   }
 
@@ -220,7 +230,7 @@ public class HealthService implements Iterable<Integer> {
    *
    * @param patients list of Patient to set
    */
-  public void setPatients(ArrayList<Patient> patients) {
+  public void setPatients(ArrayListSet<Patient> patients) {
     this.patients = patients;
   }
 
@@ -229,7 +239,7 @@ public class HealthService implements Iterable<Integer> {
    *
    * @param medicalFacilities list of MedicalFacility to set
    */
-  public void setMedicalFacilities(ArrayList<MedicalFacility> medicalFacilities) {
+  public void setMedicalFacilities(ArrayListSet<MedicalFacility> medicalFacilities) {
     this.medicalFacilities = medicalFacilities;
   }
 

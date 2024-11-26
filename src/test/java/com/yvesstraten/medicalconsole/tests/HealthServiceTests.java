@@ -29,7 +29,7 @@ public class HealthServiceTests extends MedicalConsoleTest {
   @Test
   public void idIsSequential() {
     HealthService testService =
-        new HealthService("Test", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
+        new HealthService();
 
     assertEquals(1, testService.iterator().next());
     assertEquals(2, testService.iterator().next());

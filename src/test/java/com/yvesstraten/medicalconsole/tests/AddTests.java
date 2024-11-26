@@ -3,6 +3,7 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.yvesstraten.medicalconsole.ArrayListSet;
 import com.yvesstraten.medicalconsole.HealthService;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
@@ -32,8 +33,7 @@ public class AddTests extends MedicalConsoleTest {
   @Test
   public void addingProcedureWithNoHospitalsThrows() {
     HealthService testService =
-        new HealthService(
-            "Test service", new ArrayList<MedicalFacility>(), new ArrayList<Patient>());
+        new HealthService();
     Scanner mockInput = new Scanner("");
 
     assertThrows(
@@ -48,14 +48,14 @@ public class AddTests extends MedicalConsoleTest {
    */
   @Test
   public void addingProcedureWithHospital() throws NoHospitalsAvailableException {
-    ArrayList<Procedure> expectedProcedures = new ArrayList<Procedure>();
+    ArrayListSet<Procedure> expectedProcedures = new ArrayListSet<Procedure>();
     expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
 
-    ArrayList<MedicalFacility> facilities = new ArrayList<MedicalFacility>();
+    ArrayListSet<MedicalFacility> facilities = new ArrayListSet<MedicalFacility>();
     facilities.add(new Hospital(0, "Test hospital"));
 
     HealthService testService =
-        new HealthService("Test service", facilities, new ArrayList<Patient>());
+        new HealthService("Test service", facilities, new ArrayListSet<Patient>());
 
     Scanner mockInput = new Scanner("1\nTestName\nTestDesc\nyes\n300.0\n");
 

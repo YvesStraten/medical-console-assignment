@@ -2,6 +2,9 @@ package com.yvesstraten.medicalconsole;
 
 import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
 import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
+import com.yvesstraten.medicalconsole.exceptions.NegativeNumberException;
+import com.yvesstraten.medicalconsole.exceptions.NegativeNumberException.NumTypes;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -49,16 +52,14 @@ public class Input {
 		Scanner stdin) {
     do {
       try {
-        System.out.print(prompt + " ");
-        int chosenOption = stdin.nextInt();
-        stdin.nextLine();
+        int chosenOption = Input.getInt(prompt, stdin);
         checkOption(chosenOption, maxOptions);
 
         return chosenOption;
       } catch (InvalidOptionException e) {
         System.err.println(e.getMessage());
-      }
-    } while (true);
+      }     
+		} while (true);
   }
 
   /**
@@ -113,15 +114,17 @@ public class Input {
         System.out.print(prompt + " ");
         double value = stdin.nextDouble();
         if (!allowNegative && value < 0) {
-          throw new InputMismatchException(
-              "Wrong input! Please input a non-negative decimal number!");
+          throw new NegativeNumberException(NumTypes.DECIMAL);
         }
         stdin.nextLine();
         return value;
       } catch (InputMismatchException e) {
         stdin.nextLine();
-        System.err.println(e.getMessage());
-      }
+        System.err.println("Invalid input, please input a number!");
+      } catch (NegativeNumberException e){
+				stdin.nextLine(); 
+				System.err.println(e.getMessage());
+			}
     } while (true);
   }
 
@@ -151,13 +154,16 @@ public class Input {
         int value = stdin.nextInt();
 
         if (!allowNegative && value < 0)
-          throw new InputMismatchException("Wrong input! Please input a non-negative integer!");
+          throw new NegativeNumberException(NumTypes.INTEGER);
         stdin.nextLine();
         return value;
       } catch (InputMismatchException e) {
         stdin.nextLine();
-        System.err.print(e.getMessage());
-      }
+        System.err.println("Invalid Input! Please input a number!");
+      } catch (NegativeNumberException e){
+				stdin.nextLine();
+				System.err.println(e.getMessage());
+			}
     } while (true);
   }
 
