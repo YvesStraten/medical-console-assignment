@@ -12,7 +12,9 @@ public class Clinic extends MedicalFacility {
   /** The visit fee when a private patient visits */
   @Editable private double fee;
 
-  /** The percentage, in decimal format, that is added the fee when a public patient visits */
+  /** The percentage, in decimal format, that is added the fee when
+	 * a public patient visits 
+	*/
   @Editable(message = "What is the gap percentage?")
   private double gapPercent;
 
@@ -31,7 +33,7 @@ public class Clinic extends MedicalFacility {
   }
 
   /**
-   * This hospital must have an id, as such, this is operation is <b>unsupported</b>
+   * Unsupported constructor. This clinic must have an id
    *
    * @throws UnsupportedOperationException always
    */
@@ -80,6 +82,7 @@ public class Clinic extends MedicalFacility {
 		this.gapPercent = gapPercent;
   }
 
+	// TODO
   /**
    * Make a patient visit this facility
    *

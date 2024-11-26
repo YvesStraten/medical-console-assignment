@@ -213,7 +213,9 @@ public class MedicalConsole {
     System.out.println(Format.enumeratedContent(mainOptions));
 
     int chosenOption =
-        Input.chooseOption("Which service would you like to add?", mainOptions.length, stdin);
+        Input.chooseOption("Which service would you like to add?", 
+			mainOptions.length, 
+			stdin);
 
     switch (chosenOption) {
       case 1:
@@ -318,16 +320,13 @@ public class MedicalConsole {
    */
   public static void deleteProcedure(HealthService service, Scanner stdin) {
     List<Hospital> hospitals = service.getHospitals().toList();
+		// Map procedures to related hospitals
     HashMap<Procedure, Hospital> map = new HashMap<Procedure, Hospital>();
 
+		// Grab every procedure and map it to the hospital
     for (Hospital hospital : hospitals) {
-<<<<<<< Updated upstream
-      for (Procedure procedure : hospital.getProcedures()) map.put(procedure, hospital);
-=======
-      for (Procedure procedure : hospital.getProcedures()) {
+      for (Procedure procedure : hospital.getProcedures()) 
 				map.put(procedure, hospital);
-			}
->>>>>>> Stashed changes
     }
 
     listObjectGroup(map.keySet().stream(), "procedures");
@@ -335,7 +334,9 @@ public class MedicalConsole {
     if (map.keySet().size() != 0) {
 
       int toDelete =
-          Input.chooseOption("Choose a procedure to remove:", map.keySet().size(), stdin);
+          Input.chooseOption("Choose a procedure to remove:", 
+				map.keySet().size(), 
+				stdin);
 
       int i = 0;
       Iterator<Entry<Procedure, Hospital>> iterator = 
@@ -363,7 +364,7 @@ public class MedicalConsole {
 	 * or {@link Procedure}.
    *
    * @param service <code>HealthService</code> object to delete an object from
-   * @param stdin <code>Scanner</code> object which preferably iterates over <code>System.in</code>
+   * @param stdin standard in preferably set to <code>System.in</code>
    */
   public static void deleteObject(HealthService service, Scanner stdin) {
     System.out.println("The following types of services are available: ");
@@ -394,7 +395,8 @@ public class MedicalConsole {
    * @param name name that should be included in final string
    * @return String containing details of objects in the stream
    */
-  public static <T> String getObjectStreamDetails(Stream<T> stream, String name) {
+  public static <T> String getObjectStreamDetails(Stream<T> stream, 
+		String name) {
     // Using .count() is a terminal operation,
     // as such, the stream is converted to a list
     // first to get its size and return an appropriate message
@@ -404,8 +406,15 @@ public class MedicalConsole {
     }
 
     // Get every detail of an object, and append to builder
-    StringBuilder builder = new StringBuilder("The following " + name + " are available \n");
-    objects.stream().forEach(object -> builder.append(object.toString()).append("\n"));
+    StringBuilder builder = new StringBuilder("The following " 
+			+ name 
+			+ " are available \n");
+
+    objects
+			.stream()
+			.map(Object::toString)
+			.forEach(string -> builder.append(string)
+				.append("\n"));
 
     return builder.toString();
   }
@@ -436,7 +445,9 @@ public class MedicalConsole {
 			"Procedures"};
     System.out.println(Format.enumeratedContent(options));
 
-    int chosenOption = Input.chooseOption("Please select a type:", options.length, stdin);
+    int chosenOption = Input.chooseOption("Please select a type:", 
+			options.length, 
+			stdin);
 
     switch (chosenOption) {
       case 1:
@@ -465,7 +476,9 @@ public class MedicalConsole {
     listObjectGroup(service.getPatientsStream(), "patients");
     int chosenPatient =
         Input.chooseOption(
-            "Please choose a patient to simulate a visit:", service.getPatients().size(), stdin);
+            "Please choose a patient to simulate a visit:", 
+			service.getPatients().size(),
+			stdin);
 
     listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
     int chosenFacility =
@@ -473,11 +486,21 @@ public class MedicalConsole {
             "Please choose a facility the patient should visit:",
             service.getMedicalFacilities().size(),
             stdin);
-    MedicalFacility chosenFacilityObject = service.getMedicalFacilities().get(chosenFacility - 1);
-    Patient chosenPatientObject = service.getPatients().get(chosenPatient - 1);
+    MedicalFacility chosenFacilityObject = 
+		service
+		.getMedicalFacilities()
+		.get(chosenFacility - 1);
+
+    Patient chosenPatientObject = service
+		.getPatients()
+		.get(chosenPatient - 1);
 
     boolean successfullVisit =
-        chosenFacilityObject.visit(service.getPatients().get(chosenPatient - 1));
+        chosenFacilityObject
+		.visit(
+			service
+			.getPatients()
+			.get(chosenPatient - 1));
 
     if (successfullVisit)
       System.out.println(
@@ -517,10 +540,18 @@ public class MedicalConsole {
     System.out.print("Please select which patient to operate: ");
     int selectedPatientIndex =
         Input.chooseOption(
-            "Please select which patient to operate:", service.getPatients().size(), stdin);
+            "Please select which patient to operate:", 
+			service.getPatients().size(), 
+			stdin);
 
-    Hospital selectedHospital = service.getHospitals().toList().get(selectedHospitalIndex - 1);
-    Patient selectedPatient = service.getPatients().get(selectedPatientIndex - 1);
+    Hospital selectedHospital = service
+		.getHospitals()
+		.toList()
+		.get(selectedHospitalIndex - 1);
+
+    Patient selectedPatient = service
+		.getPatients()
+		.get(selectedPatientIndex - 1);
 
     try {
       if (selectedPatient.isInThisHospital(selectedHospital)) {
@@ -561,7 +592,9 @@ public class MedicalConsole {
     System.out.println(Format.enumeratedContent(types));
     System.out.print("Which object type would you like to see sorted? ");
     int selectedOpt =
-        Input.chooseOption("Which object type would you like to see sorted?", types.length, stdin);
+        Input.chooseOption("Which object type would you like to see sorted?",
+			types.length,
+			stdin);
 
     String[] sortingCriteria;
     int selectedCriteria;
@@ -574,21 +607,22 @@ public class MedicalConsole {
         System.out.print("Which criteria would you like to sort them by? ");
         selectedCriteria =
             Input.chooseOption(
-                "Which criteria would you like to sort them by?", sortingCriteria.length, stdin);
-        Stream<MedicalFacility> facilities = service.getMedicalFacilitiesStream();
+                "Which criteria would you " 
+						+ "like to sort them by?", 
+				sortingCriteria.length, 
+				stdin);
+        Stream<MedicalFacility> facilities =
+					service
+					.getMedicalFacilitiesStream();
         // Invoke comparators according to input
         switch (selectedCriteria) {
           case 1:
             listObjectGroup(
-<<<<<<< Updated upstream
-                facilities.sorted(new MedicalFacilitiesComparators.SortByName()), "facilities");
-=======
                 facilities.sorted(
 						new 
 						MedicalFacilitiesComparators
 						.SortByName()), 
 					"facilities");
->>>>>>> Stashed changes
             break;
           case 2:
             listObjectGroup(
@@ -714,7 +748,12 @@ public class MedicalConsole {
     }
 
     List<Field> editableFiltered =
-        fields.stream().filter(field -> field.getAnnotation(Editable.class) != null).toList();
+        fields
+		.stream()
+		.filter(field -> 
+			field.getAnnotation(Editable.class) != null)
+		.toList();
+
     if (editableFiltered.size() == 0) {
       // No Editable annotation was present
       throw new ClassIsNotEditableException();
@@ -811,16 +850,11 @@ public class MedicalConsole {
           System.out.println(Format.enumeratedContent(clinics, 1));
           int clinicToEdit =
               Input.chooseOption(
-<<<<<<< Updated upstream
-                  "Please select a clinic to edit:", service.getClinics().toList().size(), stdin);
-          attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
-=======
-                  "Please select a clinic to edit:",
+                  "Please select a clinic to edit:", 
 					service.getClinics().toList().size(), 
 					stdin);
           attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), 
 					stdin);
->>>>>>> Stashed changes
           break;
         case 3:
           String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");
@@ -830,43 +864,44 @@ public class MedicalConsole {
                   "Please select a hospital to edit:",
                   service.getHospitals().toList().size(),
                   stdin);
-<<<<<<< Updated upstream
-          attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
-=======
           attemptEdit(service
 							.getHospitals()
 							.toList()
 							.get(hospitalToEdit - 1), 
 					stdin);
->>>>>>> Stashed changes
           break;
         case 4:
-          String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");
+          String patients = getObjectStreamDetails(service.getPatientsStream(),
+					"patients");
           System.out.println(Format.enumeratedContent(patients, 1));
           int patientToEdit =
               Input.chooseOption(
-                  "Please select a patient to edit:", service.getPatients().size(), stdin);
-          attemptEdit(service.getPatients().get(patientToEdit - 1), stdin);
+                  "Please select a patient to edit:", 
+					service.getPatients().size(), 
+					stdin);
+
+          attemptEdit(
+						service
+						.getPatients()
+						.get(patientToEdit - 1), 
+					stdin);
           break;
         case 5:
           List<Procedure> proceduresList =
-<<<<<<< Updated upstream
-              service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
-          String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");
-=======
               service.getHospitals()
-								.flatMap(hospital -> 
-													hospital
-													.getProceduresStream())
+							.flatMap(hospital -> 
+												hospital
+												.getProceduresStream())
 							.toList();
           String procedures = getObjectStreamDetails(proceduresList.stream(),
 					"patients");
->>>>>>> Stashed changes
           System.out.println(Format.enumeratedContent(procedures, 1));
           System.out.print("");
           int procedureToEdit =
               Input.chooseOption(
-                  "Please select a procedure to edit:", proceduresList.size(), stdin);
+                  "Please select a procedure to edit:", 
+					proceduresList.size(),
+					stdin);
           attemptEdit(proceduresList.get(procedureToEdit - 1), stdin);
           break;
       }

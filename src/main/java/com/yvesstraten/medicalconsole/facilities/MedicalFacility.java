@@ -9,7 +9,8 @@ import java.io.Serializable;
  *
  * @author Yves Straten e2400068
  */
-public abstract class MedicalFacility implements Comparable<MedicalFacility>, Serializable {
+public abstract class MedicalFacility implements Comparable<MedicalFacility>, 
+	Serializable {
   /** id of this medical facility */
   private final int id;
 
@@ -30,7 +31,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>, Se
   }
 
   /**
-   * This medical facility must have an id, thus providing no details is <b>Unsupported</b>
+   * Unsupported constructor. This medical facility must have an id
    *
    * @throws UnsupportedOperationException always
    */

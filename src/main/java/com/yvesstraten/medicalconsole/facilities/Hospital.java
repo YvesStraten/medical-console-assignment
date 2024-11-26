@@ -47,7 +47,7 @@ public class Hospital extends MedicalFacility {
   }
 
   /**
-   * This hospital must have an id, as such providing no details is <b>unsupported</b>
+   * Unsupported constructor. This hospital must have an id
    *
    * @throws UnsupportedOperationException always
    */
@@ -113,8 +113,7 @@ public class Hospital extends MedicalFacility {
    * Makes a patient visit this hospital, setting the current facility
    *
    * @param pat - Patient that will visit
-   * @return true if randomly generated number is larger than the probability of admission false
-   *     otherwise
+   * @return true if random num > probability of admission false otherwise
    */
   public boolean visit(Patient pat) {
     Random random = new Random();

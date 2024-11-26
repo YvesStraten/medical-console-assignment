@@ -63,8 +63,7 @@ public class HealthService implements Iterable<Integer> {
     }
 
     /**
-     * Compares this id dispenser with one another by comparing their state, that is their last
-     * dispensed id
+     * Compares this id dispenser with one another by comparing their state
      *
      * @return true if object is equal, false otherwise
      */
@@ -72,7 +71,8 @@ public class HealthService implements Iterable<Integer> {
     public boolean equals(Object other) {
       if (this == other) return true;
       else if (other instanceof SequentialIdDispenser){
-				SequentialIdDispenser dispenser = (SequentialIdDispenser) other;
+				SequentialIdDispenser dispenser = 
+					(SequentialIdDispenser) other;
 				return getLastDispensedId() == 
 				dispenser.getLastDispensedId();
 			}
@@ -363,15 +363,8 @@ public class HealthService implements Iterable<Integer> {
   /**
    * String representation of this service
    *
-   * @return string with format HealthService that manages the following medical facilities:
-   *     <ul>
-   *       <li>detail
-   *     </ul>
-   *     Patients
-   *     <ul>
-   *       <li>detail
-   *     </ul>
-   */
+   * @return string representation
+	*/
   @Override
   public String toString() {
     StringBuilder base =
@@ -392,7 +385,7 @@ public class HealthService implements Iterable<Integer> {
   }
 
   /**
-   * Compares this health service with another. For health services to be equal, they must meet the
+   * Compares this health service with another. Must meet the
    * following conditions:
    *
    * <ul>

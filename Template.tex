@@ -1,10 +1,13 @@
 \documentclass{article}
 \usepackage{minted}
+\usepackage{cleveref}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{courier}
+\usepackage[backend=biber,citestyle=authoryear,url=true,backref=bibtex,bibstyle=apa,useprefix=true]{biblatex}
 \setminted[python]{fontfamily=courier}
 
+\addbibresource{bibliography.bib}
 \begin{document}
 	\section{Source code}\label{sec:code} % (fold)
 	The source code of this application, in its entirety can be found below, split up as follows: 
@@ -24,11 +27,14 @@
 	\textit{Format.java}
 	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Format.java}
 
-	\textit{Editable.java}
-	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Editable.java}
-
 	\textit{Input.java}
 	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Input.java}
+
+	\textit{ArrayListSet.java}
+	\inputminted{java}{./src/main/java/com/yvesstraten/medicalconsole/ArrayListSet.java}
+
+	\textit{Editable.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/Editable.java}
 
 	\pagebreak
 
@@ -83,6 +89,9 @@
 	\textit{InvalidYesNoException.java}
 	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/InvalidYesNoException.java}
 
+	\textit{NegativeNumberException.java}
+	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/NegativeNumberException.java}
+
 	\textit{NoHospitalsAvailableException.java}
 	\inputminted{java}{src/main/java/com/yvesstraten/medicalconsole/exceptions/NoHospitalsAvailableException.java}
 
@@ -91,7 +100,7 @@
 	% subsection Exceptions (end)
 
 	\section{Unit tests}\label{sec:unit_tests} % (fold)
-	For this assignment, unit tests were used extensively. Each unit test is show as follows:
+	For this assignment, unit tests written in JUNIT 5 \textcite{Junit5} were used extensively. Each unit test is show as follows:
 	
 	\textit{AddTests.java} 
 	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/AddTests.java}
@@ -131,6 +140,32 @@
 
 	\textit{SortingTest.java} 
 	\inputminted{java}{src/test/java/com/yvesstraten/medicalconsole/tests/SortingTest.java}
+
+	When running these tests with \textit{mvn test} the following output is shown:
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.8\textwidth]{figures/Mvn_test.png}
+		\end{center}
+		\caption{Test output}\label{fig:}
+	\end{figure}
+	
 	% section Unit tests (end)
+
+	\section{Runtime output}\label{sec:runtime_output} % (fold)
+	Several runtime tests have been undertaken as well to test all functions of the program. These are:
+	\begin{itemize}
+		\item Adding objects
+		\item Deleting objects 
+		\item Sorting objects 
+		\item Deleting objects
+	\end{itemize}
+
+	\subsection{Adding objects}\label{sub:adding_objects} % (fold)
+	In this test, addition of objects will be tested with random misinputs to also check for the robustness of the system.
+
+
+	% subsection Adding objects (end)
+	
+	% section Runtime output (end)
 
 \end{document}

@@ -20,7 +20,7 @@ public @interface Editable {
   String message() default "";
 
   /**
-   * Name of setter, if it is different than the field's name
+   * Name of setter, if it is different than the field name
    *
    * @return name of setter
    */

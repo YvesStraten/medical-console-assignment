@@ -27,11 +27,11 @@ public class Input {
   }
 
   /**
-   * This helper functions checks an integer input against the max available options
+   * This helper functions checks an integer input against the available options
    *
    * @param chosenOption integer input
    * @param maxOptions max num of options available
-   * @throws InvalidOptionException integer input is negative or more than max available options
+   * @throws InvalidOptionException integer input is negative or more
    */
   public static void checkOption(int chosenOption, int maxOptions) 
 	throws InvalidOptionException {
@@ -67,7 +67,7 @@ public class Input {
    *
    * @param stringToTest input that should be tested
    * @return true if yes, false if no
-   * @throws InvalidYesNoException input has anything other than y, yes, n, no
+   * @throws InvalidYesNoException any of y, yes, n, no are not present
    */
   public static boolean testYesNo(String stringToTest) throws InvalidYesNoException {
     if (stringToTest.startsWith("y") || stringToTest.startsWith("Y")) {
