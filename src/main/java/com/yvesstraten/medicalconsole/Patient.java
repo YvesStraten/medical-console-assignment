@@ -241,7 +241,7 @@ public class Patient implements Comparable<Patient>, Serializable {
    */
   @Override
   public String toString() {
-    String statusString = isPrivate() ? "private" : "public";
+    String statusString = isPrivate() ? "Private" : "Public";
     MedicalFacility currentFacility = getCurrentFacility();
     String facilityString;
 
@@ -252,7 +252,7 @@ public class Patient implements Comparable<Patient>, Serializable {
     }
 
     return statusString
-        + " patient "
+        + " patient with id "
         + getId()
         + " named "
         + getName()

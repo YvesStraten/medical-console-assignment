@@ -164,7 +164,7 @@ public class MedicalConsole {
 
     String name = Input.getString("Name of procedure?", stdin);
     String description = Input.getString("Description of procedure?", stdin);
-    boolean isElective = Input.getYesNoInput("Is the procedure elective?", stdin);
+    boolean isElective = Input.getYesNoInput("Is the procedure elective? [y/n]", stdin);
     double basicCost = Input.getDouble("What is the basic cost of the procedure?", stdin);
 
     service.initializeProcedure(hospital, name, description, isElective, basicCost);
@@ -301,7 +301,6 @@ public class MedicalConsole {
 
     if (map.keySet().size() != 0) {
 
-      System.out.print("Choose a procedure to remove: ");
       int toDelete =
           Input.chooseOption("Choose a procedure to remove:", map.keySet().size(), stdin);
 
