@@ -6,6 +6,7 @@ import java.util.Set;
 
 /** 
  * This class is an alternate version of an {@link ArrayList}, with capabilities of a {@link Set}
+ * @param <E> element type
 */
 public class ArrayListSet<E> extends ArrayList<E> implements Set<E> {
   /**
@@ -36,7 +37,7 @@ public class ArrayListSet<E> extends ArrayList<E> implements Set<E> {
 	*/
 	@Override
 	public boolean add(E e){
-		if(!super.contains(e)){
+		if(!super.contains(e) && e != null){
 			return super.add(e);
 		} 	
 

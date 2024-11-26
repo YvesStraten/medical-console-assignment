@@ -9,7 +9,9 @@ package com.yvesstraten.medicalconsole.exceptions;
 public class NegativeNumberException extends Exception {
 	/** Types of numbers */
   public enum NumTypes {
+		/** Integer */
     INTEGER,
+		/** Decimal */
     DECIMAL
   }
 
@@ -25,7 +27,9 @@ public class NegativeNumberException extends Exception {
     super("Wrong input! Please input a non-negative number!");
   }
 
-  /** Construct this exception with a custom error message */
+  /** Construct this exception with a custom error message
+	 * @param s custom message 
+	*/
   public NegativeNumberException(String s) {
     super(s);
   }
