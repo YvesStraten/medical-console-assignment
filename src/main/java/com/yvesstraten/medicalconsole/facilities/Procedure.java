@@ -46,9 +46,8 @@ public class Procedure implements Comparable<Procedure> {
   }
 
   /**
-   * This procedure must have an id, thus, providing no details is <b>unsupported</b>
+   * Unsupported constructor. This procedure must have an id
    *
-   * @see Procedure#Procedure(int, String, String, boolean, double)
    * @throws UnsupportedOperationException always
    */
   public Procedure() {
@@ -140,7 +139,7 @@ public class Procedure implements Comparable<Procedure> {
    * Compares this procedure with another Object
    *
    * @param other object to compare to
-   * @return true if objects are the same or have the same id, false otherwise
+   * @return true id1 == id2, false otherwise
    */
   @Override
   public boolean equals(Object other) {
@@ -177,10 +176,7 @@ public class Procedure implements Comparable<Procedure> {
   }
 
   /**
-   * {@inheritDoc}
-   *
-   * <p>In this implementation, the string has the following format: Elective or non Elective
-   * procedure Name with id id with description description and basic cost cost
+   * String representation of this procedure 
    *
    * @return String representation
    */

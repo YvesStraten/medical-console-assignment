@@ -74,9 +74,8 @@ public class Patient implements Comparable<Patient>, Serializable {
   }
 
   /**
-   * This patient must have an id, thus, providing no details is an <b>Unsupported</b> operation
+   * Unsupported constructor. This patient must have an id
    *
-   * @see Patient#Patient(int, String, boolean, double, MedicalFacility)
    * @throws UnsupportedOperationException always
    */
   public Patient() {
@@ -122,7 +121,7 @@ public class Patient implements Comparable<Patient>, Serializable {
   /**
    * Get the current facility this patient is in
    *
-   * @return MedicalFacility or null if this patient is currently not in a facility
+   * @return MedicalFacility or null
    */
   public MedicalFacility getCurrentFacility() {
     return this.currentFacility;
@@ -188,6 +187,7 @@ public class Patient implements Comparable<Patient>, Serializable {
    * @return true if specified hospital is the same as the patient's 
 	 * {@link Patient#currentFacility}
    */
+	// TODO
   public boolean isInThisHospital(Hospital hospitalToCheck) throws WrongHospitalException {
     if (getCurrentFacility() == null) {
       throw new WrongHospitalException("Patient has not visited any hospital yet!");
