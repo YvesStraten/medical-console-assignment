@@ -291,7 +291,9 @@ public class MedicalConsole {
       MedicalFacility facilityToBeDeleted =
           service.getMedicalFacilities().get(facilityToDelete - 1);
       if (facilityToBeDeleted instanceof Hospital) {
-				Hospital hospitalToBeDeleted = (Hospital) facilityToBeDeleted;
+				Hospital hospitalToBeDeleted = 
+				(Hospital) facilityToBeDeleted;
+
         int numProcedures = ((Hospital) hospitalToBeDeleted)
 				.getProcedures()
 				.size();
