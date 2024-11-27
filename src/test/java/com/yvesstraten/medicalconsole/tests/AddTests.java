@@ -47,15 +47,28 @@ public class AddTests extends MedicalConsoleTest {
    * @throws NoHospitalsAvailableException when a hospital is not successfully added
    */
   @Test
-  public void addingProcedureWithHospital() throws NoHospitalsAvailableException {
-    ArrayListSet<Procedure> expectedProcedures = new ArrayListSet<Procedure>();
-    expectedProcedures.add(new Procedure(1, "TestName", "TestDesc", true, 300));
+  public void addingProcedureWithHospital()
+	  throws NoHospitalsAvailableException {
+    ArrayListSet<Procedure> expectedProcedures = 
+		new ArrayListSet<Procedure>();
+    expectedProcedures.add(
+			new Procedure(
+				1,
+				"TestName",
+				"TestDesc",
+				true,
+				300
+			)
+		);
 
-    ArrayListSet<MedicalFacility> facilities = new ArrayListSet<MedicalFacility>();
+    ArrayListSet<MedicalFacility> facilities = 
+		new ArrayListSet<MedicalFacility>();
     facilities.add(new Hospital(0, "Test hospital"));
 
     HealthService testService =
-        new HealthService("Test service", facilities, new ArrayListSet<Patient>());
+        new HealthService("Test service",
+			facilities,
+			new ArrayListSet<Patient>());
 
     Scanner mockInput = new Scanner("1\nTestName\nTestDesc\nyes\n300.0\n");
 
@@ -70,7 +83,8 @@ public class AddTests extends MedicalConsoleTest {
     MedicalConsole.addHospital(testService, new Scanner("TestHospital\n"));
     List<Hospital> newHospitalList = testService.getHospitals().toList();
     assertEquals(
-        new Hospital(testService.getIdDispenser().getLastDispensedId(), "TestHospital"),
+        new Hospital(testService.getIdDispenser().getLastDispensedId(), 
+				"TestHospital"),
         newHospitalList.get(newHospitalList.size() - 1));
   }
 

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Locale.Builder;
 import java.util.stream.Stream;
 
 /**
@@ -132,8 +133,11 @@ public class MedicalConsole {
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
   public static void addPatient(HealthService service, Scanner stdin) {
-    String name = Input.getString("What is the name of the patient?", stdin);
-    boolean isPrivate = Input.getYesNoInput("Is the patient private? [y/n]", stdin);
+    String name = Input.getString("What is the name of the patient?", 
+			stdin);
+    boolean isPrivate = Input
+		.getYesNoInput("Is the patient private? [y/n]", 
+			stdin);
 
     service.initializePatient(name, isPrivate);
     System.out.println("Successfully added new patient!");
@@ -145,7 +149,8 @@ public class MedicalConsole {
    *
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
-   * @throws NoHospitalsAvailableException if no hospitals are managed by the service
+   * @throws NoHospitalsAvailableException if no hospitals 
+	 * are managed by the service
    */
   public static void addProcedure(HealthService service, Scanner stdin)
       throws NoHospitalsAvailableException {
@@ -153,27 +158,40 @@ public class MedicalConsole {
       throw new NoHospitalsAvailableException();
     }
 
-    List<Hospital> filteredHospitals = service.getHospitals().toList();
+    List<Hospital> filteredHospitals = service
+		.getHospitals()
+		.toList();
+
     listObjectGroup(service.getHospitals(), "hospitals");
 
     int chosenHospital =
         Input.chooseOption(
-            "Please select a hospital to add the procedure to:", filteredHospitals.size(), stdin);
+            "Please select a hospital to add the procedure to:",
+			filteredHospitals.size(),
+			stdin);
 
     Hospital hospital = filteredHospitals.get(chosenHospital - 1);
 
     String name = Input.getString("Name of procedure?", stdin);
     String description = Input.getString("Description of procedure?", stdin);
-    boolean isElective = Input.getYesNoInput("Is the procedure elective? [y/n]", stdin);
-    double basicCost = Input.getDouble("What is the basic cost of the procedure?", stdin);
+    boolean isElective = Input
+		.getYesNoInput("Is the procedure elective? [y/n]", 
+			stdin);
+    double basicCost = Input
+		.getDouble("What is the basic cost of the procedure?",
+			stdin);
 
-    service.initializeProcedure(hospital, name, description, isElective, basicCost);
+    service.initializeProcedure(hospital,
+			name,
+			description,
+			isElective,
+			basicCost);
     System.out.println("Added procedure successfully!");
     System.out.println();
   }
 
   /**
-   * Control flow for when a user wishes to add an object the service. Possible objects are:
+   * Control flow for when a user wishes to add an object the service. Possibilities:
    *
    * <ul>
    *   <li>Medical facility
@@ -244,7 +262,9 @@ public class MedicalConsole {
 
     if (numPatients != 0) {
       int patientToRemove =
-          Input.chooseOption("Which patient would you like to remove?", numPatients, stdin);
+          Input.chooseOption("Which patient would you like to remove?", 
+				numPatients,
+				stdin);
       service.deletePatient(patientToRemove - 1);
       System.out.println("Removed patient successfully!");
     }
@@ -262,11 +282,18 @@ public class MedicalConsole {
 
     if (numFacilities != 0) {
       int facilityToDelete =
-          Input.chooseOption("Which facility would you like to delete?", numFacilities, stdin);
+          Input.chooseOption("Which facility would you like to delete?",
+				numFacilities,
+				stdin);
+
       MedicalFacility facilityToBeDeleted =
           service.getMedicalFacilities().get(facilityToDelete - 1);
       if (facilityToBeDeleted instanceof Hospital) {
-        int numProcedures = ((Hospital) facilityToBeDeleted).getProcedures().size();
+				Hospital hospitalToBeDeleted = (Hospital) facilityToBeDeleted;
+        int numProcedures = ((Hospital) hospitalToBeDeleted)
+				.getProcedures()
+				.size();
+
         if (numProcedures > 0) {
           String prompt =
               "This hospital can perform "
@@ -294,7 +321,13 @@ public class MedicalConsole {
     HashMap<Procedure, Hospital> map = new HashMap<Procedure, Hospital>();
 
     for (Hospital hospital : hospitals) {
+<<<<<<< Updated upstream
       for (Procedure procedure : hospital.getProcedures()) map.put(procedure, hospital);
+=======
+      for (Procedure procedure : hospital.getProcedures()) {
+				map.put(procedure, hospital);
+			}
+>>>>>>> Stashed changes
     }
 
     listObjectGroup(map.keySet().stream(), "procedures");
@@ -305,7 +338,8 @@ public class MedicalConsole {
           Input.chooseOption("Choose a procedure to remove:", map.keySet().size(), stdin);
 
       int i = 0;
-      Iterator<Entry<Procedure, Hospital>> iterator = map.entrySet().iterator();
+      Iterator<Entry<Procedure, Hospital>> iterator = 
+			map.entrySet().iterator();
       Hospital hospitalToAffect = null;
       Procedure procedureToDelete = null;
 
@@ -324,8 +358,9 @@ public class MedicalConsole {
   }
 
   /**
-   * Deletes an object from the provided HealthService this object can either be a {@link
-   * MedicalFacility}, {@link Patient} or {@link Procedure}.
+   * Deletes an object from the provided HealthService this object can either be a 
+	 * {@linkMedicalFacility}, {@link Patient}
+	 * or {@link Procedure}.
    *
    * @param service <code>HealthService</code> object to delete an object from
    * @param stdin <code>Scanner</code> object which preferably iterates over <code>System.in</code>
@@ -357,10 +392,7 @@ public class MedicalConsole {
    * @param <T> type of objects present in the stream
    * @param stream stream to get details from
    * @param name name that should be included in final string
-   * @return String containing details of objects in the stream This String always has the following
-   *     format: <code>The following <strong>name</strong> are available \n details of object</code>
-   *     unless there are not items present, in this case, <code>
-   *     There are no <strong>name</strong> for this service \n</code>
+   * @return String containing details of objects in the stream
    */
   public static <T> String getObjectStreamDetails(Stream<T> stream, String name) {
     // Using .count() is a terminal operation,
@@ -399,7 +431,9 @@ public class MedicalConsole {
    */
   public static void listObjects(HealthService service, Scanner stdin) {
     System.out.println("Which type of object would you like to see listed?");
-    String[] options = new String[] {"Medical Facilities", "Patients", "Procedures"};
+    String[] options = new String[] {"Medical Facilities", 
+			"Patients",
+			"Procedures"};
     System.out.println(Format.enumeratedContent(options));
 
     int chosenOption = Input.chooseOption("Please select a type:", options.length, stdin);
@@ -450,11 +484,18 @@ public class MedicalConsole {
           chosenPatientObject.getName()
               + " successfully visited "
               + chosenFacilityObject.getName());
-    else
-      System.out.println(
-      chosenPatientObject.getName() 
-			+ " failed to visit " 
-			+ chosenFacilityObject.getName());
+    else {
+			StringBuilder builder = new StringBuilder(chosenPatientObject.getName());
+			if(chosenFacilityObject instanceof Hospital){
+				builder.append(" did not get admitted to ");
+			} else if(chosenFacilityObject instanceof Clinic){
+				builder.append(" was registered in ");
+			}
+
+			builder.append(chosenFacilityObject.getName());
+			System.out.println(builder.toString());
+		}
+
   }
 
   /**
@@ -539,15 +580,29 @@ public class MedicalConsole {
         switch (selectedCriteria) {
           case 1:
             listObjectGroup(
+<<<<<<< Updated upstream
                 facilities.sorted(new MedicalFacilitiesComparators.SortByName()), "facilities");
+=======
+                facilities.sorted(
+						new 
+						MedicalFacilitiesComparators
+						.SortByName()), 
+					"facilities");
+>>>>>>> Stashed changes
             break;
           case 2:
             listObjectGroup(
-                facilities.sorted(new MedicalFacilitiesComparators.SortByHospital()), "facilities");
+                facilities.sorted(
+									new 
+						MedicalFacilitiesComparators
+						.SortByHospital()),
+					"facilities");
             break;
           case 3:
             listObjectGroup(
-                facilities.sorted(new MedicalFacilitiesComparators.SortByClinic()), "facilities");
+                facilities.sorted(
+						new MedicalFacilitiesComparators
+						.SortByClinic()), "facilities");
             break;
         }
         break;
@@ -557,16 +612,24 @@ public class MedicalConsole {
         System.out.println(Format.enumeratedContent(sortingCriteria));
         selectedCriteria =
             Input.chooseOption(
-                "Which criteria would you like to sort them by?", sortingCriteria.length, stdin);
+                "Which criteria would you like to sort them by?",
+				sortingCriteria.length,
+				stdin);
         Stream<Patient> patients = service.getPatientsStream();
 
         switch (selectedCriteria) {
           // Invoke comparators according to input
           case 1:
-            listObjectGroup(patients.sorted(new PatientComparators.SortByName()), "patients");
+            listObjectGroup(patients.sorted(
+					new PatientComparators
+					.SortByName()),
+					"patients");
             break;
           case 2:
-            listObjectGroup(patients.sorted(new PatientComparators.SortByBalance()), "patients");
+            listObjectGroup(patients.sorted(
+					new PatientComparators
+					.SortByBalance()),
+					"patients");
             break;
         }
 
@@ -577,26 +640,41 @@ public class MedicalConsole {
         System.out.println(Format.enumeratedContent(sortingCriteria));
         selectedCriteria =
             Input.chooseOption(
-                "Which criteria would you like to sort them by?", sortingCriteria.length, stdin);
+                "Which criteria would you like to sort them by?", 
+				sortingCriteria.length,
+				stdin);
         Stream<Procedure> procedures =
-            service.getHospitals().flatMap(hospital -> hospital.getProceduresStream());
+            service.getHospitals().flatMap(hospital -> 
+				hospital.getProceduresStream());
 
         switch (selectedCriteria) {
           // Invoke comparators according to input
           case 1:
-            listObjectGroup(procedures.sorted(new ProcedureComparators.SortByName()), "procedures");
+            listObjectGroup(procedures.sorted(
+					new ProcedureComparators
+					.SortByName()),
+					"procedures");
             break;
           case 2:
             listObjectGroup(
-                procedures.sorted(new ProcedureComparators.SortByPrice().reversed()), "procedures");
+                procedures.sorted(
+						new ProcedureComparators
+						.SortByPrice()
+						.reversed()), "procedures");
             break;
           case 3:
             listObjectGroup(
-                procedures.sorted(new ProcedureComparators.SortByElective()), "procedures");
+                procedures.sorted(
+						new ProcedureComparators
+						.SortByElective()),
+					"procedures");
             break;
           case 4:
             listObjectGroup(
-                procedures.sorted(new ProcedureComparators.SortByElective().reversed()),
+                procedures.sorted(
+						new ProcedureComparators
+						.SortByElective()
+						.reversed()),
                 "procedures");
             break;
         }
@@ -609,10 +687,9 @@ public class MedicalConsole {
    *
    * @param toEdit object that should be edited
    * @param stdin standard in source preferably <code>System.in</code>
-   * @throws ClassIsNotEditableException if the class has no {@link Editable} annotation
+   * @throws ClassIsNotEditableException if the class has no {@link Editable}
    */
   public static void attemptEdit(Object toEdit, Scanner stdin) throws ClassIsNotEditableException {
-    System.out.println("Attempting edit");
     Class<?> selectedClass = toEdit.getClass();
     // All fields, including private ones
     List<Field> fields = new ArrayList<Field>();
@@ -650,7 +727,10 @@ public class MedicalConsole {
         fieldNameChars[0] = Character.toUpperCase(editableField.getName().charAt(0));
         // Standard way to name setters
         String setterName =
-            editable.setter().isEmpty() ? "set" + new String(fieldNameChars) : editable.setter();
+            editable
+							.setter()
+							.isEmpty() ? "set" + new String(fieldNameChars) 
+						: editable.setter();
 
         boolean validInput = false;
 
@@ -664,7 +744,8 @@ public class MedicalConsole {
               messageBuilder
                   .append("Please input new value to set for")
                   .append(" ")
-                  .append(editableField.getName());
+                  .append(editableField.getName())
+									.append(":");
             } else {
               // Annotation was provided a message to output
               messageBuilder.append(editable.message());
@@ -725,12 +806,21 @@ public class MedicalConsole {
           attemptEdit(service, stdin);
           break;
         case 2:
-          String clinics = getObjectStreamDetails(service.getClinics(), "clinics");
+          String clinics = getObjectStreamDetails(service.getClinics(),
+					"clinics");
           System.out.println(Format.enumeratedContent(clinics, 1));
           int clinicToEdit =
               Input.chooseOption(
+<<<<<<< Updated upstream
                   "Please select a clinic to edit:", service.getClinics().toList().size(), stdin);
           attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), stdin);
+=======
+                  "Please select a clinic to edit:",
+					service.getClinics().toList().size(), 
+					stdin);
+          attemptEdit(service.getClinics().toList().get(clinicToEdit - 1), 
+					stdin);
+>>>>>>> Stashed changes
           break;
         case 3:
           String hospitals = getObjectStreamDetails(service.getHospitals(), "hospitals");
@@ -740,7 +830,15 @@ public class MedicalConsole {
                   "Please select a hospital to edit:",
                   service.getHospitals().toList().size(),
                   stdin);
+<<<<<<< Updated upstream
           attemptEdit(service.getHospitals().toList().get(hospitalToEdit - 1), stdin);
+=======
+          attemptEdit(service
+							.getHospitals()
+							.toList()
+							.get(hospitalToEdit - 1), 
+					stdin);
+>>>>>>> Stashed changes
           break;
         case 4:
           String patients = getObjectStreamDetails(service.getPatientsStream(), "patients");
@@ -752,8 +850,18 @@ public class MedicalConsole {
           break;
         case 5:
           List<Procedure> proceduresList =
+<<<<<<< Updated upstream
               service.getHospitals().flatMap(hospital -> hospital.getProceduresStream()).toList();
           String procedures = getObjectStreamDetails(proceduresList.stream(), "patients");
+=======
+              service.getHospitals()
+								.flatMap(hospital -> 
+													hospital
+													.getProceduresStream())
+							.toList();
+          String procedures = getObjectStreamDetails(proceduresList.stream(),
+					"patients");
+>>>>>>> Stashed changes
           System.out.println(Format.enumeratedContent(procedures, 1));
           System.out.print("");
           int procedureToEdit =
@@ -817,7 +925,8 @@ public class MedicalConsole {
     // Adding starting objects
     Hospital hospital = new Hospital(idDispenser.next(), "TestHospital");
     Clinic clinic = new Clinic(idDispenser.next(), "Croix", 1000, 0.3);
-    Patient patient = new Patient(idDispenser.next(), "Mark", false);
+    Patient patient1 = new Patient(idDispenser.next(), "Mark", false, 1000);
+    Patient patient2 = new Patient(idDispenser.next(), "John", true);
     service.addProcedure(
         hospital,
         new Procedure(
@@ -836,7 +945,8 @@ public class MedicalConsole {
 			      300));
     service.addMedicalFacility(hospital);
     service.addMedicalFacility(clinic);
-    service.addPatient(patient);
+    service.addPatient(patient1);
+    service.addPatient(patient2);
 
     return service;
   }

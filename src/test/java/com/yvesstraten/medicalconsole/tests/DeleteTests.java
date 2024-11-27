@@ -59,6 +59,9 @@ public class DeleteTests extends MedicalConsoleTest {
     MedicalConsole.deleteProcedure(testService, mockInput);
     assertEquals(
         priorSize - 1,
-        testService.getHospitals().flatMap(Hospital::getProceduresStream).toList().size());
+        testService.getHospitals()
+			.flatMap(Hospital::getProceduresStream)
+			.toList()
+			.size());
   }
 }

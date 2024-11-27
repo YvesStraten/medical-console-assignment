@@ -18,7 +18,7 @@ public class ProcedureTests {
   public ProcedureTests() {}
 
   /**
-   * Test factory for all tests related to the sorting of {@link Procedure} objects
+   * Test factory for all tests related to the sorting of {@link Procedure}
    *
    * @return stream of tests
    */
@@ -50,6 +50,9 @@ public class ProcedureTests {
                 () ->
                     assertEquals(
                         test.getExpected(),
-                        procedures.stream().sorted(test.getComparator()).toList())));
+                        procedures
+					              .stream()
+					              .sorted(test.getComparator())
+					              .toList())));
   }
 }

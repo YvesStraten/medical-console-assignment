@@ -72,15 +72,21 @@ public class Clinic extends MedicalFacility {
    * @param gapPercent - gapPercent to set
    */
   public void setGapPercent(double gapPercent) {
-    this.gapPercent = gapPercent;
+    if (gapPercent > 1) {
+      // Percentage in non-decimal format, e.g 3%.
+      gapPercent /= 100;
+    }
+
+		this.gapPercent = gapPercent;
   }
 
   /**
    * Make a patient visit this facility
    *
    * @param pat patient that will visit
-   * @return true if patient has already visited this clinic and the appropriate cost has been added
-   *     to their balance according to these criteria:
+   * @return true if patient has already visited this clinic and the
+	 * cost has been added to their balance according
+	 * to these criteria:
    *     <ul>
    *       <li>Private patient - only fee
    *       <li>Public patient - fee * gapPercent

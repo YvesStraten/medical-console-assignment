@@ -22,8 +22,8 @@ public class Input {
   public Input() {
     throw new UnsupportedOperationException(
         "This class contains a collection of helper functions to" 
-				+ " aid in parsing user input, it is"
-        + " not meant to be constructed!");
+			+ " aid in parsing user input, it is" 
+			+ " not meant to be constructed!");
   }
 
   /**
@@ -59,7 +59,7 @@ public class Input {
       } catch (InvalidOptionException e) {
         System.err.println(e.getMessage());
       }     
-		} while (true);
+	  } while (true);
   }
 
   /**

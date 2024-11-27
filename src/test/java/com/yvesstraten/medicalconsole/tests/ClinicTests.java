@@ -47,4 +47,17 @@ public class ClinicTests {
     clinic.visit(publicPatient);
     assertEquals(publicPatient.getBalance(), fee + (fee * gapPercent));
   }
+
+
+  /** This test tests whether the clinic supports gap percents in decimal and integer format */
+	@Test 
+	public void settingIntegerAsGapPercentConverts(){
+    Clinic clinic = new Clinic(0, "Test clinic", 300, 1.2);
+		clinic.setGapPercent(50);
+		assertEquals(0.5, clinic.getGapPercent());
+		clinic.setGapPercent(1);
+		assertEquals(1, clinic.getGapPercent());
+		clinic.setGapPercent(0.3);
+		assertEquals(0.3, clinic.getGapPercent());
+	}
 }

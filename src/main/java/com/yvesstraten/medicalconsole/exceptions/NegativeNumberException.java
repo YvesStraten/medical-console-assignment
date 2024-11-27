@@ -1,15 +1,15 @@
 package com.yvesstraten.medicalconsole.exceptions;
 
 /** 
- * This exception is thrown when a negative number, both decimal and integer is input, 
- * in methods which do not support it 
+ * This exception is thrown when a negative number, both decimal 
+ * and integer is input, in methods which do not support it 
  *
  * @author Yves Straten e2400068
 */
 public class NegativeNumberException extends Exception {
 	/** Types of numbers */
   public enum NumTypes {
-		/** Integer */
+    /** Integer */
     INTEGER,
 		/** Decimal */
     DECIMAL

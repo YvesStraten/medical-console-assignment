@@ -325,7 +325,11 @@ public class HealthService implements Iterable<Integer> {
    * @param cost basic cost of procedure
    */
   public void initializeProcedure(
-      Hospital hospital, String name, String description, boolean isElective, double cost) {
+      Hospital hospital, 
+		  String name,
+		  String description,
+		  boolean isElective,
+		  double cost) {
     Procedure procedureToAdd =
         new Procedure(iterator().next(), 
 				name, 

@@ -47,14 +47,19 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   public void invalidOptionShouldThrow(int selectedOption, int maxOption) {
     InvalidOptionException e =
         assertThrows(
-            InvalidOptionException.class, () -> Input.checkOption(selectedOption, maxOption));
+            InvalidOptionException.class, 
+		        () -> Input.checkOption(selectedOption, maxOption));
 
     assertEquals(
-        String.format("Invalid option please select option [%d-%d]", 1, maxOption), e.getMessage());
+        String.format("Invalid option please select option [%d-%d]",
+				1,
+				maxOption),
+			e.getMessage());
   }
 
   /**
-   * This method provides the needed arguments for {@link #invalidOptionShouldThrow(int, int)} test
+   * This method provides the needed arguments for 
+	 * {@link #invalidOptionShouldThrow(int, int)} test
    *
    * @return stream of arguments
    */
@@ -110,8 +115,8 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   }
 
   /**
-   * This test tests that an empty stream returns an appropriate message when using {@link
-   * MedicalConsole#getObjectStreamDetails(Stream, String)}
+   * This test tests that an empty stream returns an appropriate message when using 
+	 * {@link MedicalConsole#getObjectStreamDetails(Stream, String)}
    */
   @Test
   public void emptyStreamShouldReturnNoDetailsString() {
@@ -123,8 +128,7 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 
   /**
    * This test tests that a filled stream returns an appropriate message when using {@link
-   * MedicalConsole#getObjectStreamDetails(Stream, String)}, that is by combining the toString() of
-   * each element in the stream
+   * MedicalConsole#getObjectStreamDetails(Stream, String)}
    *
    * @param <T> type of list
    * @param listToTest list that should be used for testing
@@ -132,10 +136,16 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
    */
   @ParameterizedTest
   @MethodSource("objectStreams")
-  public <T> void filledStreamShouldReturnDetailsString(List<T> listToTest, String name) {
+  public <T> void filledStreamShouldReturnDetailsString(List<T> listToTest,
+		String name) {
     StringBuilder builder = new StringBuilder("The following " + name + " are available \n");
 
-    listToTest.stream().forEach((item) -> builder.append(item.toString()).append("\n"));
+    listToTest
+			.stream()
+			.forEach((item) -> 
+				builder
+				.append(item.toString())
+				.append("\n"));
     String result = MedicalConsole.getObjectStreamDetails(listToTest.stream(), name);
 
     assertEquals(builder.toString(), result);
@@ -154,8 +164,8 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   }
 
   /**
-   * This test tests whether trying to get the cost of an operation returns appropriate results
-   * according to conditions
+   * This test tests whether trying to get the cost of an operation returns 
+	 * appropriate results
    *
    * @param patient patient to test with
    * @param procedure procedure to test with
@@ -172,7 +182,7 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 
   /**
    * This method provides the needed arguments for {@link
-   * #gettingOperationCostReturnsProperResults(Patient, Procedure, double)} test
+   * #gettingOperationCostReturnsProperResults(Patient, Procedure, double)}
    *
    * @return stream of arguments
    */

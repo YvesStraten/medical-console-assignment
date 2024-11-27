@@ -181,14 +181,19 @@ public class Patient implements Comparable<Patient>, Serializable {
   /**
    * Check whether this patient is currently in the specified hospital
    *
-   * @param hospitalToCheck Hospital object to check with this patient's current facility
-   * @throws WrongHospitalException if this patient is currently not in any hospital
-   * @return true if specified hospital is the same as the patient's {@link Patient#currentFacility}
+   * @param hospitalToCheck Hospital object to check with this 
+	 * patient's current facility
+   * @throws WrongHospitalException if this patient is 
+	 * currently not in any hospital
+   * @return true if specified hospital is the same as the patient's 
+	 * {@link Patient#currentFacility}
    */
   public boolean isInThisHospital(Hospital hospitalToCheck) throws WrongHospitalException {
-    if (getCurrentFacility() == null || !getCurrentFacility().equals(hospitalToCheck)) {
+    if (getCurrentFacility() == null) {
       throw new WrongHospitalException("Patient has not visited any hospital yet!");
-    }
+    } else if(!getCurrentFacility().equals(hospitalToCheck)){
+      throw new WrongHospitalException("Patient is not in this hospital!");
+		}
 
     return true;
   }
