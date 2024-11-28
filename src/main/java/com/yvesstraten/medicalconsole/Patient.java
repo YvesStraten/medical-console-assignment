@@ -187,7 +187,6 @@ public class Patient implements Comparable<Patient>, Serializable {
    * @return true if specified hospital is the same as the patient's 
 	 * {@link Patient#currentFacility}
    */
-	// TODO
   public boolean isInThisHospital(Hospital hospitalToCheck) throws WrongHospitalException {
     if (getCurrentFacility() == null) {
       throw new WrongHospitalException("Patient has not visited any hospital yet!");
