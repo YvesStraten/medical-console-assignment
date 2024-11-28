@@ -20,9 +20,9 @@ public class SortingTest<T> {
   /**
    * Constructs a sorting test
    *
-   * @param name - name of test
-   * @param comparator - comparator to use
-   * @param expected - expected result
+   * @param name name of test
+   * @param comparator comparator to use
+   * @param expected expected result
    */
   public SortingTest(String name, Comparator<T> comparator, List<T> expected) {
     setName(name);
@@ -60,7 +60,7 @@ public class SortingTest<T> {
   /**
    * Set name of test
    *
-   * @param name - name of test
+   * @param name name of test
    */
   public void setName(String name) {
     this.name = name;
@@ -69,7 +69,7 @@ public class SortingTest<T> {
   /**
    * Set comparator to use in this test
    *
-   * @param comparator - comparator to use
+   * @param comparator comparator to use
    */
   public void setComparator(Comparator<T> comparator) {
     this.comparator = comparator;
@@ -78,7 +78,7 @@ public class SortingTest<T> {
   /**
    * Set expected list output of test
    *
-   * @param expected - list representing expected output
+   * @param expected list representing expected output
    */
   public void setExpected(List<T> expected) {
     this.expected = expected;

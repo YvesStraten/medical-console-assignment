@@ -25,9 +25,9 @@ public class Hospital extends MedicalFacility {
   /**
    * Constructs this hospital
    *
-   * @param id - id to give this hospital
-   * @param name - name to give this hospital
-   * @param procedures - procedures that this hospital offers
+   * @param id id to give this hospital
+   * @param name name to give this hospital
+   * @param procedures procedures that this hospital offers
    */
   public Hospital(final int id, String name, ArrayListSet<Procedure> procedures) {
     super(id, name);
@@ -39,8 +39,8 @@ public class Hospital extends MedicalFacility {
   /**
    * Constructs this hospital
    *
-   * @param id - id to give this hospital
-   * @param name - name to give this hospital
+   * @param id id to give this hospital
+   * @param name name to give this hospital
    */
   public Hospital(int id, String name) {
     this(id, name, new ArrayListSet<Procedure>());
@@ -85,7 +85,7 @@ public class Hospital extends MedicalFacility {
   /**
    * Set the probability of admission of this hospital
    *
-   * @param probAdmit - probability to set
+   * @param probAdmit probability to set
    */
   public void setProbAdmit(double probAdmit) {
     this.probAdmit = probAdmit;
@@ -94,7 +94,7 @@ public class Hospital extends MedicalFacility {
   /**
    * Set procedure offered by this hospital
    *
-   * @param procedures - procedures to set
+   * @param procedures procedures to set
    */
   public void setProcedures(ArrayListSet<Procedure> procedures) {
     this.procedures = procedures;
@@ -103,7 +103,7 @@ public class Hospital extends MedicalFacility {
   /**
    * Removes a procedure from this hospital
    *
-   * @param toRemove - procedure to remove
+   * @param toRemove procedure to remove
    */
   public void removeProcedure(Procedure toRemove) {
     getProcedures().remove(toRemove);
@@ -112,7 +112,7 @@ public class Hospital extends MedicalFacility {
   /**
    * Makes a patient visit this hospital, setting the current facility
    *
-   * @param pat - Patient that will visit
+   * @param pat Patient that will visit
    * @return true if random num > probability of admission false otherwise
    */
   public boolean visit(Patient pat) {

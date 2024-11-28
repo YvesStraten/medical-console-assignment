@@ -21,10 +21,10 @@ public class Clinic extends MedicalFacility {
   /**
    * Constructs this clinic
    *
-   * @param id - id to give this clinic
-   * @param name - name to give this clinic
-   * @param fee - base fee to give this clinic
-   * @param gapPercent - gap percentage to give this clinic
+   * @param id id to give this clinic
+   * @param name name to give this clinic
+   * @param fee base fee to give this clinic
+   * @param gapPercent gap percentage to give this clinic
    */
   public Clinic(final int id, String name, double fee, double gapPercent) {
     super(id, name);
@@ -53,7 +53,7 @@ public class Clinic extends MedicalFacility {
   /**
    * Setter for fee
    *
-   * @param fee - fee to set
+   * @param fee fee to set
    */
   public void setFee(double fee) {
     this.fee = fee;
@@ -71,7 +71,7 @@ public class Clinic extends MedicalFacility {
   /**
    * Setter for gapPercent
    *
-   * @param gapPercent - gapPercent to set
+   * @param gapPercent gapPercent to set
    */
   public void setGapPercent(double gapPercent) {
     if (gapPercent > 1) {
@@ -82,7 +82,6 @@ public class Clinic extends MedicalFacility {
 		this.gapPercent = gapPercent;
   }
 
-	// TODO
   /**
    * Make a patient visit this facility
    *

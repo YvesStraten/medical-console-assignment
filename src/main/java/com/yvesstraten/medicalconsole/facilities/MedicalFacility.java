@@ -42,7 +42,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>,
   /**
    * Retrieves the id of this medical facility
    *
-   * @return id - id of this facility
+   * @return id id of this facility
    */
   public int getId() {
     return this.id;
@@ -51,7 +51,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>,
   /**
    * Retrieves the name of this medical facility
    *
-   * @return name - name of this facility
+   * @return name name of this facility
    */
   public String getName() {
     return this.name;
@@ -60,7 +60,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>,
   /**
    * Sets the name of this medical facility
    *
-   * @param name - name to set
+   * @param name name to set
    */
   public void setName(String name) {
     this.name = name;
@@ -69,7 +69,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>,
   /**
    * Make a patient visit this medical facility
    *
-   * @param pat - patient that visits
+   * @param pat patient that visits
    * @return true if visit was successful, false otherwise
    */
   public abstract boolean visit(Patient pat);
@@ -87,7 +87,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>,
   /**
    * Compares this medical facility to another object
    *
-   * @param obj - object to compare with
+   * @param obj object to compare with
    * @return true if object is the same false otherwise
    */
   @Override
@@ -106,7 +106,7 @@ public abstract class MedicalFacility implements Comparable<MedicalFacility>,
    * Compares this MedicalFacility to another The natural order of medical facilities is by their
    * ids.
    *
-   * @param o - medical facility to compare
+   * @param o medical facility to compare
    * @return 0 if same id, 1 if larger id, -1 otherwise
    */
   @Override

@@ -210,7 +210,7 @@ public class Patient implements Comparable<Patient>, Serializable {
   /**
    * Compares this patient to another. The natural order of patients is by their ids.
    *
-   * @param oPatient - Patient to compare to
+   * @param oPatient Patient to compare to
    * @return 0 if same id, 1 if larger id, -1 if smaller id
    */
   public int compareTo(Patient oPatient) {
@@ -223,7 +223,7 @@ public class Patient implements Comparable<Patient>, Serializable {
    *
    * <p>Patients are equal if and only if their ids are the same
    *
-   * @param obj - Object to compare
+   * @param obj Object to compare
    * @return true if this object is the same as the obj argument
    */
   @Override

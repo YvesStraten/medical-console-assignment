@@ -12,7 +12,7 @@ public class WrongHospitalException extends Exception {
   /**
    * Construct this exception with an error message
    *
-   * @param s - error message
+   * @param s error message
    */
   public WrongHospitalException(String s) {
     super(s);
