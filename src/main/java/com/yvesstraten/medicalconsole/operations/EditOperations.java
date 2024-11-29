@@ -11,7 +11,18 @@ import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Input;
 import com.yvesstraten.medicalconsole.exceptions.ClassIsNotEditableException;
 
+/** This class holds a collection of helper functions for editing */
 public class EditOperations {
+  /** 
+   * Unsupported constructor 
+   * @throws UnsupportedOperationException always 
+  */
+  public EditOperations(){
+    throw new UnsupportedOperationException(
+      "This class is not meant to be constructed"
+    );
+  }
+
   /**
    * Helper function to aid the application in editing objects in the service in-place
    *
@@ -19,7 +30,8 @@ public class EditOperations {
    * @param stdin standard in source preferably <code>System.in</code>
    * @throws ClassIsNotEditableException if the class has no {@link Editable}
    */
-  public static void attemptEdit(Object toEdit, Scanner stdin) throws ClassIsNotEditableException {
+  public static void attemptEdit(Object toEdit, Scanner stdin) 
+  throws ClassIsNotEditableException {
     Class<?> selectedClass = toEdit.getClass();
     // All fields, including private ones
     List<Field> fields = new ArrayList<Field>();
@@ -45,10 +57,10 @@ public class EditOperations {
 
     List<Field> editableFiltered =
         fields
-		.stream()
-		.filter(field -> 
-			field.getAnnotation(Editable.class) != null)
-		.toList();
+    .stream()
+    .filter(field -> 
+      field.getAnnotation(Editable.class) != null)
+    .toList();
 
     if (editableFiltered.size() == 0) {
       // No Editable annotation was present
@@ -58,14 +70,23 @@ public class EditOperations {
         Editable editable = editableField.getAnnotation(Editable.class);
         // Field type
         Class<?> fieldType = editableField.getType();
-        char[] fieldNameChars = editableField.getName().toCharArray();
-        fieldNameChars[0] = Character.toUpperCase(editableField.getName().charAt(0));
+        char[] fieldNameChars = editableField
+        .getName()
+        .toCharArray();
+
+        fieldNameChars[0] = Character
+        .toUpperCase(editableField
+          .getName()
+          .charAt(0));
+
         // Standard way to name setters
         String setterName =
             editable
-							.setter()
-							.isEmpty() ? "set" + new String(fieldNameChars) 
-						: editable.setter();
+              .setter()
+              .isEmpty() 
+            ? "set" 
+              + new String(fieldNameChars) 
+            : editable.setter();
 
         boolean validInput = false;
 
@@ -80,7 +101,7 @@ public class EditOperations {
                   .append("Please input new value to set for")
                   .append(" ")
                   .append(editableField.getName())
-									.append(":");
+                  .append(":");
             } else {
               // Annotation was provided a message to output
               messageBuilder.append(editable.message());
@@ -89,7 +110,7 @@ public class EditOperations {
             String prompt = messageBuilder.toString();
 
             // Check the type of field, invoke the respective setter
-						// with name and appropriate input from the scanner
+            // with name and appropriate input from the scanner
             if (fieldType.equals(double.class)) {
               setter = selectedClass.getMethod(setterName, double.class);
               setter.invoke(toEdit, Input.getDouble(prompt, stdin));

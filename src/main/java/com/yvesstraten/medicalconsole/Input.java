@@ -22,8 +22,8 @@ public class Input {
   public Input() {
     throw new UnsupportedOperationException(
         "This class contains a collection of helper functions to" 
-			+ " aid in parsing user input, it is" 
-			+ " not meant to be constructed!");
+      + " aid in parsing user input, it is" 
+      + " not meant to be constructed!");
   }
 
   /**
@@ -34,7 +34,7 @@ public class Input {
    * @throws InvalidOptionException integer input is negative or more
    */
   public static void checkOption(int chosenOption, int maxOptions) 
-	throws InvalidOptionException {
+  throws InvalidOptionException {
     if (chosenOption < 0 || chosenOption > maxOptions) {
       throw new InvalidOptionException(maxOptions);
     }
@@ -49,7 +49,7 @@ public class Input {
    * @return chosen option
    */
   public static int chooseOption(String prompt, int maxOptions, 
-		Scanner stdin) {
+    Scanner stdin) {
     do {
       try {
         int chosenOption = Input.getInt(prompt, stdin);
@@ -59,7 +59,7 @@ public class Input {
       } catch (InvalidOptionException e) {
         System.err.println(e.getMessage());
       }     
-	  } while (true);
+    } while (true);
   }
 
   /**
@@ -108,7 +108,7 @@ public class Input {
    * @return entered decimal value
    */
   public static double getDouble(String prompt, Scanner stdin, 
-		boolean allowNegative) {
+    boolean allowNegative) {
     do {
       try {
         System.out.print(prompt + " ");
@@ -122,9 +122,9 @@ public class Input {
         stdin.nextLine();
         System.err.println("Invalid input, please input a number!");
       } catch (NegativeNumberException e){
-				stdin.nextLine(); 
-				System.err.println(e.getMessage());
-			}
+        stdin.nextLine(); 
+        System.err.println(e.getMessage());
+      }
     } while (true);
   }
 
@@ -161,9 +161,9 @@ public class Input {
         stdin.nextLine();
         System.err.println("Invalid Input! Please input a number!");
       } catch (NegativeNumberException e){
-				stdin.nextLine();
-				System.err.println(e.getMessage());
-			}
+        stdin.nextLine();
+        System.err.println(e.getMessage());
+      }
     } while (true);
   }
 

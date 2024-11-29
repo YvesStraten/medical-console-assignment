@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Yves Straten e2400068
  */
 public abstract class MedicalFacility implements Comparable<MedicalFacility>, 
-	Serializable {
+  Serializable {
   /** id of this medical facility */
   private final int id;
 

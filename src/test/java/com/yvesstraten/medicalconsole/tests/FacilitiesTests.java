@@ -29,7 +29,7 @@ public class FacilitiesTests extends MedicalConsoleTest {
 
   /**
    * This test tests whether medicalfacilities have the correct hashcode,
-	 * that is their ids are used
+     * that is their ids are used
    */
   @Test
   public void shouldBeSameHashCode() {

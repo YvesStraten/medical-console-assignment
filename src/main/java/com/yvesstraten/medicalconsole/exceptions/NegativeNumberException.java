@@ -7,17 +7,17 @@ package com.yvesstraten.medicalconsole.exceptions;
  * @author Yves Straten e2400068
 */
 public class NegativeNumberException extends Exception {
-	/** Types of numbers */
+  /** Types of numbers */
   public enum NumTypes {
     /** Integer */
     INTEGER,
-		/** Decimal */
+    /** Decimal */
     DECIMAL
   }
 
   /** Construct this exception with custom error message
-	 * @param type type of number
-	*/
+   * @param type type of number
+  */
   public NegativeNumberException(NumTypes type) {
     super("Wrong input! Please input a non-negative " + type.toString().toLowerCase() + "!");
   }
@@ -28,8 +28,8 @@ public class NegativeNumberException extends Exception {
   }
 
   /** Construct this exception with a custom error message
-	 * @param s custom message 
-	*/
+   * @param s custom message 
+  */
   public NegativeNumberException(String s) {
     super(s);
   }

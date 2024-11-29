@@ -43,15 +43,15 @@ public class PatientTests extends MedicalConsoleTest {
   @Test
   public void comparableTest() {
     Patient patient = new Patient(0,
-			"Mark",
-			false,
-			0.0,
-			new Clinic(2, "Victory", 300, 0.3));
+            "Mark",
+            false,
+            0.0,
+            new Clinic(2, "Victory", 300, 0.3));
     Patient patient2 = new Patient(1,
-			"Other",
-			false,
-			0.0,
-			new Clinic(3, "Victory", 300, 0.3));
+            "Other",
+            false,
+            0.0,
+            new Clinic(3, "Victory", 300, 0.3));
     patient2.setBalance(30.0);
 
     Patient[] patients = new Patient[] {patient2, patient};
@@ -70,15 +70,15 @@ public class PatientTests extends MedicalConsoleTest {
   @Test
   public void equalsTest() {
     Patient patient = new Patient(0,
-			"Mark",
-			false,
-			0.0,
-			new Clinic(2, "Victory", 300, 0.3));
+            "Mark",
+            false,
+            0.0,
+            new Clinic(2, "Victory", 300, 0.3));
     Patient patient2 = new Patient(1,
-			"Other",
-			false,
-			0.0,
-			new Clinic(3, "Victory", 300, 0.3));
+            "Other",
+            false,
+            0.0,
+            new Clinic(3, "Victory", 300, 0.3));
 
     assertTrue(patient.equals(patient));
     assertFalse(patient.equals(patient2));
@@ -99,9 +99,9 @@ public class PatientTests extends MedicalConsoleTest {
         Stream.of(
             new SortingTest<Patient>(
                 "Sort by name", 
-				        new PatientComparators
-				            .SortByName(),
-				        List.of(patient2, patient1)),
+                        new PatientComparators
+                            .SortByName(),
+                        List.of(patient2, patient1)),
             new SortingTest<Patient>(
                 "Sort by balance",
                 new PatientComparators.SortByBalance(),
@@ -115,9 +115,9 @@ public class PatientTests extends MedicalConsoleTest {
                     assertEquals(
                         test.getExpected(),
                         facilities
-					              .stream()
-					              .sorted(test
-						            .getComparator())
-					              .toList())));
+                                  .stream()
+                                  .sorted(test
+                                    .getComparator())
+                                  .toList())));
   }
 }

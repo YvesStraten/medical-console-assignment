@@ -36,7 +36,7 @@ public class EditTests extends MedicalConsoleTest {
 
   /**
    * This test tests that ClassIsNotEditableException 
-	 * is thrown when no {@link Editable} annotation is present
+     * is thrown when no {@link Editable} annotation is present
    */
   @Test
   public void attemptEditNoEditableThrows() {
@@ -45,12 +45,12 @@ public class EditTests extends MedicalConsoleTest {
     ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
     Scanner stdin = new Scanner(input);
     assertThrows(ClassIsNotEditableException.class, 
-		() -> EditOperations.attemptEdit(test, stdin));
+        () -> EditOperations.attemptEdit(test, stdin));
   }
 
   /**
-   * This test tests that a RuntimeException is thrown when the setter of an {@link Editable} field
-   * is wrong
+   * This test tests that a RuntimeException is thrown when the setter
+   * of an {@link Editable} field is wrong
    */
   @Test
   public void attemptEditWrongSetterThrows() {
@@ -66,7 +66,7 @@ public class EditTests extends MedicalConsoleTest {
     ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
     Scanner stdin = new Scanner(input);
     assertThrows(RuntimeException.class, 
-		() -> EditOperations.attemptEdit(test, stdin));
+        () -> EditOperations.attemptEdit(test, stdin));
   }
 
   /**
@@ -101,7 +101,7 @@ public class EditTests extends MedicalConsoleTest {
               Hospital toCompare = new Hospital(hospital.getId(), "Croix");
               toCompare.setProbAdmit(0.5);
               assertEquals(toCompare,
-						  hospital);
+                          hospital);
             }),
         dynamicTest(
             "Edit clinic",
@@ -110,7 +110,7 @@ public class EditTests extends MedicalConsoleTest {
               EditOperations.attemptEdit(clinic, scanners.get(2));
 
               assertEquals(new Clinic(clinic.getId(), "Croix", 300, 0.3),
-						clinic);
+                        clinic);
             }),
         dynamicTest(
             "Edit Patient",
@@ -119,7 +119,7 @@ public class EditTests extends MedicalConsoleTest {
               EditOperations.attemptEdit(patient, scanners.get(3));
 
               assertEquals(new Patient(patient.getId(), "Mark", true, 300),
-						patient);
+                        patient);
             }),
         dynamicTest(
             "Edit Procedure",
@@ -130,7 +130,7 @@ public class EditTests extends MedicalConsoleTest {
 
               assertEquals(
                   new Procedure(procedure.getId(), "TestProc", "TestDesc", true, 300),
-						procedure);
+                        procedure);
             }));
   }
 }

@@ -13,8 +13,8 @@ public class Clinic extends MedicalFacility {
   @Editable private double fee;
 
   /** The percentage, in decimal format, that is added the fee when
-	 * a public patient visits 
-	*/
+   * a public patient visits 
+  */
   @Editable(message = "What is the gap percentage?")
   private double gapPercent;
 
@@ -79,7 +79,7 @@ public class Clinic extends MedicalFacility {
       gapPercent /= 100;
     }
 
-		this.gapPercent = gapPercent;
+    this.gapPercent = gapPercent;
   }
 
   /**
@@ -87,8 +87,8 @@ public class Clinic extends MedicalFacility {
    *
    * @param pat patient that will visit
    * @return true if patient has already visited this clinic and the
-	 * cost has been added to their balance according
-	 * to these criteria:
+   * cost has been added to their balance according
+   * to these criteria:
    *     <ul>
    *       <li>Private patient - only fee
    *       <li>Public patient - fee * gapPercent

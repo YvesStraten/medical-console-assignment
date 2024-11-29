@@ -73,11 +73,11 @@ public class HealthService implements Iterable<Integer> {
     public boolean equals(Object other) {
       if (this == other) return true;
       else if (other instanceof SequentialIdDispenser){
-				SequentialIdDispenser dispenser = 
-					(SequentialIdDispenser) other;
-				return getLastDispensedId() == 
-				dispenser.getLastDispensedId();
-			}
+        SequentialIdDispenser dispenser = 
+          (SequentialIdDispenser) other;
+        return getLastDispensedId() == 
+        dispenser.getLastDispensedId();
+      }
 
       return false;
     }
@@ -117,8 +117,8 @@ public class HealthService implements Iterable<Integer> {
   }
 
   /** Alternate constructor for a HealthService object 
-	 * @param name name of service 
-	*/
+   * @param name name of service 
+  */
   public HealthService(String name) {
     this(
         name,
@@ -328,16 +328,16 @@ public class HealthService implements Iterable<Integer> {
    */
   public void initializeProcedure(
       Hospital hospital, 
-		  String name,
-		  String description,
-		  boolean isElective,
-		  double cost) {
+      String name,
+      String description,
+      boolean isElective,
+      double cost) {
     Procedure procedureToAdd =
         new Procedure(iterator().next(), 
-				name, 
-				description, 
-				isElective, 
-				cost);
+        name, 
+        description, 
+        isElective, 
+        cost);
 
     addProcedure(hospital, procedureToAdd);
   }
@@ -366,7 +366,7 @@ public class HealthService implements Iterable<Integer> {
    * String representation of this service
    *
    * @return string representation
-	*/
+  */
   @Override
   public String toString() {
     StringBuilder base =

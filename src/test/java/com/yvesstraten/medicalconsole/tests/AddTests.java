@@ -48,27 +48,27 @@ public class AddTests extends MedicalConsoleTest {
    */
   @Test
   public void addingProcedureWithHospital()
-	  throws NoHospitalsAvailableException {
+      throws NoHospitalsAvailableException {
     ArrayList<Procedure> expectedProcedures = 
-		new ArrayList<Procedure>();
+        new ArrayList<Procedure>();
     expectedProcedures.add(
-			new Procedure(
-				1,
-				"TestName",
-				"TestDesc",
-				true,
-				300
-			)
-		);
+            new Procedure(
+                1,
+                "TestName",
+                "TestDesc",
+                true,
+                300
+            )
+        );
 
     ArrayList<MedicalFacility> facilities = 
-		new ArrayList<MedicalFacility>();
+        new ArrayList<MedicalFacility>();
     facilities.add(new Hospital(0, "Test hospital"));
 
     HealthService testService =
         new HealthService("Test service",
-			facilities,
-			new ArrayList<Patient>());
+            facilities,
+            new ArrayList<Patient>());
 
     Scanner mockInput = new Scanner("1\nTestName\nTestDesc\nyes\n300.0\n");
 
@@ -84,7 +84,7 @@ public class AddTests extends MedicalConsoleTest {
     List<Hospital> newHospitalList = testService.getHospitals().toList();
     assertEquals(
         new Hospital(testService.getIdDispenser().getLastDispensedId(), 
-				"TestHospital"),
+                "TestHospital"),
         newHospitalList.get(newHospitalList.size() - 1));
   }
 

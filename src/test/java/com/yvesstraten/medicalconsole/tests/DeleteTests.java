@@ -54,7 +54,9 @@ public class DeleteTests extends MedicalConsoleTest {
   @Test
   public void deleteProcedureDeletes() {
     List<Procedure> procedures =
-        testService.getHospitals().flatMap(Hospital::getProceduresStream).toList();
+        testService.getHospitals()
+        .flatMap(Hospital::getProceduresStream)
+        .toList();
     int priorSize = procedures.size();
     Scanner mockInput = new Scanner("1\n");
 
@@ -62,8 +64,8 @@ public class DeleteTests extends MedicalConsoleTest {
     assertEquals(
         priorSize - 1,
         testService.getHospitals()
-			.flatMap(Hospital::getProceduresStream)
-			.toList()
-			.size());
+            .flatMap(Hospital::getProceduresStream)
+            .toList()
+            .size());
   }
 }

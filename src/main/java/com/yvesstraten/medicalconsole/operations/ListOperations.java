@@ -6,6 +6,16 @@ import java.util.stream.Stream;
 import com.yvesstraten.medicalconsole.Format;
 
 public class ListOperations {
+  /** 
+   * Unsupported constructor 
+   * @throws UnsupportedOperationException always 
+  */
+  public ListOperations(){
+    throw new UnsupportedOperationException(
+      "This class is not meant to be constructed"
+    );
+  }
+
   /**
    * Gets details of provided object stream
    *
@@ -15,7 +25,7 @@ public class ListOperations {
    * @return String containing details of objects in the stream
    */
   public static <T> String getObjectStreamDetails(Stream<T> stream, 
-		String name) {
+    String name) {
     // Using .count() is a terminal operation,
     // as such, the stream is converted to a list
     // first to get its size and return an appropriate message
@@ -26,14 +36,14 @@ public class ListOperations {
 
     // Get every detail of an object, and append to builder
     StringBuilder builder = new StringBuilder("The following " 
-			+ name 
-			+ " are available \n");
+      + name 
+      + " are available \n");
 
     objects
-			.stream()
-			.map(Object::toString)
-			.forEach(string -> builder.append(string)
-				.append("\n"));
+      .stream()
+      .map(Object::toString)
+      .forEach(string -> builder.append(string)
+        .append("\n"));
 
     return builder.toString();
   }

@@ -51,8 +51,8 @@ public class ProcedureTests {
                     assertEquals(
                         test.getExpected(),
                         procedures
-					              .stream()
-					              .sorted(test.getComparator())
-					              .toList())));
+                                  .stream()
+                                  .sorted(test.getComparator())
+                                  .toList())));
   }
 }

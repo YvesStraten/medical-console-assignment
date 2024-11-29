@@ -57,11 +57,11 @@ public class FormatTests {
   public static Stream<Arguments> toEnumerateNoArgs() {
     return Stream.of(
         Arguments.of(
-				new String[] {"Test1", "Test2"},
-				new String[] {"[1] Test1", "[2] Test2"}),
+                new String[] {"Test1", "Test2"},
+                new String[] {"[1] Test1", "[2] Test2"}),
         Arguments.of(
-				new String[] {"Test1", "- Test2"},
-				new String[] {"[1] Test1", "- Test2"}));
+                new String[] {"Test1", "- Test2"},
+                new String[] {"[1] Test1", "- Test2"}));
   }
 
   /**
@@ -73,16 +73,16 @@ public class FormatTests {
   public static Stream<Arguments> toEnumerateWithArgs() {
     return Stream.of(
         Arguments.of(
-				new String[] {"Test1", "Test2"},
-				new String[] {"Test1", "[1] Test2"}, 1),
+                new String[] {"Test1", "Test2"},
+                new String[] {"Test1", "[1] Test2"}, 1),
         Arguments.of(new String[] {"Test1", "- Test2"},
-				new String[] {"Test1", "- Test2"},
-				1),
+                new String[] {"Test1", "- Test2"},
+                1),
         Arguments.of(new String[] {"Test1", "Test2"},
-				new String[] {"Test1", "Test2"},
-				2),
+                new String[] {"Test1", "Test2"},
+                2),
         Arguments.of(new String[] {"Test1", "- Test2"},
-				new String[] {"Test1", "- Test2"},
-				2));
+                new String[] {"Test1", "- Test2"},
+                2));
   }
 }

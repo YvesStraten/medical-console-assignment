@@ -49,18 +49,18 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
     InvalidOptionException e =
         assertThrows(
             InvalidOptionException.class, 
-		        () -> Input.checkOption(selectedOption, maxOption));
+                () -> Input.checkOption(selectedOption, maxOption));
 
     assertEquals(
         String.format("Invalid option please select option [%d-%d]",
-				1,
-				maxOption),
-			e.getMessage());
+                1,
+                maxOption),
+            e.getMessage());
   }
 
   /**
    * This method provides the needed arguments for 
-	 * {@link #invalidOptionShouldThrow(int, int)} test
+     * {@link #invalidOptionShouldThrow(int, int)} test
    *
    * @return stream of arguments
    */
@@ -117,7 +117,7 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 
   /**
    * This test tests that an empty stream returns an appropriate message when using 
-	 * {@link ListOperations.getObjectStreamDetails(Stream, String)}
+     * {@link ListOperations.getObjectStreamDetails(Stream, String)}
    */
   @Test
   public void emptyStreamShouldReturnNoDetailsString() {
@@ -138,17 +138,17 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   @ParameterizedTest
   @MethodSource("objectStreams")
   public <T> void filledStreamShouldReturnDetailsString(List<T> listToTest,
-		String name) {
+        String name) {
     StringBuilder builder = new StringBuilder("The following " + name + " are available \n");
 
     listToTest
-			.stream()
-			.forEach((item) -> 
-				builder
-				.append(item.toString())
-				.append("\n"));
+            .stream()
+            .forEach((item) -> 
+                builder
+                .append(item.toString())
+                .append("\n"));
     String result = ListOperations
-			.getObjectStreamDetails(listToTest.stream(), name);
+            .getObjectStreamDetails(listToTest.stream(), name);
 
     assertEquals(builder.toString(), result);
   }
@@ -167,7 +167,7 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 
   /**
    * This test tests whether trying to get the cost of an operation returns 
-	 * appropriate results
+     * appropriate results
    *
    * @param patient patient to test with
    * @param procedure procedure to test with

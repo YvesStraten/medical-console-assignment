@@ -24,8 +24,8 @@ public class Format {
    * @return pretty printed enumerated string
    */
   public static String enumeratedContent(String[] options,
-		int startRange,
-		int endRange) {
+    int startRange,
+    int endRange) {
     StringBuilder builder = new StringBuilder();
     int currentIndex = 1;
     for (int i = 0; i < options.length; i++) {
@@ -35,10 +35,10 @@ public class Format {
 
       if (!options[i].startsWith("-") && i >= startRange) {
         builder
-					.append("[")
-					.append(currentIndex)
-					.append("] ")
-					.append(options[i]).append("\n");
+          .append("[")
+          .append(currentIndex)
+          .append("] ")
+          .append(options[i]).append("\n");
         currentIndex += 1;
       } else builder.append(options[i]).append("\n");
     }
@@ -76,7 +76,7 @@ public class Format {
    * @return pretty printed enumerated string
    */
   public static String enumeratedContent(String options, int startRange, 
-		int endRange) {
+    int endRange) {
     String[] splitted = options.split("\n");
     return enumeratedContent(splitted, startRange, endRange);
   }
@@ -113,7 +113,7 @@ public class Format {
    * @return pretty printed bulleted string
    */
   public static String bulletedContent(String[] options, int startRange, 
-		int endRange) {
+    int endRange) {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < options.length; i++) {
       if (i == endRange) break;
@@ -135,7 +135,7 @@ public class Format {
    * @return pretty printed bulleted string
    */
   public static String bulletedContent(String options, int startRange, 
-		int endRange) {
+    int endRange) {
     String[] splitted = options.split("\n");
     return bulletedContent(splitted, startRange, endRange);
   }
