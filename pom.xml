@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.yvesstraten.medicalconsole</groupId>
-  <artifactId>medical-console</artifactId>
-  <version>1.1.0</version>
+  <artifactId>MedicalConsole</artifactId>
+  <version>1.2.0</version>
 
-  <name>medical-console</name>
+  <name>MedicalConsole</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
