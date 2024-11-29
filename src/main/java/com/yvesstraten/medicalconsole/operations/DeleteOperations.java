@@ -21,17 +21,20 @@ public class DeleteOperations {
    */
   public static void deletePatient(HealthService service, Scanner stdin) {
     int numPatients = service.getPatients().size();
+		if(numPatients == 0){
+			System.out.println("No patients have been added yet!");
+			return;
+		}
+
     ListOperations
 			.listObjectGroup(service.getPatientsStream(), "patients");
 
-    if (numPatients != 0) {
-      int patientToRemove =
-          Input.chooseOption("Which patient would you like to remove?", 
-				numPatients,
-				stdin);
-      service.deletePatient(patientToRemove - 1);
-      System.out.println("Removed patient successfully!");
-    }
+    int patientToRemove =
+        Input.chooseOption("Which patient would you like to remove?", 
+			numPatients,
+			stdin);
+    service.deletePatient(patientToRemove - 1);
+    System.out.println("Removed patient successfully!");
   }
 
   /**
@@ -42,39 +45,42 @@ public class DeleteOperations {
    */
   public static void deleteFacility(HealthService service, Scanner stdin) {
     int numFacilities = service.getMedicalFacilities().size();
+		if(numFacilities == 0){
+			System.out.println("No facilities have been added yet!");
+			return;
+		}
+
     ListOperations
 			.listObjectGroup(service.getMedicalFacilitiesStream(), "facilities");
 
-    if (numFacilities != 0) {
-      int facilityToDelete =
-          Input.chooseOption("Which facility would you like to delete?",
-				numFacilities,
-				stdin);
+    int facilityToDelete =
+        Input.chooseOption("Which facility would you like to delete?",
+			numFacilities,
+			stdin);
 
-      MedicalFacility facilityToBeDeleted =
-          service.getMedicalFacilities().get(facilityToDelete - 1);
-      if (facilityToBeDeleted instanceof Hospital) {
-				Hospital hospitalToBeDeleted = 
-				(Hospital) facilityToBeDeleted;
+    MedicalFacility facilityToBeDeleted =
+        service.getMedicalFacilities().get(facilityToDelete - 1);
+    if (facilityToBeDeleted instanceof Hospital) {
+			Hospital hospitalToBeDeleted = 
+			(Hospital) facilityToBeDeleted;
 
-        int numProcedures = ((Hospital) hospitalToBeDeleted)
-				.getProcedures()
-				.size();
+      int numProcedures = ((Hospital) hospitalToBeDeleted)
+			.getProcedures()
+			.size();
 
-        if (numProcedures > 0) {
-          String prompt =
-              "This hospital can perform "
-                  + numProcedures
-                  + " procedures - do you still wish to delete it? [y/n]";
-          if (Input.getYesNoInput(prompt, stdin)) {
-            service.deleteMedicalFacility(facilityToDelete - 1);
-          }
+      if (numProcedures > 0) {
+        String prompt =
+            "This hospital can perform "
+                + numProcedures
+                + " procedures - do you still wish to delete it? [y/n]";
+        if (Input.getYesNoInput(prompt, stdin)) {
+          service.deleteMedicalFacility(facilityToDelete - 1);
         }
-      } else {
-        service.deleteMedicalFacility(facilityToDelete - 1);
       }
-      System.out.println("Removed facility successfully!");
+    } else {
+      service.deleteMedicalFacility(facilityToDelete - 1);
     }
+    System.out.println("Removed facility successfully!");
   }
 
   /**
@@ -94,33 +100,35 @@ public class DeleteOperations {
 				map.put(procedure, hospital);
     }
 
+		if(map.keySet().size() == 0){
+			System.out.println("No patients have been added yet!");
+			return;
+		}
+
     ListOperations
 			.listObjectGroup(map.keySet().stream(), "procedures");
 
-    if (map.keySet().size() != 0) {
+    int toDelete =
+        Input.chooseOption("Choose a procedure to remove:", 
+			map.keySet().size(), 
+			stdin);
 
-      int toDelete =
-          Input.chooseOption("Choose a procedure to remove:", 
-				map.keySet().size(), 
-				stdin);
+    int i = 0;
+    Iterator<Entry<Procedure, Hospital>> iterator = 
+		map.entrySet().iterator();
+    Hospital hospitalToAffect = null;
+    Procedure procedureToDelete = null;
 
-      int i = 0;
-      Iterator<Entry<Procedure, Hospital>> iterator = 
-			map.entrySet().iterator();
-      Hospital hospitalToAffect = null;
-      Procedure procedureToDelete = null;
-
-      while (iterator.hasNext()) {
-        Entry<Procedure, Hospital> current = iterator.next();
-        if (i == toDelete - 1) {
-          procedureToDelete = current.getKey();
-          hospitalToAffect = current.getValue();
-        }
-        i++;
+    while (iterator.hasNext()) {
+      Entry<Procedure, Hospital> current = iterator.next();
+      if (i == toDelete - 1) {
+        procedureToDelete = current.getKey();
+        hospitalToAffect = current.getValue();
       }
-
-      hospitalToAffect.removeProcedure(procedureToDelete);
-      System.out.println("Selected procedure was removed successfully!");
+      i++;
     }
+
+    hospitalToAffect.removeProcedure(procedureToDelete);
+    System.out.println("Selected procedure was removed successfully!");
   }
 }
