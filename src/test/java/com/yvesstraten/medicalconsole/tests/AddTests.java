@@ -3,15 +3,15 @@ package com.yvesstraten.medicalconsole.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.yvesstraten.medicalconsole.ArrayListSet;
 import com.yvesstraten.medicalconsole.HealthService;
-import com.yvesstraten.medicalconsole.MedicalConsole;
+import com.yvesstraten.medicalconsole.operations.AddOperations;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.exceptions.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -38,7 +38,7 @@ public class AddTests extends MedicalConsoleTest {
 
     assertThrows(
         NoHospitalsAvailableException.class,
-        () -> MedicalConsole.addProcedure(testService, mockInput));
+        () -> AddOperations.addProcedure(testService, mockInput));
   }
 
   /**
@@ -49,8 +49,8 @@ public class AddTests extends MedicalConsoleTest {
   @Test
   public void addingProcedureWithHospital()
 	  throws NoHospitalsAvailableException {
-    ArrayListSet<Procedure> expectedProcedures = 
-		new ArrayListSet<Procedure>();
+    ArrayList<Procedure> expectedProcedures = 
+		new ArrayList<Procedure>();
     expectedProcedures.add(
 			new Procedure(
 				1,
@@ -61,18 +61,18 @@ public class AddTests extends MedicalConsoleTest {
 			)
 		);
 
-    ArrayListSet<MedicalFacility> facilities = 
-		new ArrayListSet<MedicalFacility>();
+    ArrayList<MedicalFacility> facilities = 
+		new ArrayList<MedicalFacility>();
     facilities.add(new Hospital(0, "Test hospital"));
 
     HealthService testService =
         new HealthService("Test service",
 			facilities,
-			new ArrayListSet<Patient>());
+			new ArrayList<Patient>());
 
     Scanner mockInput = new Scanner("1\nTestName\nTestDesc\nyes\n300.0\n");
 
-    MedicalConsole.addProcedure(testService, mockInput);
+    AddOperations.addProcedure(testService, mockInput);
     assertEquals(
         expectedProcedures, ((Hospital) testService.getMedicalFacilities().get(0)).getProcedures());
   }
@@ -80,7 +80,7 @@ public class AddTests extends MedicalConsoleTest {
   /** This test tests for hospital adding functionality */
   @Test
   public void hospitalIsCorrectlyAdded() {
-    MedicalConsole.addHospital(testService, new Scanner("TestHospital\n"));
+    AddOperations.addHospital(testService, new Scanner("TestHospital\n"));
     List<Hospital> newHospitalList = testService.getHospitals().toList();
     assertEquals(
         new Hospital(testService.getIdDispenser().getLastDispensedId(), 
@@ -91,7 +91,7 @@ public class AddTests extends MedicalConsoleTest {
   /** This test tests for clinic adding functionality */
   @Test
   public void clinicIsCorrectlyAdded() {
-    MedicalConsole.addClinic(testService, new Scanner("TestClinic\n300\n0.3\n"));
+    AddOperations.addClinic(testService, new Scanner("TestClinic\n300\n0.3\n"));
     List<Clinic> newClinicList = testService.getClinics().toList();
     assertEquals(
         new Clinic(testService.getIdDispenser().getLastDispensedId(), "TestClinic", 300, 0.3),
@@ -101,7 +101,7 @@ public class AddTests extends MedicalConsoleTest {
   /** This test tests for patient adding functionality */
   @Test
   public void patientIsCorrectlyAdded() {
-    MedicalConsole.addPatient(testService, new Scanner("Mark\nyes\n"));
+    AddOperations.addPatient(testService, new Scanner("Mark\nyes\n"));
     List<Patient> newPatientList = testService.getPatients();
     assertEquals(
         new Patient(testService.getIdDispenser().getLastDispensedId(), "Mark", true),

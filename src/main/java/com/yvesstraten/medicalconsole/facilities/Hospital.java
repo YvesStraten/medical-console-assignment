@@ -1,6 +1,5 @@
 package com.yvesstraten.medicalconsole.facilities;
 
-import com.yvesstraten.medicalconsole.ArrayListSet;
 import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Format;
 import com.yvesstraten.medicalconsole.Patient;
@@ -20,7 +19,7 @@ public class Hospital extends MedicalFacility {
   private double probAdmit;
 
   /** Procedures offered by this hospital */
-  private ArrayListSet<Procedure> procedures;
+  private ArrayList<Procedure> procedures;
 
   /**
    * Constructs this hospital
@@ -29,7 +28,7 @@ public class Hospital extends MedicalFacility {
    * @param name name to give this hospital
    * @param procedures procedures that this hospital offers
    */
-  public Hospital(final int id, String name, ArrayListSet<Procedure> procedures) {
+  public Hospital(final int id, String name, ArrayList<Procedure> procedures) {
     super(id, name);
 
     setProbAdmit(new Random().nextDouble(1));
@@ -43,7 +42,7 @@ public class Hospital extends MedicalFacility {
    * @param name name to give this hospital
    */
   public Hospital(int id, String name) {
-    this(id, name, new ArrayListSet<Procedure>());
+    this(id, name, new ArrayList<Procedure>());
   }
 
   /**
@@ -96,7 +95,7 @@ public class Hospital extends MedicalFacility {
    *
    * @param procedures procedures to set
    */
-  public void setProcedures(ArrayListSet<Procedure> procedures) {
+  public void setProcedures(ArrayList<Procedure> procedures) {
     this.procedures = procedures;
   }
 

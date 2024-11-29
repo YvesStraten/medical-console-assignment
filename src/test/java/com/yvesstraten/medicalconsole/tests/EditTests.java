@@ -11,6 +11,8 @@ import com.yvesstraten.medicalconsole.exceptions.ClassIsNotEditableException;
 import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+import com.yvesstraten.medicalconsole.operations.EditOperations;
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Scanner;
@@ -43,7 +45,7 @@ public class EditTests extends MedicalConsoleTest {
     ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
     Scanner stdin = new Scanner(input);
     assertThrows(ClassIsNotEditableException.class, 
-		() -> MedicalConsole.attemptEdit(test, stdin));
+		() -> EditOperations.attemptEdit(test, stdin));
   }
 
   /**
@@ -64,7 +66,7 @@ public class EditTests extends MedicalConsoleTest {
     ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
     Scanner stdin = new Scanner(input);
     assertThrows(RuntimeException.class, 
-		() -> MedicalConsole.attemptEdit(test, stdin));
+		() -> EditOperations.attemptEdit(test, stdin));
   }
 
   /**
@@ -88,14 +90,14 @@ public class EditTests extends MedicalConsoleTest {
         dynamicTest(
             "Edit service",
             () -> {
-              MedicalConsole.attemptEdit(testService, scanners.get(0));
+              EditOperations.attemptEdit(testService, scanners.get(0));
               assertEquals(testService.getName(), "Service");
             }),
         dynamicTest(
             "Edit hospital",
             () -> {
               Hospital hospital = testService.getHospitals().toList().get(0);
-              MedicalConsole.attemptEdit(hospital, scanners.get(1));
+              EditOperations.attemptEdit(hospital, scanners.get(1));
               Hospital toCompare = new Hospital(hospital.getId(), "Croix");
               toCompare.setProbAdmit(0.5);
               assertEquals(toCompare,
@@ -105,7 +107,7 @@ public class EditTests extends MedicalConsoleTest {
             "Edit clinic",
             () -> {
               Clinic clinic = testService.getClinics().toList().get(0);
-              MedicalConsole.attemptEdit(clinic, scanners.get(2));
+              EditOperations.attemptEdit(clinic, scanners.get(2));
 
               assertEquals(new Clinic(clinic.getId(), "Croix", 300, 0.3),
 						clinic);
@@ -114,7 +116,7 @@ public class EditTests extends MedicalConsoleTest {
             "Edit Patient",
             () -> {
               Patient patient = testService.getPatients().get(0);
-              MedicalConsole.attemptEdit(patient, scanners.get(3));
+              EditOperations.attemptEdit(patient, scanners.get(3));
 
               assertEquals(new Patient(patient.getId(), "Mark", true, 300),
 						patient);
@@ -124,7 +126,7 @@ public class EditTests extends MedicalConsoleTest {
             () -> {
               Procedure procedure =
                   testService.getHospitals().flatMap(Hospital::getProceduresStream).toList().get(0);
-              MedicalConsole.attemptEdit(procedure, scanners.get(4));
+              EditOperations.attemptEdit(procedure, scanners.get(4));
 
               assertEquals(
                   new Procedure(procedure.getId(), "TestProc", "TestDesc", true, 300),

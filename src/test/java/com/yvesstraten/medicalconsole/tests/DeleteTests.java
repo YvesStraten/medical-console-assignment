@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+import com.yvesstraten.medicalconsole.operations.DeleteOperations;
+
 import java.util.List;
 import java.util.Scanner;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +30,7 @@ public class DeleteTests extends MedicalConsoleTest {
     int priorSize = testService.getPatients().size();
     Scanner mockInput = new Scanner("1\n");
 
-    MedicalConsole.deletePatient(testService, mockInput);
+    DeleteOperations.deletePatient(testService, mockInput);
     assertEquals(priorSize - 1, testService.getPatients().size());
   }
 
@@ -38,12 +40,12 @@ public class DeleteTests extends MedicalConsoleTest {
     int priorNum = testService.getMedicalFacilities().size();
     Scanner mockInput = new Scanner("2\n");
 
-    MedicalConsole.deleteFacility(testService, mockInput);
+    DeleteOperations.deleteFacility(testService, mockInput);
     assertEquals(priorNum - 1, testService.getMedicalFacilities().size());
 
     priorNum = testService.getMedicalFacilities().size();
     Scanner nextMock = new Scanner("1\nyes\n");
-    MedicalConsole.deleteFacility(testService, nextMock);
+    DeleteOperations.deleteFacility(testService, nextMock);
 
     assertEquals(priorNum - 1, testService.getMedicalFacilities().size());
   }
@@ -56,7 +58,7 @@ public class DeleteTests extends MedicalConsoleTest {
     int priorSize = procedures.size();
     Scanner mockInput = new Scanner("1\n");
 
-    MedicalConsole.deleteProcedure(testService, mockInput);
+    DeleteOperations.deleteProcedure(testService, mockInput);
     assertEquals(
         priorSize - 1,
         testService.getHospitals()

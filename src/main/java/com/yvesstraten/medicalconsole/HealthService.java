@@ -4,6 +4,8 @@ import com.yvesstraten.medicalconsole.facilities.Clinic;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -16,9 +18,9 @@ public class HealthService implements Iterable<Integer> {
   // Name of service
   @Editable private String name;
   // List of medical facilities
-  private ArrayListSet<MedicalFacility> medicalFacilities;
+  private ArrayList<MedicalFacility> medicalFacilities;
   // List of patients
-  private ArrayListSet<Patient> patients;
+  private ArrayList<Patient> patients;
 
   /** The id dispenser for this service The developer can provide their own id generator */
   private final IdGenerator idDispenser;
@@ -91,8 +93,8 @@ public class HealthService implements Iterable<Integer> {
    */
   public HealthService(
       String name,
-      ArrayListSet<MedicalFacility> medicalFacilities,
-      ArrayListSet<Patient> patients,
+      ArrayList<MedicalFacility> medicalFacilities,
+      ArrayList<Patient> patients,
       final IdGenerator idDispenser) {
     setName(name);
     setMedicalFacilities(medicalFacilities);
@@ -110,7 +112,7 @@ public class HealthService implements Iterable<Integer> {
    * @param patients The patients to be managed
    */
   public HealthService(
-      String name, ArrayListSet<MedicalFacility> medicalFacilities, ArrayListSet<Patient> patients) {
+      String name, ArrayList<MedicalFacility> medicalFacilities, ArrayList<Patient> patients) {
     this(name, medicalFacilities, patients, new SequentialIdDispenser());
   }
 
@@ -120,8 +122,8 @@ public class HealthService implements Iterable<Integer> {
   public HealthService(String name) {
     this(
         name,
-        new ArrayListSet<MedicalFacility>(),
-        new ArrayListSet<Patient>(),
+        new ArrayList<MedicalFacility>(),
+        new ArrayList<Patient>(),
         new SequentialIdDispenser());
   }
 
@@ -129,8 +131,8 @@ public class HealthService implements Iterable<Integer> {
   public HealthService() {
     this(
         "undefined",
-        new ArrayListSet<MedicalFacility>(),
-        new ArrayListSet<Patient>(),
+        new ArrayList<MedicalFacility>(),
+        new ArrayList<Patient>(),
         new SequentialIdDispenser());
   }
 
@@ -149,7 +151,7 @@ public class HealthService implements Iterable<Integer> {
    * @return list of MedicalFacility
    * @see MedicalFacility
    */
-  public ArrayListSet<MedicalFacility> getMedicalFacilities() {
+  public ArrayList<MedicalFacility> getMedicalFacilities() {
     return this.medicalFacilities;
   }
 
@@ -193,7 +195,7 @@ public class HealthService implements Iterable<Integer> {
    * @return list of Patient
    * @see Patient
    */
-  public ArrayListSet<Patient> getPatients() {
+  public ArrayList<Patient> getPatients() {
     return this.patients;
   }
 
@@ -230,7 +232,7 @@ public class HealthService implements Iterable<Integer> {
    *
    * @param patients list of Patient to set
    */
-  public void setPatients(ArrayListSet<Patient> patients) {
+  public void setPatients(ArrayList<Patient> patients) {
     this.patients = patients;
   }
 
@@ -239,7 +241,7 @@ public class HealthService implements Iterable<Integer> {
    *
    * @param medicalFacilities list of MedicalFacility to set
    */
-  public void setMedicalFacilities(ArrayListSet<MedicalFacility> medicalFacilities) {
+  public void setMedicalFacilities(ArrayList<MedicalFacility> medicalFacilities) {
     this.medicalFacilities = medicalFacilities;
   }
 

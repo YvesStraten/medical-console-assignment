@@ -4,12 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.yvesstraten.medicalconsole.Input;
-import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
 import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
+import com.yvesstraten.medicalconsole.operations.ListOperations;
+
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -116,19 +117,19 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 
   /**
    * This test tests that an empty stream returns an appropriate message when using 
-	 * {@link MedicalConsole#getObjectStreamDetails(Stream, String)}
+	 * {@link ListOperations.getObjectStreamDetails(Stream, String)}
    */
   @Test
   public void emptyStreamShouldReturnNoDetailsString() {
     Stream<Object> stream = Stream.of();
-    String result = MedicalConsole.getObjectStreamDetails(stream, "test");
+    String result = ListOperations.getObjectStreamDetails(stream, "test");
 
     assertEquals("There are no test for this service", result);
   }
 
   /**
    * This test tests that a filled stream returns an appropriate message when using {@link
-   * MedicalConsole#getObjectStreamDetails(Stream, String)}
+   * ListOperations.getObjectStreamDetails(Stream, String)}
    *
    * @param <T> type of list
    * @param listToTest list that should be used for testing
@@ -146,7 +147,8 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 				builder
 				.append(item.toString())
 				.append("\n"));
-    String result = MedicalConsole.getObjectStreamDetails(listToTest.stream(), name);
+    String result = ListOperations
+			.getObjectStreamDetails(listToTest.stream(), name);
 
     assertEquals(builder.toString(), result);
   }
