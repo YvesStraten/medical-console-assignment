@@ -11,7 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
-/** This class holds all tests related to a {@link Procedure} object */
+/**
+ * This class holds all tests related to Proceures 
+ * 
+ * @author Yves Straten e2400068
+*/
 @DisplayName("Procedure tests")
 public class ProcedureTests {
   /** Construct this test class */

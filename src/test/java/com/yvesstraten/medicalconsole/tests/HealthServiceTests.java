@@ -15,7 +15,12 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-/** This class holds all tests related to a {@link HealthService} object */
+/** 
+ * This class holds all tests related to
+ * a {@link HealthService} object 
+ *
+ * @author Yves Straten e2400068
+*/
 @DisplayName("HealthService Tests")
 public class HealthServiceTests extends MedicalConsoleTest {
   /** Construct this test class */
@@ -34,7 +39,8 @@ public class HealthServiceTests extends MedicalConsoleTest {
   }
 
   /**
-   * Test factory for all tests related to the sorting of {@link HealthService} objects
+   * Test factory for all tests related to the sorting of 
+   * {@link HealthService} objects
    *
    * @return stream of tests
    */

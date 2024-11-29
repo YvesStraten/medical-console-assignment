@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 /**
  * This class contains all tests related to deleting
  *
+ * @author Yves Straten e2400068
  * @see MedicalConsole
  */
 @DisplayName("Medical console delete tests")

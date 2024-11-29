@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * This class contains all tests related to formatting and pretty-printing
  *
  * @see Format
+ * @author Yves Straten e2400068
  */
 public class FormatTests {
   /** Construct this test class */
@@ -49,7 +50,8 @@ public class FormatTests {
   }
 
   /**
-   * This method provides the needed arguments for {@link #enumeratedProperlyWithNoArgs(String[],
+   * This method provides the needed arguments for {@link 
+   * #enumeratedProperlyWithNoArgs(String[],
    * String[])} test
    *
    * @return stream of arguments
@@ -65,7 +67,8 @@ public class FormatTests {
   }
 
   /**
-   * This method provides the needed arguments for {@link #enumeratedProperlyWithArgs(String[],
+   * This method provides the needed arguments for {@link 
+   * #enumeratedProperlyWithArgs(String[],
    * String[], int)} test
    *
    * @return stream of arguments

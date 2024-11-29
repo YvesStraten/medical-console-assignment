@@ -49,7 +49,7 @@ public class SortingTest<T> {
   }
 
   /**
-   * Get expected output when sorting with the specified {@link SortingTest#comparator}
+   * Get expected output when sorting with the specified Comparator
    *
    * @return sorted list
    */

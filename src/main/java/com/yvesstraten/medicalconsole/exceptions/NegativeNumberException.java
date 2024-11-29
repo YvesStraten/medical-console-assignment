@@ -19,7 +19,10 @@ public class NegativeNumberException extends Exception {
    * @param type type of number
   */
   public NegativeNumberException(NumTypes type) {
-    super("Wrong input! Please input a non-negative " + type.toString().toLowerCase() + "!");
+    super(
+      "Wrong input! Please input a non-negative " 
+      + type.toString().toLowerCase() 
+      + "!");
   }
 
   /** Construct this exception with default error message */

@@ -17,6 +17,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  * @see MedicalFacility
  * @see Clinic
  * @see Hospital
+ * @author Yves Straten e2400068
  */
 @Suite
 @SuiteDisplayName("Facilities tests")

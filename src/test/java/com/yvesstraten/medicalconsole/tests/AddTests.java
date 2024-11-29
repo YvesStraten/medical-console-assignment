@@ -18,7 +18,10 @@ import java.util.Scanner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/** This class contains all tests related to adding objects */
+/** 
+ * This class contains all tests related to adding objects 
+ * @author Yves Straten e2400068
+*/
 @DisplayName("Medical Console adding tests")
 public class AddTests extends MedicalConsoleTest {
   /** Construct this test class */
@@ -27,8 +30,8 @@ public class AddTests extends MedicalConsoleTest {
   }
 
   /**
-   * This test tests that {@link NoHospitalsAvailableException} is thrown when no Hospitals are
-   * available to add a procedure to
+   * This test tests that {@link NoHospitalsAvailableException} is thrown
+   * when no Hospitals are available to add a procedure to
    */
   @Test
   public void addingProcedureWithNoHospitalsThrows() {
@@ -44,7 +47,8 @@ public class AddTests extends MedicalConsoleTest {
   /**
    * This test tests for procedure adding functionality
    *
-   * @throws NoHospitalsAvailableException when a hospital is not successfully added
+   * @throws NoHospitalsAvailableException when a hospital
+   * is not successfully added
    */
   @Test
   public void addingProcedureWithHospital()
@@ -91,7 +95,11 @@ public class AddTests extends MedicalConsoleTest {
   /** This test tests for clinic adding functionality */
   @Test
   public void clinicIsCorrectlyAdded() {
-    AddOperations.addClinic(testService, new Scanner("TestClinic\n300\n0.3\n"));
+    AddOperations
+      .addClinic(testService,
+        new Scanner("TestClinic\n300\n0.3\n")
+      );
+
     List<Clinic> newClinicList = testService.getClinics().toList();
     assertEquals(
         new Clinic(testService.getIdDispenser().getLastDispensedId(), "TestClinic", 300, 0.3),

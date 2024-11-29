@@ -49,7 +49,8 @@ public class Patient implements Comparable<Patient>, Serializable {
   }
 
   /**
-   * Alternate constructor for this patient. Sets facility to <code>null</code>
+   * Alternate constructor for this patient.
+   * Sets facility to <code>null</code>
    *
    * @param id Id of this patient
    * @param name Name of this patient
@@ -207,7 +208,8 @@ public class Patient implements Comparable<Patient>, Serializable {
   }
 
   /**
-   * Compares this patient to another. The natural order of patients is by their ids.
+   * Compares this patient to another.
+   * The natural order of patients is by their ids.
    *
    * @param oPatient Patient to compare to
    * @return 0 if same id, 1 if larger id, -1 if smaller id

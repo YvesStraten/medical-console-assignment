@@ -17,7 +17,11 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-/** Test suite for all tests related to the {@code Patient} class */
+/** 
+ * Test suite for all tests related to the Patients
+ *
+ * @author Yves Straten e2400068
+*/
 @DisplayName("Patient tests")
 public class PatientTests extends MedicalConsoleTest {
   /** Construct this test class */

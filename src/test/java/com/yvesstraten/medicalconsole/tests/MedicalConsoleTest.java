@@ -5,14 +5,19 @@ import com.yvesstraten.medicalconsole.MedicalConsole;
 import org.junit.jupiter.api.BeforeAll;
 
 /**
- * This class acts as a wrapper. Each class that inherits from this class has access to generated
- * sample data for testing
+ * This class acts as a wrapper. Each class that inherits from this class 
+ * has access to generated sample data for testing
+ *
+ * @author Yves Straten e2400068
  */
 public class MedicalConsoleTest {
   /** Generated test service */
   static HealthService testService;
 
-  /** Generate sample data to be used for tests before every test in child class */
+  /**
+   * Generate sample data to be used for tests
+   * before every test in child class 
+  */
   @BeforeAll
   public static void setup() {
     testService = MedicalConsole.generateSampleData();

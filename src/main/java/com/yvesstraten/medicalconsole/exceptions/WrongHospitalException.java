@@ -1,12 +1,11 @@
 package com.yvesstraten.medicalconsole.exceptions;
 
-import com.yvesstraten.medicalconsole.Patient;
-
 /**
- * This exception is thrown when this patient has not yet visited a hospital and the hospital that
- * the patient is to operated in not the same as the last visited hospital of the patient
+ * This exception is thrown when this patient has not yet visited a hospital
+ * and the hospital that the patient is to be operated in
+ * is not the same as the last visited hospital of the patient
  *
- * @see Patient#isInThisHospital(com.yvesstraten.medicalconsole.facilities.Hospital)
+ * @author Yves Straten e2400068
  */
 public class WrongHospitalException extends Exception {
   /**

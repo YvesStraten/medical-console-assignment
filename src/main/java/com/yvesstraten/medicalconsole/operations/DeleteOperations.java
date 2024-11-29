@@ -12,6 +12,11 @@ import com.yvesstraten.medicalconsole.facilities.Hospital;
 import com.yvesstraten.medicalconsole.facilities.MedicalFacility;
 import com.yvesstraten.medicalconsole.facilities.Procedure;
 
+/** 
+ * This class holds a collection of helper functions for deleting 
+ *
+ * @author Yves Straten e2400068
+*/
 public class DeleteOperations {
   /**
    * Control flow for when a user wishes to delete a patient from the service
@@ -62,8 +67,7 @@ public class DeleteOperations {
     MedicalFacility facilityToBeDeleted =
         service.getMedicalFacilities().get(facilityToDelete - 1);
     if (facilityToBeDeleted instanceof Hospital) {
-      Hospital hospitalToBeDeleted = 
-      (Hospital) facilityToBeDeleted;
+      Hospital hospitalToBeDeleted = (Hospital) facilityToBeDeleted;
 
       int numProcedures = ((Hospital) hospitalToBeDeleted)
       .getProcedures()
@@ -108,7 +112,10 @@ public class DeleteOperations {
     }
 
     ListOperations
-      .listObjectGroup(map.keySet().stream(), "procedures");
+      .listObjectGroup(map
+        .keySet()
+        .stream(),
+      "procedures");
 
     int toDelete =
         Input.chooseOption("Choose a procedure to remove:", 

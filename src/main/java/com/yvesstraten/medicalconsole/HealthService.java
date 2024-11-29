@@ -112,7 +112,9 @@ public class HealthService implements Iterable<Integer> {
    * @param patients The patients to be managed
    */
   public HealthService(
-      String name, ArrayList<MedicalFacility> medicalFacilities, ArrayList<Patient> patients) {
+    String name,
+    ArrayList<MedicalFacility> medicalFacilities,
+    ArrayList<Patient> patients) {
     this(name, medicalFacilities, patients, new SequentialIdDispenser());
   }
 

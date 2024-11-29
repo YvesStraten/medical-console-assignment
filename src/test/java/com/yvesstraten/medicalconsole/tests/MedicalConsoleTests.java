@@ -26,6 +26,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  * This test suite groups all integration tests related to the medical console program
  *
  * @see MedicalConsole
+ * @author Yves Straten e2400068
  */
 @Suite
 @SuiteDisplayName("Medical console tests")
@@ -85,7 +86,8 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   }
 
   /**
-   * This method provides the needed arguments for {@link #validYesNoReturnsBoolean(String,
+   * This method provides the needed arguments for 
+   * {@link #validYesNoReturnsBoolean(String,
    * boolean)} test
    *
    * @return stream of arguments
@@ -99,8 +101,8 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   }
 
   /**
-   * This test tests that {@link Input#testYesNo(String)} returns a boolean only when inputs are y,
-   * yes, n, no.
+   * This test tests that {@link Input#testYesNo(String)} returns a boolean
+   * only when inputs are y, yes, n, no.
    *
    * @param input input test String
    * @param expected expected boolean output
@@ -116,8 +118,8 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   }
 
   /**
-   * This test tests that an empty stream returns an appropriate message when using 
-     * {@link ListOperations.getObjectStreamDetails(Stream, String)}
+   * This test tests that an empty stream
+   * returns an appropriate message when using 
    */
   @Test
   public void emptyStreamShouldReturnNoDetailsString() {
@@ -128,8 +130,7 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   }
 
   /**
-   * This test tests that a filled stream returns an appropriate message when using {@link
-   * ListOperations.getObjectStreamDetails(Stream, String)}
+   * This test tests that a filled stream returns an appropriate message
    *
    * @param <T> type of list
    * @param listToTest list that should be used for testing
@@ -167,7 +168,7 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
 
   /**
    * This test tests whether trying to get the cost of an operation returns 
-     * appropriate results
+   * appropriate results
    *
    * @param patient patient to test with
    * @param procedure procedure to test with

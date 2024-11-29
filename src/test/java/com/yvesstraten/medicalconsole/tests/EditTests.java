@@ -25,6 +25,7 @@ import org.junit.jupiter.api.TestFactory;
 /**
  * This class contains all tests related to editing
  *
+ * @author Yves Straten e2400068
  * @see MedicalConsole
  */
 @DisplayName("Edit Tests")
@@ -129,8 +130,14 @@ public class EditTests extends MedicalConsoleTest {
               EditOperations.attemptEdit(procedure, scanners.get(4));
 
               assertEquals(
-                  new Procedure(procedure.getId(), "TestProc", "TestDesc", true, 300),
-                        procedure);
-            }));
+                new Procedure(
+                  procedure.getId(),
+                  "TestProc",
+                  "TestDesc",
+                  true,
+                  300), 
+                procedure);
+            })
+    );
   }
 }

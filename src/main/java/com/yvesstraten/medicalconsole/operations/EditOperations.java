@@ -11,7 +11,11 @@ import com.yvesstraten.medicalconsole.Editable;
 import com.yvesstraten.medicalconsole.Input;
 import com.yvesstraten.medicalconsole.exceptions.ClassIsNotEditableException;
 
-/** This class holds a collection of helper functions for editing */
+/** 
+ * This class holds a collection of helper functions for editing 
+ *
+ * @author Yves Straten e2400068
+*/
 public class EditOperations {
   /** 
    * Unsupported constructor 
@@ -32,6 +36,8 @@ public class EditOperations {
    */
   public static void attemptEdit(Object toEdit, Scanner stdin) 
   throws ClassIsNotEditableException {
+    // Get class of passed object
+    // Ignore its T type
     Class<?> selectedClass = toEdit.getClass();
     // All fields, including private ones
     List<Field> fields = new ArrayList<Field>();
@@ -55,6 +61,7 @@ public class EditOperations {
       fields.add(fetched);
     }
 
+    // Get only fields with Editable
     List<Field> editableFiltered =
         fields
     .stream()
@@ -65,79 +72,84 @@ public class EditOperations {
     if (editableFiltered.size() == 0) {
       // No Editable annotation was present
       throw new ClassIsNotEditableException();
-    } else {
-      for (Field editableField : editableFiltered) {
-        Editable editable = editableField.getAnnotation(Editable.class);
-        // Field type
-        Class<?> fieldType = editableField.getType();
-        char[] fieldNameChars = editableField
+    } 
+
+    for (Field editableField : editableFiltered) {
+      Editable editable = editableField.getAnnotation(Editable.class);
+      // Field type
+      Class<?> fieldType = editableField.getType();
+      char[] fieldNameChars = editableField
+      .getName()
+      .toCharArray();
+
+      fieldNameChars[0] = Character
+      .toUpperCase(editableField
         .getName()
-        .toCharArray();
+        .charAt(0));
 
-        fieldNameChars[0] = Character
-        .toUpperCase(editableField
-          .getName()
-          .charAt(0));
+      // Standard way to name setters
+      String setterName =
+          editable
+            .setter()
+            .isEmpty() 
+          ? "set" 
+            + new String(fieldNameChars) 
+          : editable.setter();
 
-        // Standard way to name setters
-        String setterName =
-            editable
-              .setter()
-              .isEmpty() 
-            ? "set" 
-              + new String(fieldNameChars) 
-            : editable.setter();
+      boolean validInput = false;
 
-        boolean validInput = false;
+      do {
+        try {
+          Method setter;
 
-        do {
-          try {
-            Method setter;
-
-            StringBuilder messageBuilder = new StringBuilder();
-            if (editable.message().isEmpty()) {
-              // Annotation was not provided a message to output
-              messageBuilder
-                  .append("Please input new value to set for")
-                  .append(" ")
-                  .append(editableField.getName())
-                  .append(":");
-            } else {
-              // Annotation was provided a message to output
-              messageBuilder.append(editable.message());
-            }
-
-            String prompt = messageBuilder.toString();
-
-            // Check the type of field, invoke the respective setter
-            // with name and appropriate input from the scanner
-            if (fieldType.equals(double.class)) {
-              setter = selectedClass.getMethod(setterName, double.class);
-              setter.invoke(toEdit, Input.getDouble(prompt, stdin));
-            } else if (fieldType.equals(String.class)) {
-              setter = selectedClass.getMethod(setterName, String.class);
-              setter.invoke(toEdit, Input.getString(prompt, stdin));
-            } else if (fieldType.equals(int.class)) {
-              setter = selectedClass.getMethod(setterName, int.class);
-              setter.invoke(toEdit, Input.getInt(prompt, stdin));
-            } else if (fieldType.equals(char.class)) {
-              setter = selectedClass.getMethod(setterName, char.class);
-              setter.invoke(toEdit, Input.getChar(prompt, stdin));
-            } else if (fieldType.equals(boolean.class)) {
-              setter = selectedClass.getMethod(setterName, boolean.class);
-              setter.invoke(toEdit, Input.getYesNoInput(prompt, stdin));
-            }
-
-            validInput = true;
-          } catch (NoSuchMethodException e) {
-            throw new RuntimeException("There is no setter for this field!");
-          } catch (InvocationTargetException e) {
-            System.err.println(e.getMessage());
-          } catch (IllegalAccessException e) {
-            System.err.println("Setters should be public");
+          StringBuilder messageBuilder = new StringBuilder();
+          if (editable.message().isEmpty()) {
+            // Annotation was not provided a message to output
+            messageBuilder
+                .append("Please input new value to set for")
+                .append(" ")
+                .append(editableField.getName())
+                .append(":");
+          } else {
+            // Annotation was provided a message to output
+            messageBuilder.append(editable.message());
           }
-        } while (!validInput);
-      }
+
+          String prompt = messageBuilder.toString();
+
+          // Check the type of field, invoke the respective setter
+          // with name and appropriate input from the scanner
+          if (fieldType.equals(double.class)) {
+            setter = selectedClass.getMethod(setterName, double.class);
+            setter.invoke(toEdit, Input.getDouble(prompt, stdin));
+          } else if (fieldType.equals(String.class)) {
+            setter = selectedClass.getMethod(setterName, String.class);
+            setter.invoke(toEdit, Input.getString(prompt, stdin));
+          } else if (fieldType.equals(int.class)) {
+            setter = selectedClass.getMethod(setterName, int.class);
+            setter.invoke(toEdit, Input.getInt(prompt, stdin));
+          } else if (fieldType.equals(char.class)) {
+            setter = selectedClass.getMethod(setterName, char.class);
+            setter.invoke(toEdit, Input.getChar(prompt, stdin));
+          } else if (fieldType.equals(boolean.class)) {
+            setter = selectedClass.getMethod(setterName, boolean.class);
+            setter.invoke(toEdit, Input.getYesNoInput(prompt, stdin));
+          }
+
+          validInput = true;
+        } catch (NoSuchMethodException e) {
+          // Setter method does not exist, and setter 
+          // was not specified
+          throw new RuntimeException("There is no setter for this field!");
+        } catch (InvocationTargetException e) {
+          // Setter method does exist, but not wish such arguments 
+          System.err.println(e.getMessage());
+        } catch (IllegalAccessException e) {
+          // Setter is private
+          System.err.println("Setters should be public");
+        }
+      } while (!validInput);
+
       System.out.println("Edited object successfully! Results:");
       System.out.println(toEdit.toString());
       System.out.println();

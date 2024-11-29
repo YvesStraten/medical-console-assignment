@@ -8,6 +8,11 @@ import com.yvesstraten.medicalconsole.Input;
 import com.yvesstraten.medicalconsole.exceptions.NoHospitalsAvailableException;
 import com.yvesstraten.medicalconsole.facilities.Hospital;
 
+/** 
+ * This class holds a collection of helper functions for adding
+ *
+ * @author Yves Straten e2400068
+*/
 public class AddOperations {
   /** 
    * Unsupported constructor 
@@ -28,7 +33,7 @@ public class AddOperations {
   public static void addClinic(HealthService service, Scanner stdin) {
     String name = Input.getString("What is the name of the clinic?", stdin);
     double fee = Input.getDouble("What is the fee of the clinic?", stdin);
-    double gapPercent = Input.getDouble("What is the gap percent of the clinic?",
+    double gapPercent = Input.getDouble("What is the gap percent " + "of the clinic?",
       stdin);
 
     service.initializeClinic(name, fee, gapPercent);
