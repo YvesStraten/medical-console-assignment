@@ -27,6 +27,77 @@ public class EditOperations {
     );
   }
 
+  /** 
+   * Get a all editables available for provided class
+   *
+   * @param selectedClass class to inspect
+   * @return list of editable fields
+  */
+  public static List<Field> getAllEditables(Class<?> selectedClass){
+    List<Field> fetchedFields = new ArrayList<Field>();
+
+    // Get fields of superclass, if any
+    Class<?> superClass = selectedClass.getSuperclass();
+    while (superClass != null) {
+      // Fields are usually private
+      Field[] superClassFields = superClass.getDeclaredFields();
+      for (Field superClassField : superClassFields) {
+        fetchedFields.add(superClassField);
+      }
+
+      // Repeat process until superclasses are exhausted
+      superClass = superClass.getSuperclass();
+    }
+
+    // Get fields
+    Field[] baseFields = selectedClass.getDeclaredFields();
+    for (Field field : baseFields) {
+      fetchedFields.add(field);
+    }
+
+    // Get only fields with Editable
+    List<Field> editableFiltered =
+        fetchedFields
+    .stream()
+    .filter(field -> 
+      field.getAnnotation(Editable.class) != null)
+    .toList();
+
+
+    return editableFiltered;
+  }
+
+  /** 
+   * Helper function to get setterName for an 
+   * Editable
+   *
+   * @param forField field to get setter name for
+   * @return String setter name
+  */
+  public static String getSetterName(Field forField){
+    Editable editable = forField.getAnnotation(Editable.class);
+
+    char[] fieldNameChars = forField
+    .getName()
+    .toCharArray();
+
+    fieldNameChars[0] = Character
+    .toUpperCase(forField
+      .getName()
+      .charAt(0));
+
+    // Setters are named in camel case
+    String setterName =
+        editable
+          .setter()
+          .isEmpty() 
+        ? "set" 
+          + new String(fieldNameChars) 
+        : editable.setter();
+
+    return setterName; 
+  }
+
   /**
    * Helper function to aid the application in editing objects in the service in-place
    *
@@ -40,61 +111,18 @@ public class EditOperations {
     // Ignore its T type
     Class<?> selectedClass = toEdit.getClass();
     // All fields, including private ones
-    List<Field> fields = new ArrayList<Field>();
+    List<Field> editableList = getAllEditables(selectedClass);
 
-    // Get fields of superclass, if any
-    Class<?> superClass = selectedClass.getSuperclass();
-    while (superClass != null) {
-      // Fields are usually private
-      Field[] superClassFields = superClass.getDeclaredFields();
-      for (Field superClassField : superClassFields) {
-        fields.add(superClassField);
-      }
-
-      // Repeat process until superclasses are exhausted
-      superClass = superClass.getSuperclass();
-    }
-
-    // Get fields
-    Field[] fetchedFields = selectedClass.getDeclaredFields();
-    for (Field fetched : fetchedFields) {
-      fields.add(fetched);
-    }
-
-    // Get only fields with Editable
-    List<Field> editableFiltered =
-        fields
-    .stream()
-    .filter(field -> 
-      field.getAnnotation(Editable.class) != null)
-    .toList();
-
-    if (editableFiltered.size() == 0) {
+    if (editableList.size() == 0) {
       // No Editable annotation was present
       throw new ClassIsNotEditableException();
     } 
 
-    for (Field editableField : editableFiltered) {
+    for (Field editableField : editableList) {
       Editable editable = editableField.getAnnotation(Editable.class);
       // Field type
       Class<?> fieldType = editableField.getType();
-      char[] fieldNameChars = editableField
-      .getName()
-      .toCharArray();
-
-      fieldNameChars[0] = Character
-      .toUpperCase(editableField
-        .getName()
-        .charAt(0));
-
-      // Standard way to name setters
-      String setterName =
-          editable
-            .setter()
-            .isEmpty() 
-          ? "set" 
-            + new String(fieldNameChars) 
-          : editable.setter();
+      String setterName = getSetterName(editableField);
 
       boolean validInput = false;
 
@@ -149,12 +177,10 @@ public class EditOperations {
           System.err.println("Setters should be public");
         }
       } while (!validInput);
-
-      System.out.println("Edited object successfully! Results:");
-      System.out.println(toEdit.toString());
-      System.out.println();
     }
+
+    System.out.println("Edited object successfully! Results:");
+    System.out.println(toEdit.toString());
+    System.out.println();
   }
-
-
 }
