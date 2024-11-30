@@ -30,8 +30,9 @@ public class PatientTests extends MedicalConsoleTest {
   }
 
   /**
-   * Test to check that the id returned by {@link Patient#hashCode()} is the same as the id of this
-   * Patient
+   * Test to check that the id returned by 
+   * {@link Patient#hashCode()} is the same
+   * as the id of this Patient
    */
   @Test
   public void shouldBeSameHashCode() {
@@ -40,7 +41,8 @@ public class PatientTests extends MedicalConsoleTest {
   }
 
   /**
-   * Test to check that Patients are sorted by their natural order, that is their ids
+   * Test to check that Patients are sorted
+   * by their natural order, that is their ids
    *
    * @see Patient
    */
@@ -67,7 +69,8 @@ public class PatientTests extends MedicalConsoleTest {
   }
 
   /**
-   * Test to check that equal patients are indeed treated as equal
+   * Test to check that equal patients are
+   * indeed treated as equal
    *
    * @see Patient
    */
@@ -89,7 +92,8 @@ public class PatientTests extends MedicalConsoleTest {
   }
 
   /**
-   * Test factory for all tests related to the sorting of Patient objects
+   * Test factory for all tests related to the
+   * sorting of Patient objects
    *
    * @return stream of tests
    * @see PatientComparators

@@ -57,7 +57,8 @@ public class MedicalConsole {
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void addObject(HealthService service, Scanner stdin) {
+  public static void addObject(HealthService service,
+    Scanner stdin) {
     String[] mainOptions = new String[] {
       "Medical facility",
       "Patient",
@@ -81,7 +82,9 @@ public class MedicalConsole {
         "Hospital"
       };
 
-        System.out.println(Format.enumeratedContent(facilityOptions));
+        System.out.println(Format
+        .enumeratedContent(facilityOptions));
+
         int chosenFacilityOption =
             Input.chooseOption(
                 "Which medical facility would you like to add?",
@@ -113,7 +116,7 @@ public class MedicalConsole {
 
   /**
    * Deletes an object from the provided HealthService this object 
-   * can either be a {@linkMedicalFacility}, {@link Patient}
+   * can either be a {@link MedicalFacility}, {@link Patient}
    * or {@link Procedure}.
    *
    * @param service <code>HealthService</code> object to 
@@ -163,7 +166,8 @@ public class MedicalConsole {
       "Procedures"
     };
 
-    System.out.println(Format.enumeratedContent(options));
+    System.out.println(Format
+      .enumeratedContent(options));
 
     int chosenOption = Input.chooseOption("Please select a type:", 
       options.length, 
@@ -308,9 +312,14 @@ public class MedicalConsole {
                 stdin);
 
         Procedure selectedProcedure =
-            selectedHospital.getProcedures().get(selectedProcedureIndex - 1);
+            selectedHospital
+            .getProcedures()
+            .get(selectedProcedureIndex - 1);
 
-        double cost = Hospital.getOperationCost(selectedPatient, selectedProcedure);
+        double cost = Hospital
+        .getOperationCost(selectedPatient,
+          selectedProcedure);
+
         selectedPatient.addBalance(cost);
 
         double randomNum = new Random().nextDouble(1);
@@ -612,10 +621,21 @@ public class MedicalConsole {
     Iterator<Integer> idDispenser = service.getIdDispenser();
 
     // Adding starting objects
-    Hospital hospital = new Hospital(idDispenser.next(), "TestHospital");
-    Clinic clinic = new Clinic(idDispenser.next(), "Croix", 1000, 0.3);
-    Patient patient1 = new Patient(idDispenser.next(), "Mark", false, 1000);
-    Patient patient2 = new Patient(idDispenser.next(), "John", true);
+    Hospital hospital = new Hospital(idDispenser.next(),
+      "TestHospital");
+    Clinic clinic = new Clinic(idDispenser.next(),
+      "Croix",
+      1000,
+      0.3);
+    Patient patient1 = new Patient(idDispenser.next(),
+      "Mark",
+      false,
+      1000);
+
+    Patient patient2 = new Patient(idDispenser.next(),
+      "John",
+      true);
+
     service.addProcedure(
         hospital,
         new Procedure(

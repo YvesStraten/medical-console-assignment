@@ -30,10 +30,13 @@ public class AddOperations {
    * @param service Health service to add clinic to
    * @param stdin standard in, preferably set to <code>System.in</code>
    */
-  public static void addClinic(HealthService service, Scanner stdin) {
-    String name = Input.getString("What is the name of the clinic?", stdin);
+  public static void addClinic(HealthService service,
+    Scanner stdin) {
+    String name = Input.getString("What is the name of the clinic?",
+      stdin);
     double fee = Input.getDouble("What is the fee of the clinic?", stdin);
-    double gapPercent = Input.getDouble("What is the gap percent " + "of the clinic?",
+    double gapPercent = Input.getDouble("What is the gap percent "
+      + "of the clinic?",
       stdin);
 
     service.initializeClinic(name, fee, gapPercent);

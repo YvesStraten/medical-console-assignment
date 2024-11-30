@@ -5,6 +5,11 @@ import java.util.stream.Stream;
 
 import com.yvesstraten.medicalconsole.Format;
 
+/** 
+ * This class holds a collection of helper functions for listing
+ *
+ * @author Yves Straten e2400068
+*/
 public class ListOperations {
   /** 
    * Unsupported constructor 

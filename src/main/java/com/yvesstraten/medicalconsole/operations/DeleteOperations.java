@@ -18,6 +18,16 @@ import com.yvesstraten.medicalconsole.facilities.Procedure;
  * @author Yves Straten e2400068
 */
 public class DeleteOperations {
+  /** 
+   * Unsupported constructor 
+   * @throws UnsupportedOperationException always 
+  */
+  public DeleteOperations(){
+    throw new UnsupportedOperationException(
+      "This class is not meant to be constructed"
+    );
+  }
+
   /**
    * Control flow for when a user wishes to delete a patient from the service
    *

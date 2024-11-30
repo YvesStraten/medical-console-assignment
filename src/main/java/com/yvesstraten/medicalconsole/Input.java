@@ -150,7 +150,9 @@ public class Input {
    * @param allowNegative whether to allow negative integers
    * @return entered integer value
    */
-  public static int getInt(String prompt, Scanner stdin, boolean allowNegative) {
+  public static int getInt(String prompt,
+    Scanner stdin,
+    boolean allowNegative) {
     do {
       try {
         System.out.print(prompt + " ");

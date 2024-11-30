@@ -24,7 +24,8 @@ public class SortingTest<T> {
    * @param comparator comparator to use
    * @param expected expected result
    */
-  public SortingTest(String name, Comparator<T> comparator, List<T> expected) {
+  public SortingTest(String name, Comparator<T> comparator,
+    List<T> expected) {
     setName(name);
     setComparator(comparator);
     setExpected(expected);
@@ -49,7 +50,8 @@ public class SortingTest<T> {
   }
 
   /**
-   * Get expected output when sorting with the specified Comparator
+   * Get expected output when sorting with the specified 
+   * Comparator
    *
    * @return sorted list
    */

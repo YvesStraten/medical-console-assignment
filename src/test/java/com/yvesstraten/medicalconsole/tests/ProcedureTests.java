@@ -22,16 +22,30 @@ public class ProcedureTests {
   public ProcedureTests() {}
 
   /**
-   * Test factory for all tests related to the sorting of {@link Procedure}
+   * Test factory for all tests related to the sorting of 
+   * {@link Procedure}
    *
    * @return stream of tests
    */
   @TestFactory
   public Stream<DynamicTest> sortProcedures() {
-    Procedure procedure1 = new Procedure(1, "X-ray", "Desc", false, 1000);
-    Procedure procedure2 = new Procedure(1, "Test", "Test des", true, 600);
-    Procedure procedure3 = new Procedure(2, "Another", "Desc", false, 700);
-    List<Procedure> procedures = List.of(procedure1, procedure2, procedure3);
+    Procedure procedure1 = new Procedure(1,
+      "X-ray", "Desc",
+      false,
+      1000);
+    Procedure procedure2 = new Procedure(1,
+      "Test", "Test des",
+      true,
+      600);
+    Procedure procedure3 = new Procedure(2,
+      "Another", "Desc",
+      false,
+      700);
+
+    List<Procedure> procedures = List.of(procedure1,
+      procedure2,
+      procedure3);
+
     Stream<SortingTest<Procedure>> tests =
         Stream.of(
             new SortingTest<Procedure>(

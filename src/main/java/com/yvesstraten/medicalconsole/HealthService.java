@@ -22,7 +22,10 @@ public class HealthService implements Iterable<Integer> {
   // List of patients
   private ArrayList<Patient> patients;
 
-  /** The id dispenser for this service The developer can provide their own id generator */
+  /** 
+   * The id dispenser for this service
+   * The developer can provide their own implementation 
+  */
   private final IdGenerator idDispenser;
 
   /** This class provides a system for unique and sequential ids */
@@ -243,7 +246,8 @@ public class HealthService implements Iterable<Integer> {
    *
    * @param medicalFacilities list of MedicalFacility to set
    */
-  public void setMedicalFacilities(ArrayList<MedicalFacility> medicalFacilities) {
+  public void setMedicalFacilities(
+    ArrayList<MedicalFacility> medicalFacilities) {
     this.medicalFacilities = medicalFacilities;
   }
 

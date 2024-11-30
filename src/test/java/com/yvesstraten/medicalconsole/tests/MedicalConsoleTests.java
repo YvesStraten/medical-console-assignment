@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.yvesstraten.medicalconsole.Input;
+import com.yvesstraten.medicalconsole.MedicalConsole;
 import com.yvesstraten.medicalconsole.Patient;
 import com.yvesstraten.medicalconsole.exceptions.InvalidOptionException;
 import com.yvesstraten.medicalconsole.exceptions.InvalidYesNoException;
@@ -178,14 +179,16 @@ public class MedicalConsoleTests extends MedicalConsoleTest {
   @MethodSource("operationCostsArguments")
   public void gettingOperationCostReturnsProperResults(
       Patient patient, Procedure procedure, double expected) {
-    double result = Hospital.getOperationCost(patient, procedure);
+    double result = Hospital
+    .getOperationCost(patient, procedure);
 
     assertEquals(expected, result);
   }
 
   /**
    * This method provides the needed arguments for {@link
-   * #gettingOperationCostReturnsProperResults(Patient, Procedure, double)}
+   * #gettingOperationCostReturnsProperResults(Patient,
+   * Procedure, double)}
    *
    * @return stream of arguments
    */
