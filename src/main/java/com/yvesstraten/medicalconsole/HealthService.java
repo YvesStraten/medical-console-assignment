@@ -39,11 +39,13 @@ public class HealthService implements Iterable<Integer> {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int getLastDispensedId() {
       return this.lastDispensedId;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setLastDispensedId(int id) {
       this.lastDispensedId = id;
     }

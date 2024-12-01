@@ -114,6 +114,7 @@ public class Hospital extends MedicalFacility {
    * @param pat Patient that will visit
    * @return true if random num > probability of admission false otherwise
    */
+  @Override
   public boolean visit(Patient pat) {
     Random random = new Random();
     double rand = random.nextDouble(1);

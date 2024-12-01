@@ -95,6 +95,7 @@ public class Clinic extends MedicalFacility {
    *     </ul>
    *     or false if patient has not already visited this clinic
    */
+  @Override
   public boolean visit(Patient pat) {
     MedicalFacility medicalFacility = pat.getCurrentFacility();
     if (medicalFacility != null && medicalFacility.equals(this)) {

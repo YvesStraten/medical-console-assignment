@@ -203,6 +203,7 @@ public class Patient implements Comparable<Patient>, Serializable {
    *
    * @return Hash code
    */
+  @Override
   public int hashCode() {
     return this.id;
   }
@@ -214,6 +215,7 @@ public class Patient implements Comparable<Patient>, Serializable {
    * @param oPatient Patient to compare to
    * @return 0 if same id, 1 if larger id, -1 if smaller id
    */
+  @Override
   public int compareTo(Patient oPatient) {
     if (this == oPatient) return 0;
     else return getId() - oPatient.getId();
