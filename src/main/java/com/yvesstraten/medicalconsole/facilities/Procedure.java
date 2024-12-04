@@ -1,5 +1,7 @@
 package com.yvesstraten.medicalconsole.facilities;
 
+import java.io.Serializable;
+
 import com.yvesstraten.medicalconsole.Editable;
 
 /**
@@ -8,7 +10,7 @@ import com.yvesstraten.medicalconsole.Editable;
  * @author Yves Straten e2400068
  * @see Hospital
  */
-public class Procedure implements Comparable<Procedure> {
+public class Procedure implements Comparable<Procedure>, Serializable {
   // id of this procedure
   private final int id;
 
